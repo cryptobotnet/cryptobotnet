@@ -2,26 +2,35 @@
   "name": "okx-asyncink-bot",
   "version": "0.0.0",
   "description": "telegram bot for alerts from okx.com crypto exchange",
-  "main": "index.js",
   "repository": "git@github.com:asyncink/okx-asyncink-bot.git",
   "author": "Mikhail T. <totalism@icloud.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "",
-    "build": "",
+    "start": "nodemon",
+    "build": "tsc",
     "format": "prettier --write . && eslint '*.js' 'src/**/*.{js,ts,tsx}' --fix",
-    "checkup": "yarn lint && yarn typecheck && yarn test",
+    "checkup": "yarn lint && yarn typecheck",
     "lint": "eslint '**/*.ts'",
     "typecheck": "tsc --pretty --noEmit",
     "release": "semantic-release",
     "postinstall": "husky install"
+  },
+  "dependencies": {
+    "@grammyjs/conversations": "^1.1.0",
+    "@grammyjs/runner": "^1.0.4",
+    "@grammyjs/storage-supabase": "^2.1.0",
+    "@grammyjs/transformer-throttler": "^1.2.1",
+    "@supabase/supabase-js": "^2.5.0",
+    "dedent": "^0.7.0",
+    "grammy": "^1.13.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/git": "^10.0.1",
+    "@types/dedent": "^0.7.0",
     "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
@@ -30,8 +39,10 @@
     "eslint-config-prettier": "^8.6.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
+    "nodemon": "^2.0.20",
     "prettier": "^2.8.3",
-    "semantic-release": "^20.1.0",
-    "typescript": "^4.9.4"
+    "semantic-release": "^19.0.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
   }
 }
