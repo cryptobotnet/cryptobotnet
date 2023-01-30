@@ -1,0 +1,35 @@
+name: checkup
+
+on:
+  push:
+  workflow_call:
+
+jobs:
+  checkup:
+    name: checkup
+    if: ${{ !startsWith(github.event.message, 'chore(release)') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 16.13.0
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Run ESLint and Stylelint
+        run: yarn lint
+
+      - name: Run static types check
+        run: yarn typecheck
+
+      - name: Count lines of code
+        run: |
+          yarn global add cloc
+          cloc src/
