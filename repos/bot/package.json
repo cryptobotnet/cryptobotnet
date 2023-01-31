@@ -1,6 +1,7 @@
 {
   "name": "bot",
   "license": "UNLICENSED",
+  "version": "latest",
   "private": true,
   "scripts": {
     "format": "prettier --write . && eslint 'src/**/*.{js,ts,tsx}' --fix",
