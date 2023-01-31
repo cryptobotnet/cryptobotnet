@@ -1,11 +1,11 @@
 # dependencies
-/node_modules
+node_modules
 
 # testing
-/coverage
+coverage
 
 # production build
-/out
+out
 
 # misc
 .DS_Store
@@ -29,3 +29,9 @@ yarn-error.log*
 
 # typescript
 tsconfig.tsbuildinfo
+
+# turborepo
+.turbo
+
+# next
+.next

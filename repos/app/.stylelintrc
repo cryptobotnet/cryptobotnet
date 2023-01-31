@@ -1,0 +1,15 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
+  "rules": {
+    "alpha-value-notation": "number",
+    "no-descending-specificity": null,
+    "selector-class-pattern": null,
+    "value-keyword-case": ["lower", { "ignoreKeywords": ["currentColor"] }],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ]
+  }
+}

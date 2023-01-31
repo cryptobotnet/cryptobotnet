@@ -1,0 +1,56 @@
+@custom-media --mobile screen and (width < 768px);
+@custom-media --mobile-tablet screen and (width < 1024px);
+
+@custom-media --tablet screen and (width >= 768px);
+@custom-media --desktop screen and (width >= 1024px);
+@custom-media --monitor screen and (width >= 1440px);
+
+:root {
+  /* colors */
+  --blue: #2383f2;
+  --blue-hover: #429aff;
+  --red: #f46565;
+  --pink: #f89494;
+  --cyan: #c3dfff;
+  --danger: rgba(239 68 68 / 1);
+  --danger-hover: rgba(220 38 38 / 1);
+
+  /* white */
+  --white: #fff;
+
+  /* black */
+  --black: #333;
+
+  /* grayscale */
+  --grey: #999;
+  --grey-light: rgba(51 51 51 / 0.1);
+  --grey-background: #f8f8f8;
+
+  /* grayscale */
+  --font-family: 'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+
+  /* default text */
+  --default-font-size: 13px;
+  --default-line-height: 22px;
+
+  /* layout */
+  --layout-margin-top: calc(54px + 25px);
+  --layout-horizontal-padding: 20px;
+
+  @media (--tablet) {
+    --layout-margin-top: calc(48px + 8px + 60px);
+    --layout-horizontal-padding: 40px;
+  }
+
+  @media (--desktop) {
+    --layout-margin-top: calc(54px + 8px + 60px);
+    --layout-horizontal-padding: 60px;
+  }
+
+  @media (--monitor) {
+    --layout-margin-top: calc(60px + 8px + 60px);
+    --layout-horizontal-padding: 80px;
+  }
+}
