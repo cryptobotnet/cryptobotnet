@@ -16,7 +16,7 @@
     "start": "turbo run start --parallel",
     "format": "turbo run format",
     "postinstall": "husky install",
-    "release": "multi-semantic-release"
+    "release": "semantic-release"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
