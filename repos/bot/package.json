@@ -1,7 +1,6 @@
 {
   "name": "bot",
-  "version": "0.0.0",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "format": "prettier --write . && eslint 'src/**/*.{js,ts,tsx}' --fix",
