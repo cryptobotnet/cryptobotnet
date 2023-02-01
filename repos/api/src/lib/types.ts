@@ -31,12 +31,12 @@ export enum InstrumentType {
   ANY = 'ANY'
 }
 
-export interface PublicSubscriptionMessage {
+export interface PublicSubscriptionPayload {
   op: OKXEvent.SUBSCRIBE | OKXEvent.UNSUBSCRIBE
   args: PublicChannel[]
 }
 
-export interface PrivateSubscriptionMessage {
+export interface PrivateSubscriptionPayload {
   op: OKXEvent.SUBSCRIBE | OKXEvent.UNSUBSCRIBE
   args: PrivateChannel[]
 }
