@@ -4,7 +4,7 @@ type SignParams = {
   secretKey: string
   method: 'GET' | 'POST'
   path: string
-  params?: Record<string, unknown>
+  params?: Record<string, string>
 }
 
 export const sign = ({ secretKey, method, path }: SignParams) => {

@@ -1,11 +1,11 @@
-import { OKXEvent, type PublicChannel, type InstrumentType } from 'lib/types'
-
-import type { Debugger } from 'lib/debug'
 import util from 'util'
+import type { Debugger } from 'lib/debug'
+
+import { OKXEvent, type PublicChannel, type InstrumentType } from './types'
 
 type MessageHandlerParams = {
   debug: Debugger
-  onAuthCallback?: () => void
+  onAuthCallback: () => void
 }
 
 type ResponseMessage = {
@@ -23,7 +23,7 @@ type ResponseMessage = {
 export const getMessageHandler =
   ({ debug, onAuthCallback }: MessageHandlerParams) =>
   (payload: Buffer) => {
-    console.log('%s', payload)
+    // console.log('%s', payload)
 
     const payloadString = payload.toString()
 
@@ -38,7 +38,7 @@ export const getMessageHandler =
     if (event === OKXEvent.LOGIN || event === OKXEvent.ERROR) {
       const { msg, code } = message
 
-      debug(event, msg, code)
+      debug({ event, msg, code })
 
       if (event === OKXEvent.LOGIN && code === '0') {
         onAuthCallback?.()

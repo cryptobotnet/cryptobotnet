@@ -31,14 +31,10 @@ export enum InstrumentType {
   ANY = 'ANY'
 }
 
-export interface PublicSubscriptionPayload {
-  op: OKXEvent.SUBSCRIBE | OKXEvent.UNSUBSCRIBE
-  args: PublicChannel[]
-}
-
-export interface PrivateSubscriptionPayload {
-  op: OKXEvent.SUBSCRIBE | OKXEvent.UNSUBSCRIBE
-  args: PrivateChannel[]
+export type AuthSecrets = {
+  apiKey: string
+  passphrase: string
+  secretKey: string
 }
 
 export type PublicChannel =
@@ -56,7 +52,7 @@ export type PrivateChannel =
   | AlgoAdvanceChannel
   | LiquidationWarningChannel
 
-interface InstrumentsPublicChannel {
+export interface InstrumentsPublicChannel {
   channel: PublicChannelName.INSTRUMENTS
   instType?:
     | InstrumentType.FUTURES
@@ -66,28 +62,28 @@ interface InstrumentsPublicChannel {
     | InstrumentType.SPOT
 }
 
-interface TickersPublicChannel {
+export interface TickersPublicChannel {
   channel: PublicChannelName.TICKERS
   instType?: InstrumentType
   instId?: string
 }
 
-interface OpenInterestPublicChannel {
+export interface OpenInterestPublicChannel {
   channel: PublicChannelName.OPEN_INTEREST
   instId: string
 }
 
-interface MarkPricePublicChannel {
+export interface MarkPricePublicChannel {
   channel: PublicChannelName.MARK_PRICE
   instId: string
 }
 
-interface AccountPrivateChannel {
+export interface AccountPrivateChannel {
   channel: PrivateChannelName.ACCOUNT
   ccy?: string
 }
 
-interface PositionsPrivateChannel {
+export interface PositionsPrivateChannel {
   channel: PrivateChannelName.POSITIONS
   instType:
     | InstrumentType.FUTURES
@@ -98,17 +94,17 @@ interface PositionsPrivateChannel {
   instId?: string
 }
 
-interface BalanceAndPositionChannel {
+export interface BalanceAndPositionChannel {
   channel: PrivateChannelName.BALANCE_AND_POSITION
 }
 
-interface OrdersChannel {
+export interface OrdersChannel {
   channel: PrivateChannelName.ORDERS
   instType: InstrumentType
   instId?: string
 }
 
-interface OrdersAlgoChannel {
+export interface OrdersAlgoChannel {
   channel: PrivateChannelName.ORDERS_ALGO
   instType:
     | InstrumentType.SPOT
@@ -119,8 +115,8 @@ interface OrdersAlgoChannel {
   instId?: string
 }
 
-interface AlgoAdvanceChannel {
-  channel: PrivateChannelName.ORDERS_ALGO
+export interface AlgoAdvanceChannel {
+  channel: PrivateChannelName.ALGO_ADVANCE
   instType:
     | InstrumentType.SPOT
     | InstrumentType.FUTURES
@@ -131,7 +127,7 @@ interface AlgoAdvanceChannel {
   algoId?: string
 }
 
-interface LiquidationWarningChannel {
+export interface LiquidationWarningChannel {
   channel: PrivateChannelName.LIQUIDATION_WARNING
   instType:
     | InstrumentType.FUTURES
