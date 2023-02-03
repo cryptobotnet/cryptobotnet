@@ -15,7 +15,7 @@
     "build": "turbo run build",
     "start": "turbo run start --parallel",
     "format": "turbo run format",
-    "postinstall": "husky install",
+    "#postinstall": "husky install",
     "release": "semantic-release"
   },
   "devDependencies": {
