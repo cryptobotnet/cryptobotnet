@@ -17,7 +17,8 @@
     "@grammyjs/transformer-throttler": "^1.2.1",
     "@supabase/supabase-js": "^2.5.0",
     "dedent": "^0.7.0",
-    "grammy": "^1.13.1"
+    "grammy": "^1.13.1",
+    "redis": "^4.6.4"
   },
   "devDependencies": {
     "@types/dedent": "^0.7.0",

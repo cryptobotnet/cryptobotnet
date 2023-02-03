@@ -1,30 +1,23 @@
 import 'lib/dotenv'
 
-import { run } from '@grammyjs/runner'
-import { session } from 'grammy'
-import { conversations } from '@grammyjs/conversations'
+import { bot } from 'components/bot'
+import { commandStart } from 'commands/start'
 
-import { bot } from 'lib/bot'
-import { throttler } from 'lib/throttler'
-import { initial, storage } from 'lib/session'
-import { errorHandler } from 'lib/error-handler'
+import { run, type RunnerHandle } from '@grammyjs/runner'
 
-import { start } from 'features/start'
-import { help } from 'features/help'
-import { key } from 'features/key'
+import { redis } from 'lib/redis'
 
-bot.api.config.use(throttler)
-bot.catch(errorHandler)
+bot.use(commandStart)
 
-bot.use(session({ initial, storage }))
-bot.use(conversations())
+redis.connect()
 
-bot.use(start)
-bot.use(help)
-bot.use(key)
+const runner: RunnerHandle = run(bot)
 
-const runner = run(bot)
-const stop = () => runner.isRunning() && runner.stop()
+/* NOTE: stop bot on process exit */
+const stop = () => {
+  runner?.isRunning() && runner?.stop()
+  redis.disconnect()
+}
 
 process.once('SIGINT', stop)
 process.once('SIGTERM', stop)

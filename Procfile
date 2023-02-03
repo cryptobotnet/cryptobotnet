@@ -1,0 +1,1 @@
+web: yarn build && node bot/out/index.js

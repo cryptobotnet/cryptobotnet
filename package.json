@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "license": "UNLICENSED",
   "author": "Mikhail T. <totalism@icloud.com>",
-  "repository": "git@github.com:asyncink/okx-asyncink-bot.git",
+  "repository": "git@github.com:asyncink/okx-alerts-bot.git",
   "private": true,
   "workspaces": [
     "repos/*"
