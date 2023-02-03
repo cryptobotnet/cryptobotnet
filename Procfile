@@ -1,1 +1,0 @@
-web: yarn --frozen-lockfile && yarn lint && yarn typecheck && yarn build && node bot/out/index.js
