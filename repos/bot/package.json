@@ -3,6 +3,9 @@
   "license": "UNLICENSED",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "16.13.0"
+  },
   "scripts": {
     "format": "prettier --write . && eslint 'src/**/*.{js,ts,tsx}' --fix",
     "lint": "eslint '**/*.ts'",
