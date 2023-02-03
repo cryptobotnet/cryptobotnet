@@ -16,9 +16,7 @@
   "dependencies": {
     "@grammyjs/conversations": "^1.1.0",
     "@grammyjs/runner": "^1.0.4",
-    "@grammyjs/storage-supabase": "^2.1.0",
     "@grammyjs/transformer-throttler": "^1.2.1",
-    "@supabase/supabase-js": "^2.5.0",
     "dedent": "^0.7.0",
     "grammy": "^1.13.1",
     "redis": "^4.6.4"
