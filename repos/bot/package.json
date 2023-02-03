@@ -12,7 +12,7 @@
     "typecheck": "tsc --pretty --noEmit",
     "dev": "nodemon",
     "start": "NODE_PATH=./out node ./out/index.js",
-    "build": "tsc"
+    "build": "yarn && tsc"
   },
   "dependencies": {
     "@grammyjs/conversations": "^1.1.0",
