@@ -11,7 +11,7 @@
     "lint": "eslint '**/*.ts'",
     "typecheck": "tsc --pretty --noEmit",
     "dev": "nodemon",
-    "start": "node ./out/index.js",
+    "start": "NODE_PATH=./out node ./out/index.js",
     "build": "tsc"
   },
   "dependencies": {
