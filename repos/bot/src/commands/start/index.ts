@@ -1,25 +1,21 @@
 import { Composer, type Context } from 'grammy'
 
 import { Commands, Responses } from 'lib/constants'
-import { redis } from 'lib/redis'
+import { getRedisUserKey, redis } from 'lib/redis'
 
 export const commandStart = new Composer<Context>()
 
 commandStart.command(Commands.START, async ctx => {
   const { id: chatId } = ctx.chat
 
-  const firstResponseId = await redis.get(`USER::${chatId}`)
-
-  console.log({ firstResponseId })
+  const firstResponseId = await redis.get(getRedisUserKey(chatId))
 
   const sendFirstMessage = async () => {
     const { message_id } = await ctx.reply(Responses.START, {
       parse_mode: 'MarkdownV2'
     })
 
-    console.log({ message_id })
-
-    await redis.set(`USER::${chatId}`, message_id)
+    await redis.set(getRedisUserKey(chatId), message_id)
   }
 
   if (!firstResponseId) {

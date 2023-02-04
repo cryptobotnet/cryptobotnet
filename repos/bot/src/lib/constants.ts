@@ -21,7 +21,7 @@ export const Responses = {
     `
     *Use Home button near your text bar to control the bot ⚡️*
     
-    ||Consider to check pinned message for an introduction\\.||
+    ||Consider to check the first message for an introduction\\.||
     `
   )
 }

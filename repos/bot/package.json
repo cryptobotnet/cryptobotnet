@@ -10,9 +10,8 @@
     "format": "prettier --write . && eslint 'src/**/*.{js,ts,tsx}' --fix",
     "lint": "eslint '**/*.ts'",
     "typecheck": "tsc --pretty --noEmit",
-    "dev": "nodemon",
-    "start": "NODE_PATH=./out node ./out/index.js",
-    "build": "yarn && tsc"
+    "start": "nodemon",
+    "build": "tsc"
   },
   "dependencies": {
     "@grammyjs/conversations": "^1.1.0",

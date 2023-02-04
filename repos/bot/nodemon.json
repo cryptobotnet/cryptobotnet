@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": ".ts",
   "ignore": [],
-  "exec": "NODE_PATH=./src yarn ts-node ./src/index.ts"
+  "exec": "NODE_PATH=./src ts-node ./src/index.ts"
 }
