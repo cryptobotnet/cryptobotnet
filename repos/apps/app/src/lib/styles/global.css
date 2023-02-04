@@ -6,6 +6,8 @@ body {
   font-size: var(--default-font-size);
   line-height: var(--default-line-height);
   color: var(--black);
+  color: var(--tg-theme-text-color);
+  background-color: var(--tg-theme-bg-color);
 }
 
 * {
@@ -14,13 +16,14 @@ body {
 
 a {
   text-decoration: none;
-  color: var(--blue);
-  transition: color 0.175s;
+  color: var(--tg-theme-link-color);
+  opacity: 1;
+  transition: opacity 0.175s;
 }
 
 a:hover {
   @media (--desktop) {
-    color: var(--blue-hover);
+    opacity: 0.9;
   }
 }
 

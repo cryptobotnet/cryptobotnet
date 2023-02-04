@@ -2067,6 +2067,24 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.3.tgz#472eaab5f15c1ffdd7f8628bd4c4f753995ec79e"
   integrity sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==
 
+"@typemodule/dom@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@typemodule/dom/-/dom-0.1.1.tgz#f636aa9a7c420162190f09f6f6049bb4725fccbf"
+  integrity sha512-CNp5hUGZ2gkH8Jq+zrg74t5Tvul1VG5R7Qnmk7MYcW+Wsb7EMIctP1HOar47Chp0v+t/jWYo0loUkdGgFEe9GA==
+
+"@typemodule/local-storage@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@typemodule/local-storage/-/local-storage-0.2.0.tgz#c9eca3917149ad0d39a95d344e739eebd96066f8"
+  integrity sha512-fIqGMeJqhWFg99drFcj2h1VzINp8d7kq5gTr3pQI9PLoePWdwn+CTfpabq5T2l5Sa/f8yRpirth1nFk6O/69Sw==
+
+"@typemodule/react@^0.11.3":
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/@typemodule/react/-/react-0.11.3.tgz#2cfaa4d9955a726774405d13021fa44b19f7635b"
+  integrity sha512-BToQ2Pl2amEpiaxSTybjSf/QkErq6IGY6+5qfix8fbbEG2BubJUNu7rr/YcwjjQu4kwtTcT2IAWPjG9eSGBs2w==
+  dependencies:
+    "@typemodule/local-storage" "^0.2.0"
+    raf-throttle "^2.0.5"
+
 "@types/body-parser@*":
   version "1.19.2"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.19.2.tgz#aea2059e28b7658639081347ac4fab3de166e6f0"
@@ -6899,6 +6917,11 @@ quick-lru@^4.0.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
 
+raf-throttle@^2.0.5:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/raf-throttle/-/raf-throttle-2.0.6.tgz#5f1c273d1630fff421df31fe01551faa04b86700"
+  integrity sha512-C7W6hy78A+vMmk5a/B6C5szjBHrUzWJkVyakjKCK59Uy2CcA7KhO1JUvvH32IXYFIcyJ3FMKP3ZzCc2/71I6Vg==
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
@@ -6933,12 +6956,17 @@ react-dom@^17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-feather@^2.0.9:
+react-feather@^2.0.10:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-2.0.10.tgz#0e9abf05a66754f7b7bb71757ac4da7fb6be3b68"
   integrity sha512-BLhukwJ+Z92Nmdcs+EMw6dy1Z/VLiJTzEQACDUEnWMClhYnFykJCGWQx+NmwP/qQHGX/5CzQ+TGi8ofg2+HzVQ==
   dependencies:
     prop-types "^15.7.2"
+
+react-hook-form@^7.43.0:
+  version "7.43.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.43.0.tgz#d0c19b5c4ec561fbf8d652869ccb513c11c772e7"
+  integrity sha512-/rVEz7T0gLdSFwPqutJ1kn2e0sQNyb9ci/hmwEYr2YG0KF/LSuRLvNrf9QWJM+gj88CjDpDW5Bh/1AD7B2+z9Q==
 
 react-is@^16.13.1:
   version "16.13.1"

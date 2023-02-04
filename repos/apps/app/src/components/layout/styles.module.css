@@ -1,3 +1,11 @@
 .layout {
-  display: block;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 60px;
+
+  & > main {
+    width: 320px;
+  }
 }

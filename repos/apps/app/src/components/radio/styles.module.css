@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+}
+
+.labelContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  & label {
+    display: inline-block;
+    color: var(--black);
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 6px 12px;
+  margin-right: 10px;
+  border-radius: 50px;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  transition: background-color 200ms;
+
+  &:hover {
+    background-color: var(--grey-background);
+  }
+
+  &:active {
+    background-color: var(--grey-light);
+  }
+
+  &::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--white);
+    border: 1px solid var(--grey);
+    margin-right: 10px;
+    box-sizing: border-box;
+  }
+
+  &.active {
+    cursor: default;
+    background-color: var(--grey-background);
+
+    &::before {
+      border: 4px solid var(--blue);
+    }
+
+    &:active {
+      background-color: var(--grey-light);
+    }
+  }
+}

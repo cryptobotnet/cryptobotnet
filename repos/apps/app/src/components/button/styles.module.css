@@ -1,0 +1,285 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  position: relative;
+
+  & svg {
+    stroke: currentColor;
+  }
+}
+
+.iconLeft,
+.iconRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconLeft {
+  margin-right: 12px;
+  margin-left: -12px;
+}
+
+.iconRight {
+  margin-left: 12px;
+  margin-right: -12px;
+}
+
+.primary {
+  background-color: var(--black);
+  color: var(--white);
+  transition: color 100ms, background-color 100ms, border-color 100ms;
+
+  &:hover {
+    background-color: var(--blue);
+  }
+
+  &:active {
+    background-color: var(--blue-hover);
+  }
+}
+
+.secondary {
+  background-color: var(--grey-background);
+  color: var(--black);
+  transition: color 100ms, background-color 100ms, border-color 100ms;
+
+  &:hover {
+    background-color: var(--grey-light);
+  }
+
+  &:active {
+    background-color: var(--grey-light-hover);
+  }
+}
+
+.primary.danger {
+  background-color: var(--danger);
+
+  &:hover {
+    background-color: var(--danger-hover);
+  }
+
+  &:active {
+    background-color: var(--danger);
+  }
+}
+
+.secondary.danger {
+  background-color: var(--danger-light);
+
+  &:hover {
+    background-color: var(--danger-light-hover);
+  }
+
+  &:active {
+    background-color: var(--danger-light);
+  }
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--black);
+  border-color: var(--black);
+  transition: color 100ms, background-color 100ms, border-color 100ms;
+
+  &:hover {
+    color: var(--blue);
+    border-color: var(--blue);
+  }
+
+  &:active {
+    color: var(--blue-hover);
+    border-color: var(--blue-hover);
+  }
+}
+
+.outline.danger {
+  color: var(--danger);
+  border-color: var(--danger);
+
+  &:hover {
+    color: var(--danger-hover);
+    border-color: var(--danger-hover);
+  }
+
+  &:active {
+    color: var(--danger);
+    border-color: var(--danger);
+  }
+}
+
+.rectangular {
+  border-radius: 3px;
+}
+
+.default {
+  border-radius: 100px;
+}
+
+.tiny {
+  height: 32px;
+  padding: 0 28px;
+  font-size: 13px;
+  line-height: 16px;
+
+  & svg {
+    width: 16px;
+  }
+}
+
+.medium {
+  height: 40px;
+  padding: 0 36px;
+  font-size: 14px;
+  line-height: 20px;
+
+  & svg {
+    width: 18px;
+  }
+}
+
+.large {
+  height: 45px;
+  padding: 0 52px;
+  font-size: 16px;
+  line-height: 20px;
+
+  & svg {
+    width: 20px;
+  }
+}
+
+.block {
+  display: flex;
+  width: 100%;
+}
+
+.round {
+  padding: 0;
+  border-radius: 50%;
+
+  & > .loader {
+    position: static;
+
+    &:global {
+      animation: spin 1500ms infinite linear;
+    }
+  }
+}
+
+.round.tiny {
+  width: 32px;
+}
+
+.round.medium {
+  width: 40px;
+}
+
+.round.large {
+  width: 45px;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+@keyframes spin-loader {
+  from {
+    transform: translate3d(0, -50%, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(0, -50%, 0) rotate(360deg);
+  }
+}
+
+.loader {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+  animation: spin-loader 1500ms infinite linear;
+}
+
+.text {
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--blue);
+  font-weight: 500;
+  transition: color 0.175s;
+
+  &:hover {
+    color: var(--blue-hover);
+
+    & svg {
+      color: var(--blue-hover);
+    }
+  }
+
+  &:active {
+    color: var(--blue-hover);
+
+    & svg {
+      color: var(--blue-hover);
+    }
+  }
+
+  & > svg {
+    color: var(--black);
+    transition: color 0.175s;
+  }
+
+  & > .loader {
+    position: static;
+    margin-left: 12px;
+    transform: none;
+
+    &:global {
+      animation: spin 1500ms infinite linear;
+    }
+  }
+
+  &.danger {
+    color: var(--danger);
+
+    &:hover {
+      color: var(--danger-hover);
+    }
+
+    &:active {
+      color: var(--danger);
+    }
+  }
+
+  &.tiny {
+    height: 14px;
+  }
+
+  &.medium {
+    height: 20px;
+  }
+
+  &.large {
+    height: 20px;
+  }
+
+  & .iconLeft {
+    margin-right: 8px;
+    margin-left: 0;
+  }
+
+  & .iconRight {
+    margin-left: 8px;
+    margin-right: 0;
+  }
+}
