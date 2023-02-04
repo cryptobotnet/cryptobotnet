@@ -2,14 +2,11 @@ import 'lib/dotenv'
 
 import { bot } from 'components/bot'
 import { commandStart } from 'commands/start'
+import { redis } from 'lib/redis'
 
 import { run, type RunnerHandle } from '@grammyjs/runner'
 
-import { redis } from 'lib/redis'
-
 bot.use(commandStart)
-
-redis.connect()
 
 const runner: RunnerHandle = run(bot)
 

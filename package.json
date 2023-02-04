@@ -7,7 +7,8 @@
   "repository": "git@github.com:asyncink/okx-alerts-bot.git",
   "private": true,
   "workspaces": [
-    "repos/*"
+    "repos/apps/*",
+    "repos/packages/*"
   ],
   "scripts": {
     "lint": "turbo run lint",
