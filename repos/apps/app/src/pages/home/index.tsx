@@ -7,6 +7,7 @@ import { Radio } from 'components/radio'
 import { Input } from 'components/input'
 
 import styles from './styles.module.css'
+import { SuccessIcon } from 'components/icons'
 
 enum InstrumentType {
   SPOT = 'spot',
@@ -31,7 +32,15 @@ export const Home: NextPage = () => {
     // handleSubmit
   } = useForm<FormValues>({ reValidateMode: 'onSubmit' })
 
-  return (
+  return true ? (
+    <div className={styles.success}>
+      <label>
+        <SuccessIcon size={20} />
+        Price alert has been set:
+      </label>
+      <pre>BTCUSDT (Perpetual Swap) → 23 400</pre>
+    </div>
+  ) : (
     <>
       <Controller
         name="instrumentType"

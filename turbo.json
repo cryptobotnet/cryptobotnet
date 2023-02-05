@@ -1,15 +1,25 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "format": {},
-    "lint": {},
-    "typecheck": {},
+    "clean": {
+      "cache": false
+    },
+    "format": {
+      "cache": false
+    },
+    "lint": {
+      "cache": false
+    },
+    "typecheck": {
+      "cache": false,
+      "dependsOn": ["redis-model#build", "okx-api#build"]
+    },
     "start": {
       "cache": false,
       "persistent": true
     },
     "build": {
-      "dependsOn": ["^build", "^lint", "lint", "^typecheck", "typecheck"],
+      "dependsOn": ["^build"],
       "outputs": ["out/**", ".next/**"]
     }
   }

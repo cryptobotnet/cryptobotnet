@@ -8,16 +8,17 @@
   "private": true,
   "workspaces": [
     "repos/apps/*",
-    "repos/packages/*"
+    "repos/components/*"
   ],
   "scripts": {
+    "clean": "turbo run clean",
+    "format": "turbo run format",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
-    "build": "turbo run build",
     "start": "turbo run start --parallel",
-    "format": "turbo run format",
-    "postinstall": "husky install",
-    "release": "semantic-release"
+    "build": "turbo run build",
+    "release": "semantic-release",
+    "postinstall": "husky install"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
@@ -28,6 +29,6 @@
     "lint-staged": "^13.1.0",
     "semantic-release": "^19.0.5",
     "prettier": "^2.8.3",
-    "turbo": "^1.7.0"
+    "turbo": "^1.7.3"
   }
 }

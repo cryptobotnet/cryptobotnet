@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "format": "prettier --write . && eslint '*.js' 'src/**/*.{js,ts,tsx}' --fix",
+    "clean": "rm -rf out .turbo .next",
+    "format": "prettier --ignore-path ../../../.prettierignore --write . && eslint --ignore-path ../../../.eslintignore './*.js' 'src/**/*.{js,ts,tsx}' --fix",
     "lint": "next lint && stylelint '**/*.css'",
     "typecheck": "tsc --pretty --noEmit",
     "start": "next dev",
@@ -19,8 +20,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-feather": "^2.0.10",
-    "react-hook-form": "^7.43.0",
-    "sharp": "^0.30.4"
+    "react-hook-form": "^7.43.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
