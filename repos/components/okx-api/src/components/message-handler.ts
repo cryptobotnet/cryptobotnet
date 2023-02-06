@@ -1,7 +1,10 @@
-import util from 'util'
 import type { Debugger } from 'lib/debug'
 
-import { OKXEvent, type PublicChannel, type InstrumentType } from './types'
+import {
+  OKXEvent,
+  type PublicChannel,
+  type InstrumentType
+} from 'components/types'
 
 type MessageHandlerParams = {
   debug: Debugger
@@ -53,5 +56,5 @@ export const getMessageHandler =
 
     const { data } = message
 
-    debug(util.inspect({ data }, { showHidden: false, depth: null }))
+    debug(JSON.stringify({ data }, null, 2))
   }

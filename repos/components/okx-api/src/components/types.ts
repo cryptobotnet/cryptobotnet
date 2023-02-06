@@ -137,3 +137,28 @@ export interface LiquidationWarningChannel {
     | InstrumentType.ANY
   instId?: string
 }
+
+export type GetInstrumentsPayload = {
+  instType:
+    | InstrumentType.SPOT
+    | InstrumentType.MARGIN
+    | InstrumentType.SWAP
+    | InstrumentType.FUTURES
+    | InstrumentType.OPTION
+}
+
+export type GetTickersPayload = {
+  instType:
+    | InstrumentType.SPOT
+    | InstrumentType.SWAP
+    | InstrumentType.FUTURES
+    | InstrumentType.OPTION
+}
+
+export type GetTickerPayload = {
+  instId: string
+}
+
+export type GetMarkPricePayload = {
+  instId: string
+}

@@ -1,4 +1,4 @@
-import WebSocket from 'ws'
+import WebSocket from 'isomorphic-ws'
 
 import { getMessageHandler } from 'components/message-handler'
 import { OKXEvent, type AuthSecrets } from 'components/types'
@@ -10,7 +10,7 @@ import {
   type Debugger
 } from 'lib/debug'
 import { Endpoints } from 'lib/constants'
-import { sign } from 'lib/sign'
+import { sign } from 'components/sign'
 
 export class OKXWebSocket<ChannelType> {
   private readonly webSocket: WebSocket
@@ -32,7 +32,7 @@ export class OKXWebSocket<ChannelType> {
     this.isAuthenticated = false
 
     this.webSocket = new WebSocket(
-      this.isPrivate ? Endpoints.PRIVATE : Endpoints.PUBLIC
+      this.isPrivate ? Endpoints.WEBSOCKET_PRIVATE : Endpoints.WEBSOCKET_PUBLIC
     )
 
     this.webSocket.on('open', () => {
@@ -79,7 +79,8 @@ export class OKXWebSocket<ChannelType> {
     const { timestamp, signedBase64 } = sign({
       secretKey,
       method: 'GET',
-      path: '/users/self/verify'
+      path: '/users/self/verify',
+      type: 'websocket'
     })
 
     const message = {
