@@ -1,4 +1,4 @@
-import { createHmac } from 'isomorphic-crypto'
+import { createHmac } from 'crypto'
 
 type SignParams = {
   secretKey: string

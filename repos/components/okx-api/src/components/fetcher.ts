@@ -1,4 +1,4 @@
-import 'isomorphic-fetch'
+import fetch from 'cross-fetch'
 import queryString from 'querystring'
 
 import { Endpoints } from 'lib/constants'
@@ -65,9 +65,7 @@ export const fetcher = async (
   } catch {}
 
   if (response?.status !== 200) {
-    error = new Error(
-      `GET-request failed with code ${response?.status} on endpoint ${endpoint}`
-    )
+    error = `GET-request failed with code ${response?.status} on endpoint ${endpoint}`
   }
 
   return { data, error }

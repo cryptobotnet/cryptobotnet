@@ -1,4 +1,4 @@
-import WebSocket from 'isomorphic-ws'
+import WebSocket from 'ws'
 
 import { getMessageHandler } from 'components/message-handler'
 import { OKXEvent, type AuthSecrets } from 'components/types'
