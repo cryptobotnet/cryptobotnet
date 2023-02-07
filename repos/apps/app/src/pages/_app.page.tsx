@@ -31,6 +31,13 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
               : theme.defaultAlgorithm,
           token: {
             borderRadius: 40
+          },
+          components: {
+            ...(telegramColorScheme === 'dark' && {
+              Input: {
+                colorBorder: 'transparent'
+              }
+            })
           }
         }}>
         <Layout>
