@@ -77,9 +77,10 @@ export const Settings: NextPage = () => {
         description={
           <>
             To obtain and configure API keys please refer this page on okx.com
-            (copy and paste in your browser) —{' '}
+            (copy and paste in browser):
+            <br />
             <Typography.Text strong copyable>
-              https://www.okx.com/account/my-api
+              https://okx.com/account/my-api
             </Typography.Text>
           </>
         }
