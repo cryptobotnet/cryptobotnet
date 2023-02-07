@@ -35,7 +35,7 @@
   resolved "https://registry.yarnpkg.com/@ant-design/icons-svg/-/icons-svg-4.2.1.tgz#8630da8eb4471a4aabdaed7d1ff6a97dcb2cf05a"
   integrity sha512-EB0iwlKDGpG93hW8f85CTJTs4SvMX7tt5ceupvhALp1IF44SeUFOMhKUOYqpsoYWQKAOuTRDMqn75rEaKDp0Xw==
 
-"@ant-design/icons@^5.0.0":
+"@ant-design/icons@^5.0.0", "@ant-design/icons@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-5.0.1.tgz#febb1fdc5776f58187b2c953ac9a4496069d045b"
   integrity sha512-ZyF4ksXCcdtwA/1PLlnFLcF/q8/MhwxXhKHh4oCHDA4Ip+ZzAHoICtyp4wZWfiCVDP0yuz3HsjyvuldHFb3wjA==
@@ -2173,24 +2173,6 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.3.tgz#472eaab5f15c1ffdd7f8628bd4c4f753995ec79e"
   integrity sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==
 
-"@typemodule/dom@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@typemodule/dom/-/dom-0.1.1.tgz#f636aa9a7c420162190f09f6f6049bb4725fccbf"
-  integrity sha512-CNp5hUGZ2gkH8Jq+zrg74t5Tvul1VG5R7Qnmk7MYcW+Wsb7EMIctP1HOar47Chp0v+t/jWYo0loUkdGgFEe9GA==
-
-"@typemodule/local-storage@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@typemodule/local-storage/-/local-storage-0.2.0.tgz#c9eca3917149ad0d39a95d344e739eebd96066f8"
-  integrity sha512-fIqGMeJqhWFg99drFcj2h1VzINp8d7kq5gTr3pQI9PLoePWdwn+CTfpabq5T2l5Sa/f8yRpirth1nFk6O/69Sw==
-
-"@typemodule/react@^0.11.3":
-  version "0.11.3"
-  resolved "https://registry.yarnpkg.com/@typemodule/react/-/react-0.11.3.tgz#2cfaa4d9955a726774405d13021fa44b19f7635b"
-  integrity sha512-BToQ2Pl2amEpiaxSTybjSf/QkErq6IGY6+5qfix8fbbEG2BubJUNu7rr/YcwjjQu4kwtTcT2IAWPjG9eSGBs2w==
-  dependencies:
-    "@typemodule/local-storage" "^0.2.0"
-    raf-throttle "^2.0.5"
-
 "@types/body-parser@*":
   version "1.19.2"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.19.2.tgz#aea2059e28b7658639081347ac4fab3de166e6f0"
@@ -2302,6 +2284,11 @@
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
+
+"@types/numeral@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/numeral/-/numeral-2.0.2.tgz#8ea2c4f4e64c0cc948ad7da375f6f827778a7912"
+  integrity sha512-A8F30k2gYJ/6e07spSCPpkuZu79LCnkPTvqmIWQzNGcrzwFKpVOydG41lNt5wZXjSI149qjyzC2L1+F2PD/NUA==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -6323,6 +6310,11 @@ nth-check@^2.0.1:
   dependencies:
     boolbase "^1.0.0"
 
+numeral@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.6.tgz#4ad080936d443c2561aed9f2197efffe25f4e506"
+  integrity sha512-qaKRmtYPZ5qdw4jWJD6bxEf1FJEqllJrwxCLIm0sQU/A7v2/czigzOb+C2uSiFsa9lBUzeH7M1oK+Q+OLxL3kA==
+
 o-son@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/o-son/-/o-son-1.0.1.tgz#0e4f575a5c232fb542ab4e73e897b1c0d131b4c3"
@@ -7085,11 +7077,6 @@ quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
-
-raf-throttle@^2.0.5:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/raf-throttle/-/raf-throttle-2.0.6.tgz#5f1c273d1630fff421df31fe01551faa04b86700"
-  integrity sha512-C7W6hy78A+vMmk5a/B6C5szjBHrUzWJkVyakjKCK59Uy2CcA7KhO1JUvvH32IXYFIcyJ3FMKP3ZzCc2/71I6Vg==
 
 range-parser@~1.2.1:
   version "1.2.1"

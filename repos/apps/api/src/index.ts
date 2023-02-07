@@ -1,8 +1,9 @@
 import 'lib/dotenv'
 
 import { app } from 'components/app'
-import * as endpoints from 'endpoints'
+import { priceAlertsRouter, okxRouter } from 'endpoints'
 
-app.use('/', endpoints.priceAlertsEndpoints)
+app.use('/', priceAlertsRouter)
+app.use('/', okxRouter)
 
 app.listen(process.env.PORT)

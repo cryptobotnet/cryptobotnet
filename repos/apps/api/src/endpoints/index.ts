@@ -1,1 +1,2 @@
-export { priceAlertsEndpoints } from './price-alerts'
+export { priceAlertsRouter } from './price-alerts'
+export { okxRouter } from './okx'
