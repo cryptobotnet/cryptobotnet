@@ -1,7 +1,6 @@
 import React from 'react'
 import type { AppProps } from 'next/app'
 
-import Head from 'next/head'
 import Script from 'next/script'
 
 import { ConfigProvider, theme } from 'antd'
@@ -16,10 +15,6 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-
       <Script src="https://telegram.org/js/telegram-web-app.js" />
 
       <ConfigProvider
@@ -31,14 +26,20 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
               : theme.defaultAlgorithm,
           token: {
             borderRadius: 40
-          },
-          components: {
-            ...(telegramColorScheme === 'dark' && {
-              Input: {
-                colorBorder: 'transparent'
-              }
-            })
           }
+          // components: {
+          //   ...(telegramColorScheme === 'dark' && {
+          //     Input: {
+          //       colorBorder: 'transparent'
+          //     },
+          //     InputNumber: {
+          //       colorBorder: 'transparent'
+          //     },
+          //     Select: {
+          //       colorBorder: 'transparent'
+          //     }
+          //   })
+          // }
         }}>
         <Layout>
           <Component {...pageProps} />

@@ -76,11 +76,11 @@ export const Settings: NextPage = () => {
         message="How to get your API keys"
         description={
           <>
-            To obtain and configure API keys please refer this page on okx.com —{' '}
+            To obtain and configure API keys please refer this page on okx.com
+            (copy and paste in your browser) —{' '}
             <Typography.Text strong copyable>
               https://www.okx.com/account/my-api
             </Typography.Text>
-            .
           </>
         }
         type="info"
