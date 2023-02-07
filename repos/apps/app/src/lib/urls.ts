@@ -1,3 +1,6 @@
 export const Urls = {
-  HOME: '/'
+  ALERTS: '/alerts',
+  ADD_ALERT: '/alerts/add',
+  POSITIONS: '/positions',
+  SETTINGS: '/settings'
 }

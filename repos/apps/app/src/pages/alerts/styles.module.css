@@ -1,0 +1,56 @@
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & + .alert {
+    margin-top: 20px;
+  }
+}
+
+.instrumentId {
+  min-width: 145px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.targetPrice {
+  width: 110px;
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  color: #595959;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  margin-left: 8px;
+  transition: background-color 150ms;
+
+  &:hover {
+    background: rgb(0 0 0 / 0.06);
+  }
+
+  & svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.add {
+  margin-top: 40px;
+  width: 200px;
+}

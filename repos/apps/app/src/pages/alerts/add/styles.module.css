@@ -1,0 +1,28 @@
+.form {
+  width: 100%;
+}
+
+.instrumentType {
+  width: 100%;
+
+  & :global(.ant-radio-button-wrapper) {
+    width: 50%;
+    padding-inline: 0;
+  }
+
+  & :global(.ant-radio-button) + span {
+    display: block;
+    text-align: center;
+  }
+}
+
+.instrumentId {
+  & :global(.ant-select-clear) {
+    opacity: 1;
+  }
+}
+
+.targetPrice {
+  width: 100%;
+  font-size: 16px;
+}

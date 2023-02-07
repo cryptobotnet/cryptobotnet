@@ -1,0 +1,11 @@
+.form {
+  width: 100%;
+}
+
+.alert {
+  margin-top: 36px;
+
+  & + .alert {
+    margin-top: 24px;
+  }
+}
