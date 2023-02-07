@@ -1,10 +1,6 @@
 import type { Debugger } from 'lib/debug'
 
-import {
-  OKXEvent,
-  type PublicChannel,
-  type InstrumentType
-} from 'components/types'
+import { OKXEvent, type PublicChannel, type InstrumentType } from 'lib/types'
 
 type MessageHandlerParams = {
   debug: Debugger

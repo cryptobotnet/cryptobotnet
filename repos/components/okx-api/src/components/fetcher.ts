@@ -3,7 +3,7 @@ import queryString from 'querystring'
 
 import { Endpoints } from 'lib/constants'
 import { sign } from 'components/sign'
-import type { AuthSecrets } from 'components/types'
+import type { AuthSecrets } from 'lib/types'
 
 export const fetcher = async (
   endpoint: string,

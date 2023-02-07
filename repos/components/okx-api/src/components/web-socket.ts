@@ -1,7 +1,7 @@
 import WebSocket from 'ws'
 
 import { getMessageHandler } from 'components/message-handler'
-import { OKXEvent, type AuthSecrets } from 'components/types'
+import { OKXEvent, type AuthSecrets } from 'lib/types'
 
 import {
   debugWebSocketPublic,

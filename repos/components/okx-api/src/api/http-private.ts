@@ -1,5 +1,5 @@
 import { fetcher } from 'components/fetcher'
-import type { AuthSecrets } from 'components/types'
+import type { AuthSecrets } from 'lib/types'
 
 export class OKXHttpPrivate {
   private authSecrets: AuthSecrets

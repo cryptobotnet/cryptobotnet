@@ -7,7 +7,7 @@ import {
   type TickersPublicChannel,
   type OpenInterestPublicChannel,
   type MarkPricePublicChannel
-} from 'components/types'
+} from 'lib/types'
 
 export class OKXWebSocketPublic extends OKXWebSocket<PublicChannel> {
   constructor() {

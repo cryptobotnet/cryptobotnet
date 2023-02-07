@@ -10,7 +10,7 @@ import {
   type OrdersAlgoChannel,
   type AlgoAdvanceChannel,
   type LiquidationWarningChannel
-} from 'components/types'
+} from 'lib/types'
 
 export class OKXWebSocketPrivate extends OKXWebSocket<PrivateChannel> {
   constructor(authSecrets: AuthSecrets) {

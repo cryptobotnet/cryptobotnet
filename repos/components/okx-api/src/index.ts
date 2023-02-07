@@ -3,3 +3,5 @@ export { OKXWebSocketPrivate } from 'api/web-socket-private'
 
 export { OKXHttpPublic } from 'api/http-public'
 export { OKXHttpPrivate } from 'api/http-private'
+
+export * from 'lib/types'

@@ -4,7 +4,7 @@ import {
   GetTickersPayload,
   GetTickerPayload,
   GetMarkPricePayload
-} from 'components/types'
+} from 'lib/types'
 
 export class OKXHttpPublic {
   public async getInstruments(params: GetInstrumentsPayload) {
