@@ -1,3 +1,5 @@
+/* TODO: remove if nothing will be added */
+
 import React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 

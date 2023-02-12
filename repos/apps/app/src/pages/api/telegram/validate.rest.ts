@@ -24,14 +24,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const encoded = decodeURIComponent(telegramInitData)
-    const secret = createHmac('sha256', 'WebAppData').update(TELEGRAM_BOT_KEY)
-
     const arr = encoded.split('&')
+
     const hashIndex = arr.findIndex(str => str.startsWith('hash='))
     const hash = arr.splice(hashIndex)[0].split('=')[1]
 
     const dataCheckString = arr.sort((a, b) => a.localeCompare(b)).join('\n')
-
+    const secret = createHmac('sha256', 'WebAppData').update(TELEGRAM_BOT_KEY)
     const _hash = createHmac('sha256', secret.digest())
       .update(dataCheckString)
       .digest('hex')

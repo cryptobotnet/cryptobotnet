@@ -6,6 +6,10 @@
   & + .alert {
     margin-top: 20px;
   }
+
+  &:last-of-type {
+    margin-bottom: 24px;
+  }
 }
 
 .instrumentId {
@@ -48,9 +52,4 @@
     width: 16px;
     height: 16px;
   }
-}
-
-.add {
-  margin-top: 40px;
-  width: 200px;
 }

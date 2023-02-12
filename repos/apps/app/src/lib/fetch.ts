@@ -1,6 +1,6 @@
-export const fetchAPIRoute = async <T>(
+export const fetchAPIRoute = async <T = null>(
   endpoint: string,
-  params?: Record<string, string>
+  params?: Record<string, string | number>
 ): Promise<{ data: T; error: null } | { data: null; error: string }> => {
   let response
 
@@ -21,6 +21,10 @@ export const fetchAPIRoute = async <T>(
     data = json.data
     error = json.error
   } catch {}
+
+  if (response?.status !== 200) {
+    error = `GET-request failed with code ${response?.status} on endpoint ${endpoint}`
+  }
 
   return { data, error }
 }

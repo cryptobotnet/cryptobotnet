@@ -3,9 +3,11 @@ import type { NextPage } from 'next'
 
 import { getTickers, InstrumentType } from 'api'
 import { getNumberPrecision } from 'lib/get-number-precision'
+import { Urls } from 'lib/urls'
 
 import { Controller, useForm } from 'react-hook-form'
-import { Radio, Select, InputNumber, Form } from 'antd'
+import Link from 'next/link'
+import { Radio, Select, InputNumber, Form, Button } from 'antd'
 
 import styles from './styles.module.css'
 
@@ -130,64 +132,58 @@ export const AddAlert: NextPage = () => {
     []
   )
 
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   return (
-    <Form layout="vertical" className={styles.form}>
-      <Controller
-        name="instrumentType"
-        control={control}
-        rules={{ required: true }}
-        render={({ field }) => (
-          <Form.Item>
-            <Radio.Group
-              value={field.value}
-              onChange={field.onChange}
-              options={[
-                {
-                  value: InstrumentType.SPOT,
-                  label: 'Spot Market'
-                },
-                {
-                  value: InstrumentType.SWAP,
-                  label: 'Perpetual Swap'
-                }
-              ]}
-              className={styles.instrumentType}
-              optionType="button"
-            />
-          </Form.Item>
-        )}
-      />
+    <>
+      <Form layout="vertical" className={styles.form}>
+        <Controller
+          name="instrumentType"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Form.Item>
+              <Radio.Group
+                value={field.value}
+                onChange={field.onChange}
+                options={[
+                  {
+                    value: InstrumentType.SPOT,
+                    label: 'Spot Market'
+                  },
+                  {
+                    value: InstrumentType.SWAP,
+                    label: 'Perpetual Swap'
+                  }
+                ]}
+                className={styles.instrumentType}
+                optionType="button"
+              />
+            </Form.Item>
+          )}
+        />
 
-      <Controller
-        name="instrumentId"
-        control={control}
-        rules={{ required: true }}
-        render={({ field }) => (
-          <Form.Item>
-            <Select
-              value={field.value}
-              onChange={field.onChange}
-              options={instruments[instrumentType]}
-              loading={!instruments[instrumentType].length}
-              showArrow={!instruments[instrumentType].length}
-              filterSort={handleFilterSort}
-              placeholder="Select asset"
-              notFoundContent="No matching asset"
-              showSearch
-              allowClear
-              className={styles.instrumentId}
-            />
-          </Form.Item>
-        )}
-      />
+        <Controller
+          name="instrumentId"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Form.Item>
+              <Select
+                value={field.value}
+                onChange={field.onChange}
+                options={instruments[instrumentType]}
+                loading={!instruments[instrumentType].length}
+                showArrow={!instruments[instrumentType].length}
+                filterSort={handleFilterSort}
+                placeholder="Select asset"
+                notFoundContent="No matching asset"
+                showSearch
+                allowClear
+                className={styles.instrumentId}
+              />
+            </Form.Item>
+          )}
+        />
 
-      {mounted && (
         <Controller
           name="targetPrice"
           control={control}
@@ -205,8 +201,16 @@ export const AddAlert: NextPage = () => {
             </Form.Item>
           )}
         />
-      )}
-    </Form>
+      </Form>
+
+      <Button type="primary" block>
+        Add
+      </Button>
+
+      <Link href={Urls.ALERTS} className={styles.back}>
+        <Button type="link">Back</Button>
+      </Link>
+    </>
   )
 }
 

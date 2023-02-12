@@ -17,7 +17,7 @@ const LINKS = [
   {
     label: 'Positions',
     // href: Urls.POSITIONS,
-    href: Urls.ADD_ALERT,
+    href: Urls.POSITIONS,
     icon: <LayersIcon />
   },
   {

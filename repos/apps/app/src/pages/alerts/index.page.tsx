@@ -2,11 +2,11 @@ import React, { useMemo } from 'react'
 import type { NextPage } from 'next'
 
 import { InstrumentType } from 'api'
-// import { Urls } from 'lib/urls'
+import { Urls } from 'lib/urls'
 import numeral from 'numeral'
 
-// import Link from 'next/link'
-// import { Button } from 'antd'
+import Link from 'next/link'
+import { Button } from 'antd'
 import { TrashIcon } from 'components/icons'
 
 import styles from './styles.module.css'
@@ -65,9 +65,9 @@ export const Alerts: NextPage = () => {
     <>
       {alertNodes}
 
-      {/* <Link href={Urls.ADD_ALERT}>
-        <Button className={styles.add}>Add Alert</Button>
-      </Link> */}
+      <Link href={Urls.ADD_ALERT}>
+        <Button type="link">Add</Button>
+      </Link>
     </>
   )
 }
