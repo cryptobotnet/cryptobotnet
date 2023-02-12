@@ -1,3 +1,3 @@
-import { Redis } from 'redis-model'
+import { RedisModel } from 'redis-model'
 
-export const redis = new Redis(process.env.REDIS_URL as string)
+export const redisModel = new RedisModel(process.env.REDIS_URL as string)

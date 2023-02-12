@@ -1,18 +1,18 @@
 import type { CommandContext, Context } from 'grammy'
 import { Responses } from 'lib/constants'
-import { redis } from 'lib/redis'
+import { redisModel } from 'lib/redis'
 
 export const handler = async (ctx: CommandContext<Context>) => {
   const { id: chatId } = ctx.chat
 
-  const introMessageId = await redis.getIntroMessageId(chatId)
+  const introMessageId = await redisModel.getIntroMessageId(chatId)
 
   const sendIntroMessage = async () => {
-    const { message_id } = await ctx.reply(Responses.START, {
+    const { message_id: messageId } = await ctx.reply(Responses.START, {
       parse_mode: 'MarkdownV2'
     })
 
-    await redis.setIntroMessageId(chatId, message_id)
+    redisModel.setIntroMessageId(chatId, { messageId })
   }
 
   if (!introMessageId) {

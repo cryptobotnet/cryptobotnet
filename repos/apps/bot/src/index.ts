@@ -4,7 +4,7 @@ import { bot } from 'components/bot'
 import { commandHelp } from 'commands/help'
 import { commandStart } from 'commands/start'
 
-import { redis } from 'lib/redis'
+import { redisModel } from 'lib/redis'
 import { run, type RunnerHandle } from '@grammyjs/runner'
 
 bot.use(commandStart)
@@ -15,7 +15,7 @@ const runner: RunnerHandle = run(bot)
 /* NOTE: stop bot on process exit */
 const stop = () => {
   runner?.isRunning() && runner?.stop()
-  redis.disconnect()
+  redisModel.disconnect()
 }
 
 process.once('SIGINT', stop)
