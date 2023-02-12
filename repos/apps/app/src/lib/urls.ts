@@ -4,3 +4,8 @@ export const Urls = {
   POSITIONS: '/positions',
   SETTINGS: '/settings'
 }
+
+export const Endpoints = {
+  TELEGRAM_VALIDATE: '/api/telegram/validate',
+  OKX_GET_TICKERS: '/api/okx/get-tickers'
+}

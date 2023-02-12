@@ -1,26 +1,8 @@
 export {
-  Loader as LoaderIcon,
-  X as CloseIcon,
-  Copy as CopyIcon,
-  Repeat as RefreshIcon,
   Trash2 as TrashIcon,
-  Check as SuccessIcon,
-  CheckSquare as CheckSquareIcon,
-  ChevronDown as ChevronDownIcon,
-  ChevronRight as ChevronRightIcon,
-  Minus as MinusIcon,
-  Plus as PlusIcon,
-  Heart as HeartIcon,
-  Bell as BellIcon,
-  User as UserIcon,
-  Info as InfoIcon,
-  Layers as LayersIcon,
-  Command as CommandIcon,
-  HelpCircle as HintIcon,
-  CreditCard as CreditCardIcon,
-  Book as BookIcon,
-  Music as MusicIcon,
-  Video as VideoIcon,
   Activity as ActivityIcon,
-  Watch as WatchIcon
+  Layers as LayersIcon,
+  Settings as SettingsIcon
 } from 'react-feather'
+
+export { default as TelegramIcon } from './telegram.svg'

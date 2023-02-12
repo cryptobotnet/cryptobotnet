@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  background: black;
+  height: 100vh;
+  padding-bottom: 100px;
+  overflow: hidden;
+}
+
+.image {
+  width: 200px;
+  height: 112.5px;
+}

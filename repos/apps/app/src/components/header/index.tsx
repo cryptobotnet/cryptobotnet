@@ -3,8 +3,8 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { Urls } from 'lib/urls'
 
-import { Activity, Layers, Settings } from 'react-feather'
-import { Link } from 'components/link'
+import { ActivityIcon, LayersIcon, SettingsIcon } from 'components/icons'
+import Link from 'next/link'
 
 import styles from './styles.module.css'
 
@@ -12,18 +12,18 @@ const LINKS = [
   {
     label: 'Alerts',
     href: Urls.ALERTS,
-    icon: <Activity />
+    icon: <ActivityIcon />
   },
   {
     label: 'Positions',
     // href: Urls.POSITIONS,
     href: Urls.ADD_ALERT,
-    icon: <Layers />
+    icon: <LayersIcon />
   },
   {
     label: 'API Keys',
     href: Urls.SETTINGS,
-    icon: <Settings />
+    icon: <SettingsIcon />
   }
 ]
 

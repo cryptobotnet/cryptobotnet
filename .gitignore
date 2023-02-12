@@ -35,3 +35,6 @@ tsconfig.tsbuildinfo
 
 # next
 .next
+
+# internal packages
+repos/packages/nginx

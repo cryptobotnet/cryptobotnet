@@ -8,7 +8,8 @@
   "private": true,
   "workspaces": [
     "repos/apps/*",
-    "repos/components/*"
+    "repos/components/*",
+    "repos/packages/*"
   ],
   "scripts": {
     "clean": "turbo run clean",
