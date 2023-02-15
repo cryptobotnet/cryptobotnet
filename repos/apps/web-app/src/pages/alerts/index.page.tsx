@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import type { NextPage } from 'next'
 
 import { useTelegramWebApp } from 'context/telegram'
@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import { InstrumentType } from 'api'
 import { Urls } from 'lib/urls'
 import numeral from 'numeral'
-import debounce from 'lodash.debounce'
 
 import { Typography } from 'antd'
 import { TrashIcon } from 'components/icons'
@@ -56,19 +55,18 @@ export const Alerts: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const toggleMainButton = useMemo(
-    () =>
-      debounce(event => {
-        if (event.target !== event.currentTarget) {
-          return
-        }
+  const toggleMainButton = useCallback(
+    event => {
+      if (event.target !== event.currentTarget) {
+        return
+      }
 
-        WebApp?.HapticFeedback.impactOccurred('soft')
+      WebApp?.HapticFeedback.impactOccurred('soft')
 
-        WebApp?.MainButton.isVisible
-          ? WebApp?.MainButton.hide()
-          : WebApp?.MainButton.show()
-      }, 1000),
+      WebApp?.MainButton.isVisible
+        ? WebApp?.MainButton.hide()
+        : WebApp?.MainButton.show()
+    },
     [WebApp]
   )
 
@@ -108,7 +106,7 @@ export const Alerts: NextPage = () => {
     <section className={styles.page} onClick={toggleMainButton}>
       {alertNodes}
 
-      <div className={styles.button}>
+      {/* <div className={styles.button}>
         <button
           onClick={() =>
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light')
@@ -184,7 +182,7 @@ export const Alerts: NextPage = () => {
           }>
           selectionChanged
         </button>
-      </div>
+      </div> */}
     </section>
   )
 }

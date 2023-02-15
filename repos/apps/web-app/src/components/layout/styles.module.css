@@ -14,7 +14,8 @@
     flex-flow: column nowrap;
 
     &:global {
-      animation: appear 200ms linear;
+      animation: appear 200ms ease-in-out 1;
+      animation-fill-mode: forwards;
     }
   }
 }

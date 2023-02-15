@@ -24,6 +24,8 @@ export const TelegramProvider: React.FC<{
     const init = async () => {
       await loadScript('https://telegram.org/js/telegram-web-app.js')
 
+      window.Telegram?.WebApp?.ready()
+
       const telegramInitData =
         typeof window !== 'undefined' && window?.Telegram?.WebApp
           ? window.Telegram.WebApp.initData
