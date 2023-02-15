@@ -50,6 +50,7 @@ export const Settings: NextPage = () => {
         const userId = WebApp?.initDataUnsafe.user?.id
 
         if (!userId) {
+          WebApp?.HapticFeedback.notificationOccurred('error')
           setLoading(false)
 
           return
@@ -71,18 +72,19 @@ export const Settings: NextPage = () => {
           setError('secretKey', {})
 
           WebApp?.MainButton.hideProgress()
+          WebApp?.HapticFeedback.notificationOccurred('error')
           setLoading(false)
 
           return
         }
 
-        fetchIsConfigured()
+        await fetchIsConfigured()
+        WebApp?.HapticFeedback.notificationOccurred('success')
       }
     )
 
     WebApp?.MainButton.setText('Provide API Keys')
     WebApp?.MainButton.onClick(handleMainClick)
-    // WebApp?.MainButton.show()
 
     return () => {
       WebApp?.MainButton.offClick(handleMainClick)
@@ -115,6 +117,7 @@ export const Settings: NextPage = () => {
         </>
       }
       type="info"
+      className={styles.alert}
     />
   ) : (
     <>

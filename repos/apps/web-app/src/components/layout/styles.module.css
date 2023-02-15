@@ -12,5 +12,9 @@
     align-items: center;
     justify-content: flex-start;
     flex-flow: column nowrap;
+
+    &:global {
+      animation: appear 200ms linear;
+    }
   }
 }

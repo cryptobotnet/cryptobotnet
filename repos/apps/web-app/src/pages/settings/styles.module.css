@@ -1,5 +1,9 @@
 .form {
   width: 100%;
+
+  & + .alert {
+    margin-top: 8px;
+  }
 }
 
 .field {
@@ -8,7 +12,9 @@
 }
 
 .alert {
-  margin-top: 8px;
+  &:global {
+    animation: appear 200ms linear;
+  }
 
   & + .alert {
     margin-top: 24px;

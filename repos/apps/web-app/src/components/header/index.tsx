@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { useRouter } from 'next/router'
+import { useTelegramWebApp } from 'context/telegram'
 import { Urls } from 'lib/urls'
 
 import { ActivityIcon, LayersIcon, SettingsIcon } from 'components/icons'
 import Link from 'next/link'
 
 import styles from './styles.module.css'
+import clsx from 'clsx'
 
 const LINKS = [
   {
@@ -29,9 +31,12 @@ const LINKS = [
 
 export const Header: React.FC = () => {
   const { pathname } = useRouter()
+  const { WebApp } = useTelegramWebApp()
 
-  const telegramColorScheme =
-    typeof window !== 'undefined' && window?.Telegram?.WebApp?.colorScheme
+  const hapticFeedback = useCallback(
+    () => WebApp?.HapticFeedback.impactOccurred('light'),
+    [WebApp]
+  )
 
   return (
     <header className={styles.header}>
@@ -39,16 +44,8 @@ export const Header: React.FC = () => {
         <Link
           href={href}
           key={href}
-          className={styles.button}
-          style={
-            pathname === href
-              ? {
-                  backgroundColor:
-                    telegramColorScheme === 'dark' ? '#1668dc' : '#e6f4ff',
-                  color: telegramColorScheme === 'dark' ? '#fff' : '#1677ff'
-                }
-              : {}
-          }>
+          onClick={hapticFeedback}
+          className={clsx(styles.button, pathname === href && styles.active)}>
           {icon}
           {label}
         </Link>

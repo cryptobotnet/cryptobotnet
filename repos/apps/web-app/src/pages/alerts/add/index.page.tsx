@@ -138,7 +138,10 @@ export const AddAlert: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    const handleMainClick = () => handleSubmit(values => console.log(values))
+    const handleMainClick = () => {
+      WebApp?.HapticFeedback.impactOccurred('light')
+      handleSubmit(values => console.log(values))
+    }
     const handleBackClick = () => router.push(Urls.ALERTS)
 
     WebApp?.MainButton.setText('Confirm')
@@ -146,7 +149,7 @@ export const AddAlert: NextPage = () => {
     WebApp?.MainButton.show()
 
     WebApp?.BackButton.onClick(handleBackClick)
-    WebApp?.BackButton.show()
+    window.setTimeout(() => WebApp?.MainButton.show(), 1000)
 
     return () => {
       WebApp?.MainButton.offClick(handleMainClick)
@@ -168,77 +171,83 @@ export const AddAlert: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState])
 
+  const hapticFeedback = useCallback(
+    () => WebApp?.HapticFeedback.impactOccurred('light'),
+    [WebApp]
+  )
+
   return (
-    <>
-      <Form layout="vertical" className={styles.form}>
-        <Controller
-          name="instrumentType"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Form.Item>
-              <Radio.Group
-                value={field.value}
-                onChange={field.onChange}
-                options={[
-                  {
-                    value: InstrumentType.SPOT,
-                    label: 'Spot Market'
-                  },
-                  {
-                    value: InstrumentType.SWAP,
-                    label: 'Perpetual Swap'
-                  }
-                ]}
-                className={styles.instrumentType}
-                optionType="button"
-              />
-            </Form.Item>
-          )}
-        />
+    <Form layout="vertical" className={styles.page}>
+      <Controller
+        name="instrumentType"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <Form.Item>
+            <Radio.Group
+              value={field.value}
+              onChange={value => {
+                field.onChange(value)
+                hapticFeedback()
+              }}
+              options={[
+                {
+                  value: InstrumentType.SPOT,
+                  label: 'Spot Market'
+                },
+                {
+                  value: InstrumentType.SWAP,
+                  label: 'Perpetual Swap'
+                }
+              ]}
+              className={styles.instrumentType}
+              optionType="button"
+            />
+          </Form.Item>
+        )}
+      />
 
-        <Controller
-          name="instrumentId"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Form.Item>
-              <Select
-                value={field.value}
-                onChange={field.onChange}
-                options={instruments[instrumentType]}
-                loading={!instruments[instrumentType].length}
-                showArrow={!instruments[instrumentType].length}
-                filterSort={handleFilterSort}
-                placeholder="Select asset"
-                notFoundContent="No matching asset"
-                showSearch
-                allowClear
-                className={styles.instrumentId}
-              />
-            </Form.Item>
-          )}
-        />
+      <Controller
+        name="instrumentId"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <Form.Item>
+            <Select
+              value={field.value}
+              onChange={field.onChange}
+              options={instruments[instrumentType]}
+              loading={!instruments[instrumentType].length}
+              showArrow={!instruments[instrumentType].length}
+              filterSort={handleFilterSort}
+              placeholder="Select asset"
+              notFoundContent="No matching asset"
+              showSearch
+              allowClear
+              className={styles.instrumentId}
+            />
+          </Form.Item>
+        )}
+      />
 
-        <Controller
-          name="targetPrice"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Form.Item>
-              <InputNumber
-                value={field.value}
-                onChange={field.onChange}
-                placeholder="Select target price"
-                step={step}
-                stringMode
-                className={styles.targetPrice}
-              />
-            </Form.Item>
-          )}
-        />
-      </Form>
-    </>
+      <Controller
+        name="targetPrice"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <Form.Item>
+            <InputNumber
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Select target price"
+              step={step}
+              stringMode
+              className={styles.targetPrice}
+            />
+          </Form.Item>
+        )}
+      />
+    </Form>
   )
 }
 

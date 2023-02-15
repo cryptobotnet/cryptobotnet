@@ -14,10 +14,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--tg-theme-button-color);
   background-color: transparent;
   border: none;
   outline: none;
-  border-radius: 5px;
+  border-radius: 8px;
   height: 36px;
   margin: 0;
   padding: 0 12px;
@@ -31,6 +32,11 @@
 
   & + .button {
     margin-left: 12px;
+  }
+
+  &.active {
+    color: var(--tg-theme-button-text-color);
+    background-color: var(--tg-theme-button-color);
   }
 
   & svg {

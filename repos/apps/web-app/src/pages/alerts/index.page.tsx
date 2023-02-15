@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import type { NextPage } from 'next'
 
 import { useTelegramWebApp } from 'context/telegram'
@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { InstrumentType } from 'api'
 import { Urls } from 'lib/urls'
 import numeral from 'numeral'
+import debounce from 'lodash.debounce'
 
 import { Typography } from 'antd'
 import { TrashIcon } from 'components/icons'
@@ -40,11 +41,14 @@ export const Alerts: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    const clickHandler = () => router.push(Urls.ADD_ALERT)
+    const clickHandler = () => {
+      WebApp?.HapticFeedback.impactOccurred('light')
+      router.push(Urls.ADD_ALERT)
+    }
 
     WebApp?.MainButton.setText('Add price alert')
     WebApp?.MainButton.onClick(clickHandler)
-    WebApp?.MainButton.show()
+    window.setTimeout(() => WebApp?.MainButton.show(), 1000)
 
     return () => {
       WebApp?.MainButton.offClick(clickHandler)
@@ -53,16 +57,19 @@ export const Alerts: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const toggleMainButton = useCallback(
-    event => {
-      if (event.target !== event.currentTarget) {
-        return
-      }
+  const toggleMainButton = useMemo(
+    () =>
+      debounce(event => {
+        if (event.target !== event.currentTarget) {
+          return
+        }
 
-      WebApp?.MainButton.isVisible
-        ? WebApp?.MainButton.hide()
-        : WebApp?.MainButton.show()
-    },
+        WebApp?.HapticFeedback.impactOccurred('soft')
+
+        WebApp?.MainButton.isVisible
+          ? WebApp?.MainButton.hide()
+          : WebApp?.MainButton.show()
+      }, 1000),
     [WebApp]
   )
 
