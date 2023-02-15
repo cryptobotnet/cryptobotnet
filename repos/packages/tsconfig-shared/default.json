@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+
+    "module": "commonjs",
+    "target": "es2015",
+    "lib": ["es2015"],
+
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+
+    "declaration": true
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "strict": true,
+
+    "module": "esnext",
+    "target": "es5",
+    "lib": ["es2015", "dom", "esnext"],
+    "moduleResolution": "node",
+
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+
+    "importsNotUsedAsValues": "error",
+    "preserveValueImports": true,
+    "jsx": "preserve",
+    "incremental": true,
+
+    "noEmit": true,
+    "allowJs": true
+  }
+}

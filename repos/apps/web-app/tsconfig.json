@@ -1,30 +1,12 @@
 {
+  "extends": "tsconfig-shared/nextjs.json",
+
   "compilerOptions": {
-    "strict": true,
-
-    "module": "esnext",
-    "target": "es5",
-    "lib": ["es2015", "dom", "esnext"],
-    "moduleResolution": "node",
-
     "outDir": "./out",
     "rootDir": "./src",
-    "baseUrl": "./src",
-
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-
-    "importsNotUsedAsValues": "error",
-    "preserveValueImports": true,
-    "jsx": "preserve",
-    "incremental": true,
-
-    "noEmit": true,
-    "allowJs": true
+    "baseUrl": "./src"
   },
+
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", ".next", "out"]
 }

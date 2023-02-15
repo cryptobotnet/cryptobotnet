@@ -1,23 +1,12 @@
 {
+  "extends": "tsconfig-shared/default.json",
+
   "compilerOptions": {
-    "strict": true,
-
-    "module": "commonjs",
-    "target": "es2015",
-    "lib": ["es2015"],
-
     "outDir": "./out",
     "rootDir": "./src",
-    "baseUrl": "./src",
-
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-
-    "declaration": true
+    "baseUrl": "./src"
   },
+
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "out"]
 }
