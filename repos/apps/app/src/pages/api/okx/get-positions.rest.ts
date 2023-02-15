@@ -18,12 +18,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { userId } = req.body
 
-    const secrets = await redisModel.getAuthSecrets(userId)
-
-    redisModel.disconnect()
+    const secrets = await redisModel.getUserAuthSecrets(userId)
 
     if (!secrets) {
-      res.status(422).end()
+      res.status(403).end()
 
       return
     }

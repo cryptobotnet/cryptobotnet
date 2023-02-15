@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 
 import { getPositions, setUserSecrets } from 'api'
-import { useTelegram } from 'context/telegram'
+import { useTelegramWebApp } from 'context/telegram'
 import { Urls } from 'lib/urls'
 
-import { Controller, useForm } from 'react-hook-form'
 import Link from 'next/link'
-import { Form, Input, Alert, Typography, Button, Spin } from 'antd'
+import { Controller, useForm } from 'react-hook-form'
+import { Form, Input, Alert, Typography, Spin } from 'antd'
 
 import styles from './styles.module.css'
 
@@ -18,16 +18,23 @@ interface FormValues {
 }
 
 export const Settings: NextPage = () => {
-  const { webApp } = useTelegram()
+  const { WebApp } = useTelegramWebApp()
 
   const [isConfigured, setIsConfigured] = useState<boolean | null>(null)
 
   const fetchIsConfigured = useCallback(async () => {
-    const userId = webApp?.initDataUnsafe.user?.id || 1
+    const userId = WebApp?.initDataUnsafe.user?.id
+
+    if (!userId) {
+      setIsConfigured(false)
+
+      return
+    }
+
     const { error } = await getPositions({ userId })
 
     setIsConfigured(!error)
-  }, [webApp])
+  }, [WebApp])
 
   useEffect(() => {
     fetchIsConfigured()
@@ -37,16 +44,19 @@ export const Settings: NextPage = () => {
   const { formState, setError, control, handleSubmit } = useForm<FormValues>()
   const [loading, setLoading] = useState(false)
 
-  const submit = useMemo(
-    () =>
-      handleSubmit(async ({ apiKey, passphrase, secretKey }) => {
-        const userId = webApp?.initDataUnsafe.user?.id || 1
+  useEffect(() => {
+    const handleMainClick = handleSubmit(
+      async ({ apiKey, passphrase, secretKey }) => {
+        const userId = WebApp?.initDataUnsafe.user?.id
 
         if (!userId) {
+          setLoading(false)
+
           return
         }
 
         setLoading(true)
+        WebApp?.MainButton.showProgress()
 
         const { error } = await setUserSecrets({
           userId,
@@ -60,15 +70,37 @@ export const Settings: NextPage = () => {
           setError('passphrase', {})
           setError('secretKey', {})
 
+          WebApp?.MainButton.hideProgress()
           setLoading(false)
 
           return
         }
 
         fetchIsConfigured()
-      }),
-    [handleSubmit, webApp, setError, fetchIsConfigured]
-  )
+      }
+    )
+
+    WebApp?.MainButton.setText('Provide API Keys')
+    WebApp?.MainButton.onClick(handleMainClick)
+    // WebApp?.MainButton.show()
+
+    return () => {
+      WebApp?.MainButton.offClick(handleMainClick)
+      WebApp?.MainButton.enable()
+      WebApp?.MainButton.hide()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (formState.isDirty && formState.isValid && !formState.isSubmitting) {
+      WebApp?.MainButton.hideProgress()
+      WebApp?.MainButton.show()
+    } else {
+      WebApp?.MainButton.hide()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formState])
 
   return isConfigured === null ? (
     <Spin />
@@ -82,102 +114,108 @@ export const Settings: NextPage = () => {
           <Link href={Urls.POSITIONS}>Positions section</Link>.
         </>
       }
-      type="success"
+      type="info"
     />
   ) : (
-    <Form layout="vertical" className={styles.form}>
-      <Controller
-        name="apiKey"
-        control={control}
-        rules={{ required: true }}
-        render={({ field, fieldState: { error, isDirty } }) => (
-          <Form.Item
-          // label="API Key"
-          >
-            <Input
-              value={field.value}
-              onChange={field.onChange}
-              className={styles.field}
-              placeholder="API Key"
-              type="password"
-              disabled={loading}
-              status={
-                (formState.isSubmitted && !formState.isValid) ||
-                (error && !isDirty)
-                  ? 'error'
-                  : undefined
-              }
-            />
-          </Form.Item>
-        )}
-      />
-
-      <Controller
-        name="passphrase"
-        control={control}
-        rules={{ required: true }}
-        render={({ field, fieldState: { error, isDirty } }) => (
-          <Form.Item
-          // label="API Passphrase"
-          >
-            <Input
-              value={field.value}
-              onChange={field.onChange}
-              className={styles.field}
-              placeholder="API Passphrase"
-              type="password"
-              disabled={loading}
-              status={
-                (formState.isSubmitted && !formState.isValid) ||
-                (error && !isDirty)
-                  ? 'error'
-                  : undefined
-              }
-            />
-          </Form.Item>
-        )}
-      />
-
-      <Controller
-        name="secretKey"
-        control={control}
-        rules={{ required: true }}
-        render={({ field, fieldState: { error, isDirty } }) => (
-          <Form.Item
-          // label="API Secret"
-          >
-            <Input
-              value={field.value}
-              onChange={field.onChange}
-              className={styles.field}
-              placeholder="API Secret"
-              type="password"
-              disabled={loading}
-              status={
-                (formState.isSubmitted && !formState.isValid) ||
-                (error && !isDirty)
-                  ? 'error'
-                  : undefined
-              }
-            />
-          </Form.Item>
-        )}
-      />
-
-      <Button type="primary" block onClick={submit} loading={loading}>
-        Save
-      </Button>
+    <>
+      <Form layout="vertical" className={styles.form}>
+        <Controller
+          name="apiKey"
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState: { error, isDirty } }) => (
+            <Form.Item
+            // label="API Key"
+            >
+              <Input.TextArea
+                value={field.value}
+                onChange={field.onChange}
+                className={styles.field}
+                placeholder="API Key"
+                rows={2}
+                // type="password"
+                disabled={loading}
+                status={
+                  (formState.isSubmitted && !formState.isValid) ||
+                  (error && !isDirty)
+                    ? 'error'
+                    : undefined
+                }
+              />
+            </Form.Item>
+          )}
+        />
+        <Controller
+          name="passphrase"
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState: { error, isDirty } }) => (
+            <Form.Item
+            // label="API Passphrase"
+            >
+              <Input.TextArea
+                value={field.value}
+                onChange={field.onChange}
+                className={styles.field}
+                placeholder="API Passphrase"
+                rows={2}
+                // type="password"
+                disabled={loading}
+                status={
+                  (formState.isSubmitted && !formState.isValid) ||
+                  (error && !isDirty)
+                    ? 'error'
+                    : undefined
+                }
+              />
+            </Form.Item>
+          )}
+        />
+        <Controller
+          name="secretKey"
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState: { error, isDirty } }) => (
+            <Form.Item
+            // label="API Secret"
+            >
+              <Input.TextArea
+                value={field.value}
+                onChange={field.onChange}
+                className={styles.field}
+                placeholder="API Secret"
+                rows={2}
+                // type="password"
+                disabled={loading}
+                status={
+                  (formState.isSubmitted && !formState.isValid) ||
+                  (error && !isDirty)
+                    ? 'error'
+                    : undefined
+                }
+              />
+            </Form.Item>
+          )}
+        />
+      </Form>
 
       <Alert
-        message="How to get your API keys"
+        message="How to get your okx.com API keys?"
         description={
           <>
-            To obtain your API keys please refer this page on okx.com (copy and
+            To obtain your okx.com API keys please refer this page (copy and
             paste in browser):
             <br />
-            <Typography.Text strong copyable>
+            <br />
+            <Typography.Text strong copyable={{ tooltips: false }}>
               https://okx.com/account/my-api
             </Typography.Text>
+            <br />
+            <br />
+            Double check that issued API keys have{' '}
+            <Typography.Text strong>read-permission only</Typography.Text>. Keys
+            with write-permission allow trading and funding operations and that
+            is not what this bot is supposed to do.
           </>
         }
         type="info"
@@ -185,19 +223,22 @@ export const Settings: NextPage = () => {
       />
 
       <Alert
-        message="Read-Permission Only"
         description={
           <>
-            Please check that you are issuing keys with{' '}
-            <Typography.Text strong>read-permission only</Typography.Text>. Keys
-            with write-permission allow trading and funding operations and that
-            is not what this bot is supposed to do.
+            <Typography.Text strong>@okxalertsbot</Typography.Text> is
+            third-party open-source project and is not affiliated with okx.com
+            team. Check out our code in case of any concers:
+            <br />
+            <br />
+            <Typography.Text strong copyable={{ tooltips: false }}>
+              github.com/asyncink/okx-alerts-bot
+            </Typography.Text>
           </>
         }
-        type="warning"
+        type="info"
         className={styles.alert}
       />
-    </Form>
+    </>
   )
 }
 

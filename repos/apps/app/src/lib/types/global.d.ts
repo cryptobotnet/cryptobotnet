@@ -11,6 +11,8 @@ export declare global {
   }
 }
 
+/* NOTE: https://github.com/prKassad/telegram-webapps-types/blob/master/dist/index.d.ts */
+
 /**
  * Available app events.
  */
@@ -54,6 +56,35 @@ interface WebApp {
    * An object for controlling the main button, which is displayed at the bottom of the Web App in the Telegram interface.
    */
   MainButton: MainButton
+  /**
+   * An object for controlling the back button which can be displayed in the header of the Web App in the Telegram interface.
+   */
+  BackButton: BackButton
+  /**
+   * An object for controlling haptic feedback.
+   * */
+  HapticFeedback: HapticFeedback
+  /**
+   *  A method that enables a confirmation dialog while the user is trying to close the Web App.
+   */
+  enableClosingConfirmation()
+  /**
+   *  A method that shows message in a simple alert with a 'Close' button.
+   * If an optional callback parameter was passed, the callback function will be called when the popup is closed.
+   */
+  showAlert(message: string, callback?: () => void)
+  /**
+   * A method that shows message in a simple confirmation window with 'OK' and 'Cancel' buttons.
+   * If an optional callback parameter was passed, the callback function will be called when the popup is closed
+   * and the first argument will be a boolean indicating whether the user pressed the 'OK' button.
+   */
+  showConfirm(message: string, callback?: (isConfirmed: boolean) => void)
+  /**
+   * A method that shows a native popup described by the params argument of the type PopupParams.
+   * The Web App will receive the event 'popupClosed' when the popup is closed.
+   * If an optional callback parameter was passed, the callback function will be called and the field id of the pressed button will be passed as the first argument.
+   */
+  showPopup(params: PopupParams)
   /**
    * A method that sets the app event handler.
    */
@@ -169,6 +200,10 @@ interface WebAppUser {
    * URL of the user’s profile photo. The photo can be in .jpeg or .svg formats. Only returned for Web Apps launched from the attachment menu.
    */
   photo_url?: string
+  /**
+   * Optional. True, if this user is a Telegram Premium user
+   */
+  is_premium?: true
 }
 
 interface MainButton {
@@ -205,6 +240,10 @@ interface MainButton {
    */
   onClick(callback: () => void): MainButton
   /**
+   * A method that removes the button press event handler. An alias for Telegram.WebApp.offEvent('mainButtonClicked', callback)
+   */
+  offClick(callback: () => void): MainButton
+  /**
    * A method to make the button visible.
    */
   show(): MainButton
@@ -223,7 +262,7 @@ interface MainButton {
   /**
    * A method to show a loading indicator on the button.
    */
-  showProgress(leaveActive: boolean): MainButton
+  showProgress(leaveActive?: boolean): MainButton
   /**
    * A method to hide the loading indicator.
    */
@@ -255,4 +294,91 @@ interface MainButtonParams {
    * Show the button.
    */
   is_visible?: boolean
+}
+
+interface BackButon {
+  /**
+   * Shows whether the button is visible. Set to false by default.
+   */
+  isVisible: boolean
+  /**
+   * A method that sets the button press event handler. An alias for Telegram.WebApp.onEvent('backButtonClicked', callback)
+   */
+  onClick(callback: () => void): BackButton
+  /**
+   * A method that removes the button press event handler. An alias for Telegram.WebApp.offEvent('backButtonClicked', callback)
+   */
+  offClick(callback: () => void): BackButton
+  /**
+   * A method to make the button visible.
+   */
+  show(): BackButton
+  /**
+   * A method to hide the button.
+   */
+  hide(): BackButton
+}
+
+interface HapticFeedback {
+  /**
+   * A method tells that an impact occurred. The Telegram app may play the appropriate haptics based on style value passed.
+   * @param style 
+      - light   indicates a collision between small or lightweight UI objects,
+      - medium  indicates a collision between medium-sized or medium-weight UI objects,
+      - heavy   indicates a collision between large or heavyweight UI objects,
+      - rigid   indicates a collision between hard or inflexible UI objects,
+      - soft    indicates a collision between soft or flexible UI objects.
+   */
+  impactOccurred(
+    style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft'
+  ): HapticFeedback
+  /**
+   * A method tells that a task or action has succeeded, failed, or produced a warning. The Telegram app may play the appropriate haptics based on type value passed.
+   * @param style 
+      - error, indicates that a task or action has failed,
+      - success, indicates that a task or action has completed successfully,
+      - warning, indicates that a task or action produced a warning.
+   */
+  notificationOccurred(type: 'error' | 'success' | 'warning'): HapticFeedback
+  /**
+   * A method tells that the user has changed a selection. The Telegram app may play the appropriate haptics.
+   * Do not use this feedback when the user makes or confirms a selection; use it only when the selection changes.
+   */
+  selectionChanged(): HapticFeedback
+}
+
+interface PopupParams {
+  /**
+   * The message to be displayed in the body of the popup, 1-256 characters.
+   */
+  message: string
+  /**
+   * The text to be displayed in the popup title, 0-64 characters.
+   */
+  title?: string
+  /**
+   * List of buttons to be displayed in the popup, 1-3 buttons. Set to [{“type”:“close”}] by default.
+   */
+  buttons?: PopubButton[]
+}
+
+interface PopupButton {
+  /**
+   * Identifier of the button, 0-64 characters. Set to empty string by default.
+   * If the button is pressed, its id is returned in the callback and the popupClosed event.
+   */
+  id?: string
+  /**
+   * Type of the button. Set to default by default. Can be one of these values:
+      - default, a button with the default style,
+      - ok, a button with the localized text “OK”,
+      - close, a button with the localized text “Close”,
+      - cancel, a button with the localized text “Cancel”,
+      - destructive, a button with a style that indicates a destructive action (e.g. “Remove”, “Delete”, etc.).
+   */
+  type?: 'default' | 'ok' | 'close' | 'cancel' | 'destructive'
+  /**
+   * The text to be displayed on the button, 0-64 characters. Required if type is default or destructive. Irrelevant for other types.
+   */
+  text: string
 }

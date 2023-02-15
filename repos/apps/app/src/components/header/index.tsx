@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
           key={href}
           className={styles.button}
           style={
-            pathname.includes(href)
+            pathname === href
               ? {
                   backgroundColor:
                     telegramColorScheme === 'dark' ? '#1668dc' : '#e6f4ff',

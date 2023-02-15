@@ -1,12 +1,13 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import type { NextPage } from 'next'
 
+import { useTelegramWebApp } from 'context/telegram'
+import { useRouter } from 'next/router'
 import { InstrumentType } from 'api'
 import { Urls } from 'lib/urls'
 import numeral from 'numeral'
 
-import Link from 'next/link'
-import { Button } from 'antd'
+import { Typography } from 'antd'
 import { TrashIcon } from 'components/icons'
 
 import styles from './styles.module.css'
@@ -35,6 +36,36 @@ const PRICE_ALERTS = [
 ]
 
 export const Alerts: NextPage = () => {
+  const { WebApp } = useTelegramWebApp()
+  const router = useRouter()
+
+  useEffect(() => {
+    const clickHandler = () => router.push(Urls.ADD_ALERT)
+
+    WebApp?.MainButton.setText('Add price alert')
+    WebApp?.MainButton.onClick(clickHandler)
+    WebApp?.MainButton.show()
+
+    return () => {
+      WebApp?.MainButton.offClick(clickHandler)
+      WebApp?.MainButton.hide()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const toggleMainButton = useCallback(
+    event => {
+      if (event.target !== event.currentTarget) {
+        return
+      }
+
+      WebApp?.MainButton.isVisible
+        ? WebApp?.MainButton.hide()
+        : WebApp?.MainButton.show()
+    },
+    [WebApp]
+  )
+
   const sortedAlerts = useMemo(
     () =>
       PRICE_ALERTS.sort(
@@ -49,10 +80,16 @@ export const Alerts: NextPage = () => {
     () =>
       sortedAlerts.map(({ instrumentId, targetPrice }) => (
         <div key={`${instrumentId}${targetPrice}`} className={styles.alert}>
-          <div className={styles.instrumentId}>{instrumentId}</div>
-          <div className={styles.targetPrice}>
+          <Typography.Text
+            className={styles.instrumentId}
+            copyable={{ tooltips: false }}>
+            {instrumentId}
+          </Typography.Text>
+          <Typography.Text
+            className={styles.targetPrice}
+            copyable={{ tooltips: false }}>
             {numeral(targetPrice).format('0,0[.][00000000]').replace(',', ' ')}
-          </div>
+          </Typography.Text>
           <button className={styles.remove}>
             <TrashIcon />
           </button>
@@ -62,13 +99,87 @@ export const Alerts: NextPage = () => {
   )
 
   return (
-    <>
+    <section className={styles.page} onClick={toggleMainButton}>
       {alertNodes}
 
-      <Link href={Urls.ADD_ALERT}>
-        <Button type="link">Add</Button>
-      </Link>
-    </>
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light')
+          }>
+          impactOccurred light
+        </button>
+      </div>
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium')
+          }>
+          impactOccurred medium
+        </button>
+      </div>
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy')
+          }>
+          impactOccurred heavy
+        </button>
+      </div>
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('rigid')
+          }>
+          impactOccurred rigid
+        </button>
+      </div>
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('soft')
+          }>
+          impactOccurred soft
+        </button>
+      </div>
+
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred('error')
+          }>
+          notificationOccurred error
+        </button>
+      </div>
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(
+              'success'
+            )
+          }>
+          notificationOccurred success
+        </button>
+      </div>
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred(
+              'warning'
+            )
+          }>
+          notificationOccurred warning
+        </button>
+      </div>
+      <div className={styles.button}>
+        <button
+          onClick={() =>
+            window.Telegram.WebApp.HapticFeedback.selectionChanged()
+          }>
+          selectionChanged
+        </button>
+      </div>
+    </section>
   )
 }
 

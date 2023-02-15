@@ -12,9 +12,6 @@ import 'lib/styles/global.css'
 import 'lib/styles/variables.css'
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-  const telegramColorScheme =
-    typeof window !== 'undefined' && window?.Telegram?.WebApp?.colorScheme
-
   return (
     <>
       <Head>
@@ -25,13 +22,13 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <TelegramProvider>
-        {({ isValid }) =>
+        {({ isValid, WebApp }) =>
           isValid === null ? null : isValid ? (
             <ConfigProvider
               componentSize="large"
               theme={{
                 algorithm:
-                  telegramColorScheme === 'dark'
+                  WebApp?.colorScheme === 'dark'
                     ? theme.darkAlgorithm
                     : theme.defaultAlgorithm,
                 token: {

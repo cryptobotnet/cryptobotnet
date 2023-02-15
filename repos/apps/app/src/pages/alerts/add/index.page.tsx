@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import type { NextPage } from 'next'
 
+import { useTelegramWebApp } from 'context/telegram'
+import { useRouter } from 'next/router'
 import { getTickers, InstrumentType } from 'api'
 import { getNumberPrecision } from 'lib/get-number-precision'
 import { Urls } from 'lib/urls'
 
 import { Controller, useForm } from 'react-hook-form'
-import Link from 'next/link'
-import { Radio, Select, InputNumber, Form, Button } from 'antd'
+import { Radio, Select, InputNumber, Form } from 'antd'
 
 import styles from './styles.module.css'
 
@@ -40,8 +41,9 @@ export const AddAlert: NextPage = () => {
     // getValues,
     // setFocus,
     // setError,
-    control
-    // handleSubmit
+    formState,
+    control,
+    handleSubmit
   } = useForm<FormValues>({
     reValidateMode: 'onSubmit',
     defaultValues: {
@@ -132,6 +134,40 @@ export const AddAlert: NextPage = () => {
     []
   )
 
+  const { WebApp } = useTelegramWebApp()
+  const router = useRouter()
+
+  useEffect(() => {
+    const handleMainClick = () => handleSubmit(values => console.log(values))
+    const handleBackClick = () => router.push(Urls.ALERTS)
+
+    WebApp?.MainButton.setText('Confirm')
+    WebApp?.MainButton.onClick(handleMainClick)
+    WebApp?.MainButton.show()
+
+    WebApp?.BackButton.onClick(handleBackClick)
+    WebApp?.BackButton.show()
+
+    return () => {
+      WebApp?.MainButton.offClick(handleMainClick)
+      WebApp?.MainButton.enable()
+      WebApp?.MainButton.hide()
+
+      WebApp?.BackButton.offClick(handleBackClick)
+      WebApp?.BackButton.hide()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (formState.isValid) {
+      WebApp?.MainButton.enable()
+    } else {
+      WebApp?.MainButton.disable()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formState])
+
   return (
     <>
       <Form layout="vertical" className={styles.form}>
@@ -202,14 +238,6 @@ export const AddAlert: NextPage = () => {
           )}
         />
       </Form>
-
-      <Button type="primary" block>
-        Add
-      </Button>
-
-      <Link href={Urls.ALERTS} className={styles.back}>
-        <Button type="link">Back</Button>
-      </Link>
     </>
   )
 }

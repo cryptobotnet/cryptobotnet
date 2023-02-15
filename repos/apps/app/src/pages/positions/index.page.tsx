@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 
 import { getPositions } from 'api'
-import { useTelegram } from 'context/telegram'
+import { useTelegramWebApp } from 'context/telegram'
 import { Urls } from 'lib/urls'
 
 import { Alert, Spin } from 'antd'
@@ -11,13 +11,20 @@ import Link from 'next/link'
 // import styles from './styles.module.css'
 
 export const Positions: NextPage = () => {
-  const { webApp } = useTelegram()
+  const { WebApp } = useTelegramWebApp()
 
   const [isConfigured, setIsConfigured] = useState<boolean | null>(null)
   const [positions, setPositions] = useState<any[]>([])
 
   const fetchIsConfigured = useCallback(async () => {
-    const userId = webApp?.initDataUnsafe.user?.id || 1
+    const userId = WebApp?.initDataUnsafe.user?.id
+
+    if (!userId) {
+      setIsConfigured(false)
+
+      return
+    }
+
     const { data, error } = await getPositions({ userId })
 
     setIsConfigured(!error)
@@ -25,7 +32,7 @@ export const Positions: NextPage = () => {
     if (!error) {
       setPositions(data)
     }
-  }, [webApp])
+  }, [WebApp])
 
   useEffect(() => {
     fetchIsConfigured()
@@ -45,7 +52,7 @@ export const Positions: NextPage = () => {
           <Link href={Urls.SETTINGS}>API Keys section</Link>.
         </>
       }
-      type="warning"
+      type="info"
     />
   ) : (
     <></>

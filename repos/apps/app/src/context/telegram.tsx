@@ -2,16 +2,15 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 import { validateTelegram } from 'api'
 import { loadScript } from 'lib/load-script'
-import { isWebApp } from 'lib/is-web-app'
 
 interface TelegramData {
   isValid: boolean | null
-  webApp: Window['Telegram']['WebApp'] | null
+  WebApp: Window['Telegram']['WebApp'] | null
 }
 
 const initialData = {
   isValid: null,
-  webApp: null
+  WebApp: null
 }
 
 const TelegramContext = createContext<TelegramData>(initialData)
@@ -25,9 +24,10 @@ export const TelegramProvider: React.FC<{
     const init = async () => {
       await loadScript('https://telegram.org/js/telegram-web-app.js')
 
-      const telegramInitData = isWebApp
-        ? null
-        : window.Telegram?.WebApp?.initData
+      const telegramInitData =
+        typeof window !== 'undefined' && window?.Telegram?.WebApp
+          ? window.Telegram.WebApp.initData
+          : null
 
       if (!telegramInitData) {
         return
@@ -49,12 +49,11 @@ export const TelegramProvider: React.FC<{
     }
 
     init()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const data = {
     isValid,
-    webApp: isValid ? window.Telegram.WebApp : null
+    WebApp: isValid ? window.Telegram.WebApp : null
   }
 
   return (
@@ -64,4 +63,4 @@ export const TelegramProvider: React.FC<{
   )
 }
 
-export const useTelegram = (): TelegramData => useContext(TelegramContext)
+export const useTelegramWebApp = (): TelegramData => useContext(TelegramContext)

@@ -2,10 +2,19 @@
   width: 100%;
 }
 
+.field {
+  resize: none !important;
+  line-break: anywhere;
+}
+
 .alert {
-  margin-top: 36px;
+  margin-top: 8px;
 
   & + .alert {
     margin-top: 24px;
+  }
+
+  &:last-of-type {
+    margin-bottom: 16px;
   }
 }

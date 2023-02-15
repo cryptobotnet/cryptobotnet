@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { validateRequestBody, validateRequestMethod } from 'lib/middleware'
 import { setUserSecretsSchema } from 'api'
 
-import { OKXHttpPrivate } from 'okx-api'
 import { redisModel } from 'lib/redis'
+import { OKXHttpPrivate } from 'okx-api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -22,13 +22,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, error } = await OKXHttpPublicInstance.getPositions()
 
     if (!data || error) {
-      res.status(422).end()
+      res.status(403).end()
 
       return
     }
 
-    redisModel.setAuthSecrets(userId, { apiKey, passphrase, secretKey })
-    redisModel.disconnect()
+    redisModel.setUserAuthSecrets(userId, { apiKey, passphrase, secretKey })
+    // redisModel.disconnect()
 
     res.status(200).end()
   } catch (error) {
