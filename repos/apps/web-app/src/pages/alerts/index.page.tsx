@@ -48,11 +48,10 @@ export const Alerts: NextPage = () => {
 
     WebApp?.MainButton.setText('Add price alert')
     WebApp?.MainButton.onClick(clickHandler)
-    window.setTimeout(() => WebApp?.MainButton.show(), 1000)
+    WebApp?.MainButton.show()
 
     return () => {
       WebApp?.MainButton.offClick(clickHandler)
-      WebApp?.MainButton.hide()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

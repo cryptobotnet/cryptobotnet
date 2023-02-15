@@ -149,12 +149,11 @@ export const AddAlert: NextPage = () => {
     WebApp?.MainButton.show()
 
     WebApp?.BackButton.onClick(handleBackClick)
-    window.setTimeout(() => WebApp?.MainButton.show(), 1000)
+    WebApp?.BackButton.show()
 
     return () => {
       WebApp?.MainButton.offClick(handleMainClick)
       WebApp?.MainButton.enable()
-      WebApp?.MainButton.hide()
 
       WebApp?.BackButton.offClick(handleBackClick)
       WebApp?.BackButton.hide()

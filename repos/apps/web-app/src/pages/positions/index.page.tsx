@@ -35,6 +35,8 @@ export const Positions: NextPage = () => {
   }, [WebApp])
 
   useEffect(() => {
+    WebApp?.MainButton.hide()
+
     fetchIsConfigured()
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])

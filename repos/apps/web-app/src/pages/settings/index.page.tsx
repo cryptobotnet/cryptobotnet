@@ -85,11 +85,12 @@ export const Settings: NextPage = () => {
 
     WebApp?.MainButton.setText('Provide API Keys')
     WebApp?.MainButton.onClick(handleMainClick)
+    WebApp?.MainButton.hide()
 
     return () => {
       WebApp?.MainButton.offClick(handleMainClick)
+      WebApp?.MainButton.hideProgress()
       WebApp?.MainButton.enable()
-      WebApp?.MainButton.hide()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
