@@ -1,5 +1,5 @@
 {
-  "name": "redis-model",
+  "name": "redis-client",
   "license": "UNLICENSED",
   "version": "0.0.0",
   "private": true,
@@ -19,7 +19,7 @@
     "redis": "^4.6.4"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.14.0",
     "eslint-config-shared": "*",
     "tsc-alias": "^1.8.2",
     "tsconfig-shared": "*",

@@ -12,5 +12,5 @@ export const RedisKeyGetters = {
   ) =>
     RedisKeys.USER_ALERT.replace('$user$', String(userId))
       .replace('$instrument$', instrumentId)
-      .replace('$price', String(targetPrice))
+      .replace('$price$', String(targetPrice))
 }
