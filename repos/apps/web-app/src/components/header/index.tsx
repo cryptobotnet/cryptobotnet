@@ -23,7 +23,6 @@ const LINKS = [
     icon: <LayersIcon />
   },
   {
-    label: 'API Keys',
     href: Urls.SETTINGS,
     icon: <SettingsIcon />
   }
@@ -47,7 +46,7 @@ export const Header: React.FC = () => {
           onClick={hapticFeedback}
           className={clsx(styles.button, pathname === href && styles.active)}>
           {icon}
-          {label}
+          {label && <span>{label}</span>}
         </Link>
       ))}
     </header>

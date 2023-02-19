@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { validateRequestBody, validateRequestMethod } from 'lib/middleware'
 import { getPositionsSchema } from 'api'
 
-import { redisModel } from 'lib/redis'
+import { redisClient } from 'lib/redis'
 import { OKXHttpPrivate } from 'okx-api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -11,14 +11,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     validateRequestMethod(req, res)
     await validateRequestBody(req, res, getPositionsSchema)
 
-    res.setHeader(
-      'Cache-Control',
-      'public, s-maxage=1, stale-while-revalidate=2'
-    )
-
     const { userId } = req.body
 
-    const secrets = await redisModel.getUserAuthSecrets(userId)
+    const secrets = await redisClient.getUserAuthSecrets(userId)
 
     if (!secrets) {
       res.status(403).end()
@@ -30,6 +25,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { data, error } = await OKXHttpPublicInstance.getPositions()
 
+    res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=60, stale-while-revalidate'
+    )
     res.status(200).json({ data, error })
   } catch (error) {
     if (res.writableEnded) {

@@ -1,45 +1,55 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import type { NextPage } from 'next'
 
 import { useTelegramWebApp } from 'context/telegram'
 import { useRouter } from 'next/router'
-import { InstrumentType } from 'api'
+import type { Alert } from 'redis-client'
+import { getAlerts, removeAlert } from 'api'
 import { Urls } from 'lib/urls'
 import numeral from 'numeral'
+import throttle from 'lodash.throttle'
 
-import { Typography } from 'antd'
+import { Button, Tag, Typography } from 'antd'
 import { TrashIcon } from 'components/icons'
 
 import styles from './styles.module.css'
 
-const PRICE_ALERTS = [
-  {
-    instrumentType: InstrumentType.SPOT,
-    instrumentId: 'SHIB-USDT-SWAP',
-    targetPrice: '0.00001540'
-  },
-  {
-    instrumentType: InstrumentType.SWAP,
-    instrumentId: 'SHIB-USDT-SWAP',
-    targetPrice: '0.00001942'
-  },
-  {
-    instrumentType: InstrumentType.SPOT,
-    instrumentId: 'BTC-USDT-SWAP',
-    targetPrice: '26100.52'
-  },
-  {
-    instrumentType: InstrumentType.SWAP,
-    instrumentId: 'BTC-USDT-SWAP',
-    targetPrice: '23520.76'
-  }
-]
-
 export const Alerts: NextPage = () => {
   const { WebApp } = useTelegramWebApp()
+
   const router = useRouter()
 
+  const [alerts, setAlerts] = useState<Alert[]>([])
+
+  const removeLocalAlert = useCallback(
+    ({ instrumentId, targetPrice }: Omit<Alert, 'userId'>) =>
+      setAlerts(alerts =>
+        alerts.filter(
+          alert =>
+            alert.instrumentId !== instrumentId &&
+            alert.targetPrice !== targetPrice
+        )
+      ),
+    []
+  )
+
+  const fetchAlerts = useCallback(async () => {
+    const userId = WebApp?.initDataUnsafe.user?.id
+
+    if (!userId) {
+      return
+    }
+
+    const { data, error } = await getAlerts({ userId })
+
+    if (data && !error) {
+      setAlerts(data)
+    }
+  }, [WebApp])
+
   useEffect(() => {
+    fetchAlerts()
+
     const clickHandler = () => {
       WebApp?.HapticFeedback.impactOccurred('light')
       router.push(Urls.ADD_ALERT)
@@ -55,7 +65,95 @@ export const Alerts: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const toggleMainButton = useCallback(
+  const sortedAlerts = useMemo(
+    () =>
+      alerts.sort(
+        (alertA, alertB) =>
+          alertA.instrumentId.localeCompare(alertB.instrumentId) ||
+          alertB.targetPrice - alertA.targetPrice
+      ),
+    [alerts]
+  )
+
+  const [isRemoving, setIsRemoving] = useState(false)
+
+  const handleRemoveClick = useCallback(
+    ({ userId, instrumentId, targetPrice }: Alert) => {
+      WebApp?.HapticFeedback.impactOccurred('light')
+
+      WebApp?.showPopup(
+        {
+          title: 'Remove price alert?',
+          message: `${instrumentId} ${numeral(targetPrice)
+            .divide(1e8)
+            .format('0,0[.][00000000]')
+            .replace(',', ' ')}`,
+          buttons: [
+            {
+              id: 'confirm',
+              type: 'default',
+              text: 'Remove'
+            },
+            {
+              id: 'cancel',
+              type: 'cancel'
+            }
+          ]
+        },
+        async buttonId => {
+          if (buttonId !== 'confirm') {
+            WebApp?.HapticFeedback.impactOccurred('soft')
+
+            return
+          }
+
+          setIsRemoving(true)
+
+          WebApp?.HapticFeedback.impactOccurred('medium')
+
+          await removeAlert({ userId, instrumentId, targetPrice })
+          removeLocalAlert({ instrumentId, targetPrice })
+          setIsRemoving(false)
+        }
+      )
+    },
+    [WebApp, removeLocalAlert]
+  )
+
+  const alertNodes = useMemo(
+    () =>
+      sortedAlerts.map(({ userId, instrumentId, targetPrice }) => (
+        <div key={`${instrumentId}${targetPrice}`} className={styles.alert}>
+          <Typography.Text
+            className={styles.instrumentId}
+            copyable={{ tooltips: false }}>
+            {instrumentId}
+          </Typography.Text>
+          <Typography.Text
+            className={styles.targetPrice}
+            copyable={{ tooltips: false }}>
+            {numeral(targetPrice)
+              .divide(1e8)
+              .format('0,0[.][00000000]')
+              .replace(',', ' ')}
+          </Typography.Text>
+          <Button
+            className={styles.remove}
+            onClick={
+              isRemoving
+                ? undefined
+                : () => handleRemoveClick({ userId, instrumentId, targetPrice })
+            }
+            disabled={isRemoving}
+            type="link"
+            icon={<TrashIcon />}
+          />
+        </div>
+      )),
+    [sortedAlerts, handleRemoveClick, isRemoving]
+  )
+
+  const toggleMainButton = throttle(
     event => {
       if (event.target !== event.currentTarget) {
         return
@@ -67,122 +165,17 @@ export const Alerts: NextPage = () => {
         ? WebApp?.MainButton.hide()
         : WebApp?.MainButton.show()
     },
-    [WebApp]
-  )
-
-  const sortedAlerts = useMemo(
-    () =>
-      PRICE_ALERTS.sort(
-        (alertA, alertB) =>
-          alertA.instrumentId.localeCompare(alertB.instrumentId) ||
-          parseFloat(alertB.targetPrice) - parseFloat(alertA.targetPrice)
-      ),
-    []
-  )
-
-  const alertNodes = useMemo(
-    () =>
-      sortedAlerts.map(({ instrumentId, targetPrice }) => (
-        <div key={`${instrumentId}${targetPrice}`} className={styles.alert}>
-          <Typography.Text
-            className={styles.instrumentId}
-            copyable={{ tooltips: false }}>
-            {instrumentId}
-          </Typography.Text>
-          <Typography.Text
-            className={styles.targetPrice}
-            copyable={{ tooltips: false }}>
-            {numeral(targetPrice).format('0,0[.][00000000]').replace(',', ' ')}
-          </Typography.Text>
-          <button className={styles.remove}>
-            <TrashIcon />
-          </button>
-        </div>
-      )),
-    [sortedAlerts]
+    500,
+    { trailing: false }
   )
 
   return (
     <section className={styles.page} onClick={toggleMainButton}>
-      {alertNodes}
-
-      {/* <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light')
-          }>
-          impactOccurred light
-        </button>
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium')
-          }>
-          impactOccurred medium
-        </button>
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy')
-          }>
-          impactOccurred heavy
-        </button>
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('rigid')
-          }>
-          impactOccurred rigid
-        </button>
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('soft')
-          }>
-          impactOccurred soft
-        </button>
-      </div>
-
-      <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred('error')
-          }>
-          notificationOccurred error
-        </button>
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred(
-              'success'
-            )
-          }>
-          notificationOccurred success
-        </button>
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred(
-              'warning'
-            )
-          }>
-          notificationOccurred warning
-        </button>
-      </div>
-      <div className={styles.button}>
-        <button
-          onClick={() =>
-            window.Telegram.WebApp.HapticFeedback.selectionChanged()
-          }>
-          selectionChanged
-        </button>
-      </div> */}
+      {alertNodes.length ? (
+        alertNodes
+      ) : (
+        <Tag color="processing">no active alerts</Tag>
+      )}
     </section>
   )
 }

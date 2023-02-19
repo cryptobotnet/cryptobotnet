@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import type { NextPage } from 'next'
 
 import { getPositions } from 'api'
 import { useTelegramWebApp } from 'context/telegram'
 import { Urls } from 'lib/urls'
 
-import { Alert, Spin } from 'antd'
+import { Alert, Spin, Tag } from 'antd'
 import Link from 'next/link'
 
-// import styles from './styles.module.css'
+import styles from './styles.module.css'
 
 export const Positions: NextPage = () => {
   const { WebApp } = useTelegramWebApp()
@@ -41,7 +41,10 @@ export const Positions: NextPage = () => {
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 
-  console.log(positions)
+  const positionNodes = useMemo(
+    () => positions.map((item, index) => <div key={index}>{index}</div>),
+    [positions]
+  )
 
   return isConfigured === null ? (
     <Spin />
@@ -56,8 +59,12 @@ export const Positions: NextPage = () => {
       }
       type="info"
     />
+  ) : positionNodes.length ? (
+    <>{positionNodes}</>
   ) : (
-    <></>
+    <Tag color="processing" className={styles.tag}>
+      no open positions
+    </Tag>
   )
 }
 

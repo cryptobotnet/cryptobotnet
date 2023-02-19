@@ -84,7 +84,7 @@ interface WebApp {
    * The Web App will receive the event 'popupClosed' when the popup is closed.
    * If an optional callback parameter was passed, the callback function will be called and the field id of the pressed button will be passed as the first argument.
    */
-  showPopup(params: PopupParams)
+  showPopup(params: PopupParams, callback?: (buttonId: string) => void)
   /**
    * A method that sets the app event handler.
    */

@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { validateRequestBody, validateRequestMethod } from 'lib/middleware'
 import { setUserSecretsSchema } from 'api'
 
-import { redisModel } from 'lib/redis'
+import { redisClient } from 'lib/redis'
 import { OKXHttpPrivate } from 'okx-api'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -27,8 +27,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return
     }
 
-    redisModel.setUserAuthSecrets(userId, { apiKey, passphrase, secretKey })
-    // redisModel.disconnect()
+    redisClient.setUserAuthSecrets({ userId, apiKey, passphrase, secretKey })
+    // redisClient.disconnect()
 
     res.status(200).end()
   } catch (error) {

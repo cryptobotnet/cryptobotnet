@@ -17,7 +17,7 @@ export const validateRequestBody = async (
   }
 }
 
-export const emptyObjectSchema: ObjectSchema<Record<string, any>> = object({})
+export const emptyObjectSchema: ObjectSchema<Record<string, unknown>> = object()
   .noUnknown()
   .strict()
   .required()

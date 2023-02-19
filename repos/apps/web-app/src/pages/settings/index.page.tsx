@@ -3,11 +3,9 @@ import type { NextPage } from 'next'
 
 import { getPositions, setUserSecrets } from 'api'
 import { useTelegramWebApp } from 'context/telegram'
-import { Urls } from 'lib/urls'
 
-import Link from 'next/link'
 import { Controller, useForm } from 'react-hook-form'
-import { Form, Input, Alert, Typography, Spin } from 'antd'
+import { Form, Input, Alert, Typography, Spin, Checkbox, Button } from 'antd'
 
 import styles from './styles.module.css'
 
@@ -108,18 +106,60 @@ export const Settings: NextPage = () => {
   return isConfigured === null ? (
     <Spin />
   ) : isConfigured === true ? (
-    <Alert
-      message="Configuration Complete"
-      description={
-        <>
-          OKX API keys have been configured. You can receive alerts with account
-          position events. Your open positions are listed in{' '}
-          <Link href={Urls.POSITIONS}>Positions section</Link>.
-        </>
-      }
-      type="info"
-      className={styles.alert}
-    />
+    <>
+      <Alert
+        message="Configuration Complete"
+        description={
+          <>
+            OKX API keys have been configured. You can receive alerts based on
+            account positions.
+          </>
+        }
+        type="info"
+        className={styles.alert}
+      />
+
+      <Checkbox
+        onChange={() => {
+          WebApp?.HapticFeedback.impactOccurred('soft')
+        }}
+        className={styles.checkbox}>
+        Auto alerts with open positions events
+      </Checkbox>
+      <Typography.Paragraph className={styles.example}>
+        <pre>
+          SHORT in SHIB-USDT-SWAP
+          <br />
+          just opened
+          <br />
+          <br />
+          10 USDT x10 = 100 USDT
+          <br />
+          <br />
+          Entry price = 0.00001181 USDT
+        </pre>
+      </Typography.Paragraph>
+
+      <Checkbox
+        onChange={() => {
+          WebApp?.HapticFeedback.impactOccurred('soft')
+        }}
+        className={styles.checkbox}>
+        Auto alerts with opens positions PnL
+      </Checkbox>
+
+      <Typography.Paragraph className={styles.example}>
+        <pre>
+          SHORT in SHIB-USDT-SWAP
+          <br />
+          just reached 10% or 2.56 USDT
+        </pre>
+      </Typography.Paragraph>
+
+      <Button type="link" danger className={styles.remove}>
+        Remove API Keys
+      </Button>
+    </>
   ) : (
     <>
       <Form layout="vertical" className={styles.form}>
@@ -231,7 +271,7 @@ export const Settings: NextPage = () => {
           <>
             <Typography.Text strong>@okxalertsbot</Typography.Text> is
             third-party open-source project and is not affiliated with okx.com
-            team. Check out our code in case of any concers:
+            team. Check out our code in case of any concerns:
             <br />
             <br />
             <Typography.Text strong copyable={{ tooltips: false }}>

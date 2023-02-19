@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 
 import { useTelegramWebApp } from 'context/telegram'
 import { useRouter } from 'next/router'
-import { getTickers, InstrumentType } from 'api'
+import { addAlert, getTickers, InstrumentType } from 'api'
 import { getNumberPrecision } from 'lib/get-number-precision'
 import { Urls } from 'lib/urls'
 
@@ -36,11 +36,8 @@ export const AddAlert: NextPage = () => {
   const {
     watch,
     setValue,
-    // reset,
-    // setValue,
-    // getValues,
-    // setFocus,
-    // setError,
+    setError,
+    trigger,
     formState,
     control,
     handleSubmit
@@ -112,6 +109,7 @@ export const AddAlert: NextPage = () => {
 
     if (last) {
       setValue('targetPrice', last)
+      trigger()
 
       if (Number(last) > 10000) {
         setStep(10)
@@ -137,22 +135,61 @@ export const AddAlert: NextPage = () => {
   const { WebApp } = useTelegramWebApp()
   const router = useRouter()
 
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     const handleMainClick = () => {
       WebApp?.HapticFeedback.impactOccurred('light')
-      handleSubmit(values => console.log(values))
+      handleSubmit(async ({ instrumentId, targetPrice: targetPriceString }) => {
+        const userId = WebApp?.initDataUnsafe.user?.id
+
+        if (!userId || !instrumentId || !targetPriceString) {
+          WebApp?.HapticFeedback.notificationOccurred('error')
+          setLoading(false)
+
+          return
+        }
+
+        setLoading(true)
+        WebApp?.MainButton.showProgress()
+
+        /* NOTE: multiply by 1e8 to avoid float numbers with high precision */
+        const targetPrice = Math.trunc(Number(targetPriceString) * 1e8)
+
+        const { error } = await addAlert({
+          userId,
+          instrumentId,
+          targetPrice
+        })
+
+        if (error) {
+          setError('instrumentId', {})
+          setError('targetPrice', {})
+
+          WebApp?.MainButton.hideProgress()
+          WebApp?.HapticFeedback.notificationOccurred('error')
+          setLoading(false)
+
+          return
+        }
+
+        WebApp?.HapticFeedback.notificationOccurred('success')
+        router.push(Urls.ALERTS)
+      })()
     }
+
     const handleBackClick = () => router.push(Urls.ALERTS)
 
     WebApp?.MainButton.setText('Confirm')
     WebApp?.MainButton.onClick(handleMainClick)
-    WebApp?.MainButton.show()
+    WebApp?.MainButton.hide()
 
     WebApp?.BackButton.onClick(handleBackClick)
     WebApp?.BackButton.show()
 
     return () => {
       WebApp?.MainButton.offClick(handleMainClick)
+      WebApp?.MainButton.hideProgress()
       WebApp?.MainButton.enable()
 
       WebApp?.BackButton.offClick(handleBackClick)
@@ -162,10 +199,11 @@ export const AddAlert: NextPage = () => {
   }, [])
 
   useEffect(() => {
-    if (formState.isValid) {
-      WebApp?.MainButton.enable()
+    if (formState.isDirty && formState.isValid && !formState.isSubmitting) {
+      WebApp?.MainButton.hideProgress()
+      WebApp?.MainButton.show()
     } else {
-      WebApp?.MainButton.disable()
+      WebApp?.MainButton.hide()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState])
@@ -200,6 +238,7 @@ export const AddAlert: NextPage = () => {
                 }
               ]}
               className={styles.instrumentType}
+              disabled={loading}
               optionType="button"
             />
           </Form.Item>
@@ -210,7 +249,7 @@ export const AddAlert: NextPage = () => {
         name="instrumentId"
         control={control}
         rules={{ required: true }}
-        render={({ field }) => (
+        render={({ field, fieldState: { error, isDirty } }) => (
           <Form.Item>
             <Select
               value={field.value}
@@ -224,6 +263,13 @@ export const AddAlert: NextPage = () => {
               showSearch
               allowClear
               className={styles.instrumentId}
+              disabled={loading}
+              status={
+                (formState.isSubmitted && !formState.isValid) ||
+                (error && !isDirty)
+                  ? 'error'
+                  : undefined
+              }
             />
           </Form.Item>
         )}
@@ -233,7 +279,7 @@ export const AddAlert: NextPage = () => {
         name="targetPrice"
         control={control}
         rules={{ required: true }}
-        render={({ field }) => (
+        render={({ field, fieldState: { error, isDirty } }) => (
           <Form.Item>
             <InputNumber
               value={field.value}
@@ -242,6 +288,13 @@ export const AddAlert: NextPage = () => {
               step={step}
               stringMode
               className={styles.targetPrice}
+              disabled={loading}
+              status={
+                (formState.isSubmitted && !formState.isValid) ||
+                (error && !isDirty)
+                  ? 'error'
+                  : undefined
+              }
             />
           </Form.Item>
         )}

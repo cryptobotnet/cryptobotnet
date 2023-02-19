@@ -1,10 +1,3 @@
-@custom-media --mobile screen and (width < 768px);
-@custom-media --mobile-tablet screen and (width < 1024px);
-
-@custom-media --tablet screen and (width >= 768px);
-@custom-media --desktop screen and (width >= 1024px);
-@custom-media --monitor screen and (width >= 1440px);
-
 :root {
   /* colors */
   --blue: #2383f2;
@@ -34,23 +27,4 @@
   /* default text */
   --default-font-size: 16px;
   --default-line-height: 22px;
-
-  /* layout */
-  --layout-margin-top: calc(54px + 25px);
-  --layout-horizontal-padding: 20px;
-
-  @media (--tablet) {
-    --layout-margin-top: calc(48px + 8px + 60px);
-    --layout-horizontal-padding: 40px;
-  }
-
-  @media (--desktop) {
-    --layout-margin-top: calc(54px + 8px + 60px);
-    --layout-horizontal-padding: 60px;
-  }
-
-  @media (--monitor) {
-    --layout-margin-top: calc(60px + 8px + 60px);
-    --layout-horizontal-padding: 80px;
-  }
 }

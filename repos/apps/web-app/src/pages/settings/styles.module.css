@@ -25,3 +25,26 @@
     margin-bottom: 16px;
   }
 }
+
+.checkbox {
+  width: 285px;
+  margin-left: 0 !important;
+  user-select: none;
+
+  &:global {
+    animation: appear 200ms ease-in-out 1;
+    animation-fill-mode: forwards;
+  }
+
+  &:first-of-type {
+    margin-top: 24px;
+  }
+}
+
+.example {
+  width: 280px;
+}
+
+.remove {
+  margin-top: 36px;
+}

@@ -1,22 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { validateRequestBody, validateRequestMethod } from 'lib/middleware'
-import { getTickersSchema } from 'api'
+import { removeAlertSchema } from 'api'
 
-import { OKXHttpPublicInstance } from 'lib/okx'
+import { redisClient } from 'lib/redis'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     validateRequestMethod(req, res)
-    await validateRequestBody(req, res, getTickersSchema)
+    await validateRequestBody(req, res, removeAlertSchema)
 
-    const { data, error } = await OKXHttpPublicInstance.getTickers(req.body)
+    const { userId, instrumentId, targetPrice } = req.body
 
-    res.setHeader(
-      'Cache-Control',
-      'public, s-maxage=60, stale-while-revalidate'
-    )
-    res.status(200).json({ data, error })
+    redisClient.removeUserAlert({ userId, instrumentId, targetPrice })
+    // redisClient.disconnect()
+
+    res.status(200).end()
   } catch (error) {
     if (res.writableEnded) {
       return

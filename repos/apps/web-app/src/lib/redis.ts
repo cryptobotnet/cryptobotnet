@@ -1,3 +1,10 @@
-import { RedisModel } from 'redis-model'
+import { RedisClient } from 'redis-client'
 
-export const redisModel = new RedisModel(process.env.REDIS_URL as string)
+const globalForRedis = global as unknown as { redisClient: RedisClient }
+
+export const redisClient =
+  globalForRedis.redisClient ?? new RedisClient(process.env.REDIS_URL as string)
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForRedis.redisClient = redisClient
+}
