@@ -17,11 +17,11 @@
     "@grammyjs/transformer-throttler": "^1.2.1",
     "dedent": "^0.7.0",
     "grammy": "^1.13.1",
-    "redis-model": "*"
+    "redis-client": "*"
   },
   "devDependencies": {
     "@types/dedent": "^0.7.0",
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.14.0",
     "dotenv": "^16.0.3",
     "eslint-config-shared": "*",
     "ts-node-dev": "^2.0.0",

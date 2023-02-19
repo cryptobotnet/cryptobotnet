@@ -14,7 +14,7 @@ export const Responses = {
 
     *Use Home button near your text bar to control the bot ⚡️*
 
-    \`Disclaimer: @okxalertsbot is third\\-party open\\-source project and is not affiliated with okx\\.com team\\. To receive account position events you need to provide your API keys from okx\\.com with read permission\\. Check out our code in case of any concers: github\\.com/asyncink/okx\\-alerts\\-bot\\.\`
+    \`Disclaimer: @okxalertsbot is third\\-party open\\-source project and is not affiliated with okx\\.com team\\. To receive account position events you need to provide your API keys from okx\\.com with read permission\\. Check out our code in case of any concerns: github\\.com/asyncink/okx\\-alerts\\-bot\\.\`
     `
   ),
   HELP: dedent(
