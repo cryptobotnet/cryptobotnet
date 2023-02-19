@@ -40,22 +40,22 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
 
     const inputBorderColor =
       colorScheme === 'light'
-        ? telegramBackgroundColor.darken(0.6).toString()
+        ? telegramBackgroundColor.darken(0.15).toString()
         : telegramBackgroundColor.lighten(0.6).toString()
 
     const alertBackgroundColor =
       colorScheme === 'light'
-        ? telegramBackgroundColor.darken(0.2).toString()
+        ? telegramBackgroundColor.darken(0.05).toString()
         : telegramBackgroundColor.lighten(0.2).toString()
 
     const alertBorderColor =
       colorScheme === 'light'
-        ? telegramBackgroundColor.darken(0.4).toString()
+        ? telegramBackgroundColor.darken(0.1).toString()
         : telegramBackgroundColor.lighten(0.4).toString()
 
     const tinyIconColor =
       colorScheme === 'light'
-        ? telegramTextColor.lighten(0.4).toString()
+        ? telegramTextColor.lighten(0.8).toString()
         : telegramTextColor.darken(0.4).toString()
 
     const tagBorderColor = telegramPrimaryColor.fade(0.4).toString()
@@ -73,6 +73,11 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [WebApp])
 
+  const inputColors = {
+    colorBgContainer: inputBackgroundColor,
+    colorBorder: inputBorderColor
+  }
+
   return (
     <ConfigProvider
       componentSize="large"
@@ -88,21 +93,17 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
         },
         components: {
           Radio: {
-            colorBgContainer: inputBackgroundColor,
-            colorBorder: inputBorderColor
+            ...inputColors
           },
           Select: {
-            colorBgContainer: inputBackgroundColor,
-            colorBgElevated: inputBackgroundColor,
-            colorBorder: inputBorderColor
+            ...inputColors,
+            colorBgElevated: inputBackgroundColor
           },
           InputNumber: {
-            colorBgContainer: inputBackgroundColor,
-            colorBorder: inputBorderColor
+            ...inputColors
           },
           Input: {
-            colorBgContainer: inputBackgroundColor,
-            colorBorder: inputBorderColor
+            ...inputColors
           },
           Alert: {
             colorInfoBg: alertBackgroundColor,
