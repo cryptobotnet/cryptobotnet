@@ -53,3 +53,8 @@ button {
     transform: rotate(360deg);
   }
 }
+
+.global-appear {
+  animation: appear 200ms ease-in-out 1;
+  animation-fill-mode: forwards;
+}

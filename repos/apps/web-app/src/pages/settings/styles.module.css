@@ -12,10 +12,10 @@
 }
 
 .alert {
-  &:global {
+  /* &:global {
     animation: appear 200ms ease-in-out 1;
     animation-fill-mode: forwards;
-  }
+  } */
 
   & + .alert {
     margin-top: 24px;
@@ -31,10 +31,10 @@
   margin-left: 0 !important;
   user-select: none;
 
-  &:global {
+  /* &:global {
     animation: appear 200ms ease-in-out 1;
     animation-fill-mode: forwards;
-  }
+  } */
 
   &:first-of-type {
     margin-top: 24px;

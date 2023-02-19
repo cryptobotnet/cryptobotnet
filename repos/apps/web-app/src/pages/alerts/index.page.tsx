@@ -9,10 +9,13 @@ import { Urls } from 'lib/urls'
 import numeral from 'numeral'
 import throttle from 'lodash.throttle'
 
+import { Spin } from 'components/spin'
 import { Button, Tag, Typography } from 'antd'
 import { TrashIcon } from 'components/icons'
 
 import styles from './styles.module.css'
+
+import clsx from 'clsx'
 
 export const Alerts: NextPage = () => {
   const { WebApp } = useTelegramWebApp()
@@ -20,6 +23,7 @@ export const Alerts: NextPage = () => {
   const router = useRouter()
 
   const [alerts, setAlerts] = useState<Alert[]>([])
+  const [loading, setLoading] = useState(true)
 
   const removeLocalAlert = useCallback(
     ({ instrumentId, targetPrice }: Omit<Alert, 'userId'>) =>
@@ -40,11 +44,15 @@ export const Alerts: NextPage = () => {
       return
     }
 
+    setLoading(true)
+
     const { data, error } = await getAlerts({ userId })
 
     if (data && !error) {
       setAlerts(data)
     }
+
+    setLoading(false)
   }, [WebApp])
 
   useEffect(() => {
@@ -123,7 +131,9 @@ export const Alerts: NextPage = () => {
   const alertNodes = useMemo(
     () =>
       sortedAlerts.map(({ userId, instrumentId, targetPrice }) => (
-        <div key={`${instrumentId}${targetPrice}`} className={styles.alert}>
+        <div
+          key={`${instrumentId}${targetPrice}`}
+          className={clsx(styles.alert, 'global-appear')}>
           <Typography.Text
             className={styles.instrumentId}
             copyable={{ tooltips: false }}>
@@ -171,11 +181,13 @@ export const Alerts: NextPage = () => {
 
   return (
     <section className={styles.page} onClick={toggleMainButton}>
-      {alertNodes.length ? (
-        alertNodes
-      ) : (
-        <Tag color="processing">no active alerts</Tag>
-      )}
+      <Spin loading={loading}>
+        {alertNodes.length ? (
+          alertNodes
+        ) : (
+          <Tag color="processing">no active alerts</Tag>
+        )}
+      </Spin>
     </section>
   )
 }

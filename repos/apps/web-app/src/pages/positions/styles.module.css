@@ -1,6 +1,3 @@
-.tag {
-  &:global {
-    animation: appear 200ms ease-in-out 1;
-    animation-fill-mode: forwards;
-  }
+.foo {
+  font-weight: bold;
 }

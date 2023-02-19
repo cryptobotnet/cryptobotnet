@@ -1,0 +1,7 @@
+.spinner {
+  color: var(--tg-theme-link-color);
+
+  &:global {
+    animation: 2500ms spin infinite;
+  }
+}

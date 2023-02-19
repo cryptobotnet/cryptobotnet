@@ -6,7 +6,7 @@ import { Header } from 'components/header'
 
 import styles from './styles.module.css'
 
-export const Layout: React.FC<{ children: React.ReactNode }> = ({
+export const Layout: React.FC<{ children: React.ReactElement }> = ({
   children
 }) => {
   const { pathname } = useRouter()
@@ -14,7 +14,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({
   return (
     <div className={styles.layout}>
       <Header />
-      <main key={pathname}>{children}</main>
+      <main key={pathname} className="global-appear">
+        {children}
+      </main>
     </div>
   )
 }

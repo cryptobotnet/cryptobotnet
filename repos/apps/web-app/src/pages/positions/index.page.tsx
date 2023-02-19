@@ -5,33 +5,38 @@ import { getPositions } from 'api'
 import { useTelegramWebApp } from 'context/telegram'
 import { Urls } from 'lib/urls'
 
-import { Alert, Spin, Tag } from 'antd'
+import { Spin } from 'components/spin'
+import { Alert, Tag } from 'antd'
 import Link from 'next/link'
 
-import styles from './styles.module.css'
+// import styles from './styles.module.css'
 
 export const Positions: NextPage = () => {
   const { WebApp } = useTelegramWebApp()
 
-  const [isConfigured, setIsConfigured] = useState<boolean | null>(null)
+  const [loading, setLoading] = useState(true)
   const [positions, setPositions] = useState<any[]>([])
+  const [configured, setConfigured] = useState<boolean>(false)
 
   const fetchIsConfigured = useCallback(async () => {
     const userId = WebApp?.initDataUnsafe.user?.id
 
     if (!userId) {
-      setIsConfigured(false)
+      setConfigured(false)
 
       return
     }
 
-    const { data, error } = await getPositions({ userId })
+    setLoading(true)
 
-    setIsConfigured(!error)
+    const { data, error } = await getPositions({ userId })
 
     if (!error) {
       setPositions(data)
     }
+
+    setConfigured(!error)
+    setLoading(false)
   }, [WebApp])
 
   useEffect(() => {
@@ -46,25 +51,28 @@ export const Positions: NextPage = () => {
     [positions]
   )
 
-  return isConfigured === null ? (
-    <Spin />
-  ) : isConfigured === false ? (
-    <Alert
-      message="Not Configured"
-      description={
-        <>
-          OKX API keys have not been configured. Please visit{' '}
-          <Link href={Urls.SETTINGS}>API Keys section</Link>.
-        </>
-      }
-      type="info"
-    />
-  ) : positionNodes.length ? (
-    <>{positionNodes}</>
-  ) : (
-    <Tag color="processing" className={styles.tag}>
-      no open positions
-    </Tag>
+  return (
+    <Spin loading={loading}>
+      {configured === false ? (
+        <Alert
+          message="Not Configured"
+          description={
+            <>
+              OKX API keys have not been configured. Please visit{' '}
+              <Link href={Urls.SETTINGS}>API Keys section</Link>.
+            </>
+          }
+          type="info"
+          className="global-appear"
+        />
+      ) : positionNodes.length ? (
+        <>{positionNodes}</>
+      ) : (
+        <Tag color="processing" className="global-appear">
+          no open positions
+        </Tag>
+      )}
+    </Spin>
   )
 }
 

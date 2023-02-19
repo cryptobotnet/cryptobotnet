@@ -1,15 +1,15 @@
 import React from 'react'
 
 import Image from 'next/image'
-import loaderPic from './loader.png'
+import logoImage from './loader.png'
 import { Button } from 'antd'
 
 import styles from './styles.module.css'
 
-export const Loader: React.FC = () => (
+export const NoAccess: React.FC = () => (
   <div className={styles.container}>
     <Image
-      src={loaderPic}
+      src={logoImage}
       alt="okx alerts bot loader"
       placeholder="blur"
       className={styles.image}

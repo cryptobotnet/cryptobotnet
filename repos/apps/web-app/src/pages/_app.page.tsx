@@ -5,7 +5,7 @@ import Head from 'next/head'
 
 import { ConfigProvider, theme } from 'antd'
 import { TelegramProvider } from 'context/telegram'
-import { Loader } from 'components/loader'
+import { NoAccess } from 'components/no-access'
 import { Layout } from 'components/layout'
 
 import 'lib/styles/global.css'
@@ -53,7 +53,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
               </Layout>
             </ConfigProvider>
           ) : (
-            <Loader />
+            <NoAccess />
           )
         }
       </TelegramProvider>
