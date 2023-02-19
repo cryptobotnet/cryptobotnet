@@ -10,11 +10,11 @@ import numeral from 'numeral'
 import throttle from 'lodash.throttle'
 
 import { Spin } from 'components/spin'
-import { Button, Tag, Typography } from 'antd'
+import { Button, Tag } from 'antd'
+import { Copyable } from 'components/copyable'
 import { TrashIcon } from 'components/icons'
 
 import styles from './styles.module.css'
-
 import clsx from 'clsx'
 
 export const Alerts: NextPage = () => {
@@ -99,8 +99,7 @@ export const Alerts: NextPage = () => {
           buttons: [
             {
               id: 'confirm',
-              type: 'default',
-              text: 'Remove'
+              type: 'ok'
             },
             {
               id: 'cancel',
@@ -134,19 +133,13 @@ export const Alerts: NextPage = () => {
         <div
           key={`${instrumentId}${targetPrice}`}
           className={clsx(styles.alert, 'global-appear')}>
-          <Typography.Text
-            className={styles.instrumentId}
-            copyable={{ tooltips: false }}>
-            {instrumentId}
-          </Typography.Text>
-          <Typography.Text
-            className={styles.targetPrice}
-            copyable={{ tooltips: false }}>
+          <Copyable className={styles.instrumentId}>{instrumentId}</Copyable>
+          <Copyable className={styles.targetPrice}>
             {numeral(targetPrice)
               .divide(1e8)
               .format('0,0[.][00000000]')
               .replace(',', ' ')}
-          </Typography.Text>
+          </Copyable>
           <Button
             className={styles.remove}
             onClick={
@@ -182,11 +175,7 @@ export const Alerts: NextPage = () => {
   return (
     <section className={styles.page} onClick={toggleMainButton}>
       <Spin loading={loading}>
-        {alertNodes.length ? (
-          alertNodes
-        ) : (
-          <Tag color="processing">no active alerts</Tag>
-        )}
+        {alertNodes.length ? alertNodes : <Tag>no active alerts</Tag>}
       </Spin>
     </section>
   )

@@ -8,14 +8,15 @@
     "format": "prettier --ignore-path ../../../.prettierignore --write . && eslint --ignore-path ../../../.eslintignore './*.js' 'src/**/*.{js,ts,tsx}' --fix",
     "lint": "next lint && stylelint '**/*.css'",
     "typecheck": "tsc --pretty --noEmit",
-    "start": "DEBUG=web-app next dev",
+    "start": "next dev",
     "start:prod": "next start",
-    "build": "DEBUG=web-app next build"
+    "build": "next build"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "antd": "^5.2.1",
     "clsx": "^1.1.1",
+    "color": "^4.2.3",
     "lodash.throttle": "^4.1.1",
     "next": "^13.1.6",
     "numeral": "^2.0.6",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
+    "@types/color": "^3.0.3",
     "@types/lodash.throttle": "^4.1.7",
     "@types/node": "^18.14.0",
     "@types/numeral": "^2.0.2",

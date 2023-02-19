@@ -3,10 +3,10 @@ import type { AppProps } from 'next/app'
 
 import Head from 'next/head'
 
-import { ConfigProvider, theme } from 'antd'
 import { TelegramProvider } from 'context/telegram'
-import { NoAccess } from 'components/no-access'
+import { TelegramTheme } from 'context/theme'
 import { Layout } from 'components/layout'
+import { NoAccess } from 'components/no-access'
 
 import 'lib/styles/global.css'
 import 'lib/styles/variables.css'
@@ -22,36 +22,13 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <TelegramProvider>
-        {({ isValid, WebApp }) =>
+        {({ isValid }) =>
           isValid === null ? null : isValid ? (
-            <ConfigProvider
-              componentSize="large"
-              theme={{
-                algorithm:
-                  WebApp?.colorScheme === 'dark'
-                    ? theme.darkAlgorithm
-                    : theme.defaultAlgorithm,
-                token: {
-                  borderRadius: 40
-                }
-                // components: {
-                //   ...(telegramColorScheme === 'dark' && {
-                //     Input: {
-                //       colorBorder: 'transparent'
-                //     },
-                //     InputNumber: {
-                //       colorBorder: 'transparent'
-                //     },
-                //     Select: {
-                //       colorBorder: 'transparent'
-                //     }
-                //   })
-                // }
-              }}>
+            <TelegramTheme>
               <Layout>
                 <Component {...pageProps} />
               </Layout>
-            </ConfigProvider>
+            </TelegramTheme>
           ) : (
             <NoAccess />
           )

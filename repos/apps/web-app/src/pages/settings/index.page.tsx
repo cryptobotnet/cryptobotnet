@@ -7,6 +7,7 @@ import { useTelegramWebApp } from 'context/telegram'
 import { Spin } from 'components/spin'
 import { Controller, useForm } from 'react-hook-form'
 import { Form, Input, Alert, Typography, Checkbox, Button } from 'antd'
+import { Copyable } from 'components/copyable'
 
 import styles from './styles.module.css'
 import clsx from 'clsx'
@@ -259,9 +260,7 @@ export const Settings: NextPage = () => {
                 paste in browser):
                 <br />
                 <br />
-                <Typography.Text strong copyable={{ tooltips: false }}>
-                  https://okx.com/account/my-api
-                </Typography.Text>
+                <Copyable strong>https://okx.com/account/my-api</Copyable>
                 <br />
                 <br />
                 Double check that issued API keys have{' '}
@@ -282,9 +281,7 @@ export const Settings: NextPage = () => {
                 okx.com team. Check out our code in case of any concerns:
                 <br />
                 <br />
-                <Typography.Text strong copyable={{ tooltips: false }}>
-                  github.com/asyncink/okx-alerts-bot
-                </Typography.Text>
+                <Copyable strong>github.com/asyncink/okx-alerts-bot</Copyable>
               </>
             }
             type="info"

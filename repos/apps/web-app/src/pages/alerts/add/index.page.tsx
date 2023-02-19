@@ -44,7 +44,7 @@ export const AddAlert: NextPage = () => {
   } = useForm<FormValues>({
     reValidateMode: 'onSubmit',
     defaultValues: {
-      instrumentType: InstrumentType.SWAP
+      instrumentType: InstrumentType.SPOT
     }
   })
 
@@ -187,6 +187,8 @@ export const AddAlert: NextPage = () => {
     WebApp?.BackButton.onClick(handleBackClick)
     WebApp?.BackButton.show()
 
+    document.documentElement.style.overflow = 'hidden'
+
     return () => {
       WebApp?.MainButton.offClick(handleMainClick)
       WebApp?.MainButton.hideProgress()
@@ -194,6 +196,8 @@ export const AddAlert: NextPage = () => {
 
       WebApp?.BackButton.offClick(handleBackClick)
       WebApp?.BackButton.hide()
+
+      document.documentElement.style.overflow = 'auto'
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -240,6 +244,7 @@ export const AddAlert: NextPage = () => {
               className={styles.instrumentType}
               disabled={loading}
               optionType="button"
+              buttonStyle="solid"
             />
           </Form.Item>
         )}

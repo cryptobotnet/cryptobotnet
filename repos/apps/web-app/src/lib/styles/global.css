@@ -5,7 +5,6 @@ body {
   font-family: var(--font-family);
   font-size: var(--default-font-size);
   line-height: var(--default-line-height);
-  color: var(--black);
   color: var(--tg-theme-text-color);
   background-color: var(--tg-theme-bg-color);
 }
