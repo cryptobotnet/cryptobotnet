@@ -40,12 +40,12 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
 
     const inputBorderColor =
       colorScheme === 'light'
-        ? telegramBackgroundColor.darken(0.15).toString()
+        ? telegramBackgroundColor.darken(0.2).toString()
         : telegramBackgroundColor.lighten(0.6).toString()
 
     const alertBackgroundColor =
       colorScheme === 'light'
-        ? telegramBackgroundColor.darken(0.05).toString()
+        ? telegramBackgroundColor.darken(0.025).toString()
         : telegramBackgroundColor.lighten(0.2).toString()
 
     const alertBorderColor =
