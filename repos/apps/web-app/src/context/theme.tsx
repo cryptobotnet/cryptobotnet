@@ -10,16 +10,7 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { WebApp } = useTelegramWebApp()
 
-  const {
-    primaryFadedColor,
-    inputBackgroundColor,
-    inputBorderColor,
-    alertBackgroundColor,
-    alertBorderColor,
-    tinyIconColor,
-    tagBorderColor,
-    tagColor
-  } = useMemo(() => {
+  const theme = useMemo(() => {
     if (!WebApp) {
       return {}
     }
@@ -31,51 +22,42 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
     const telegramPrimaryColor = color(button_color)
     const telegramTextColor = color(text_color)
 
-    const primaryFadedColor = telegramPrimaryColor.fade(0.8).toString()
-
-    const inputBackgroundColor =
-      colorScheme === 'light'
-        ? telegramBackgroundColor.lighten(0.3).toString()
-        : telegramBackgroundColor.darken(0.3).toString()
-
-    const inputBorderColor =
-      colorScheme === 'light'
-        ? telegramBackgroundColor.darken(0.2).toString()
-        : telegramBackgroundColor.lighten(0.6).toString()
-
-    const alertBackgroundColor =
-      colorScheme === 'light'
-        ? telegramBackgroundColor.darken(0.025).toString()
-        : telegramBackgroundColor.lighten(0.2).toString()
-
-    const alertBorderColor =
-      colorScheme === 'light'
-        ? telegramBackgroundColor.darken(0.1).toString()
-        : telegramBackgroundColor.lighten(0.4).toString()
-
-    const tinyIconColor =
-      colorScheme === 'light'
-        ? telegramTextColor.lighten(0.8).toString()
-        : telegramTextColor.darken(0.4).toString()
-
-    const tagBorderColor = telegramPrimaryColor.fade(0.4).toString()
-    const tagColor = telegramPrimaryColor.toString()
-
     return {
-      primaryFadedColor,
-      inputBackgroundColor,
-      inputBorderColor,
-      alertBackgroundColor,
-      alertBorderColor,
-      tinyIconColor,
-      tagBorderColor,
-      tagColor
+      primaryFadedColor: telegramPrimaryColor.fade(0.8).toString(),
+
+      inputBackgroundColor:
+        colorScheme === 'light'
+          ? telegramBackgroundColor.lighten(0.3).toString()
+          : telegramBackgroundColor.darken(0.3).toString(),
+
+      inputBorderColor:
+        colorScheme === 'light'
+          ? telegramBackgroundColor.darken(0.25).toString()
+          : telegramBackgroundColor.lighten(0.6).toString(),
+
+      alertBackgroundColor:
+        colorScheme === 'light'
+          ? telegramBackgroundColor.darken(0.025).toString()
+          : telegramBackgroundColor.lighten(0.2).toString(),
+
+      alertBorderColor:
+        colorScheme === 'light'
+          ? telegramBackgroundColor.darken(0.1).toString()
+          : telegramBackgroundColor.lighten(0.4).toString(),
+
+      tinyIconColor:
+        colorScheme === 'light'
+          ? telegramTextColor.lighten(0.8).toString()
+          : telegramTextColor.darken(0.4).toString(),
+
+      tagBorderColor: telegramPrimaryColor.fade(0.4).toString(),
+      tagColor: telegramPrimaryColor.toString()
     }
   }, [WebApp])
 
   const inputColors = {
-    colorBgContainer: inputBackgroundColor,
-    colorBorder: inputBorderColor
+    colorBgContainer: theme.inputBackgroundColor,
+    colorBorder: theme.inputBorderColor
   }
 
   return (
@@ -88,8 +70,8 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
             : defaultTheme.defaultAlgorithm,
         token: {
           borderRadius: 20,
-          colorPrimary: primaryFadedColor,
-          colorInfo: tinyIconColor
+          colorPrimary: theme.primaryFadedColor,
+          colorInfo: theme.tinyIconColor
         },
         components: {
           Radio: {
@@ -97,7 +79,7 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
           },
           Select: {
             ...inputColors,
-            colorBgElevated: inputBackgroundColor
+            colorBgElevated: theme.inputBackgroundColor
           },
           InputNumber: {
             ...inputColors
@@ -106,15 +88,15 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
             ...inputColors
           },
           Alert: {
-            colorInfoBg: alertBackgroundColor,
-            colorInfoBorder: alertBorderColor
+            colorInfoBg: theme.alertBackgroundColor,
+            colorInfoBorder: theme.alertBorderColor
           },
           Tag: {
-            colorBorder: tagBorderColor,
-            colorText: tagColor
+            colorBorder: theme.tagBorderColor,
+            colorText: theme.tagColor
           },
           Button: {
-            colorLink: tinyIconColor
+            colorLink: theme.tinyIconColor
           }
         }
       }}>
