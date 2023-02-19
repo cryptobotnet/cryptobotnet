@@ -8,11 +8,12 @@
       "cache": false
     },
     "lint": {
-      "cache": false
+      "cache": false,
+      "dependsOn": ["redis-client#build", "okx-api#build"]
     },
     "typecheck": {
       "cache": false,
-      "dependsOn": ["redis-model#build", "okx-api#build"]
+      "dependsOn": ["redis-client#build", "okx-api#build"]
     },
     "start": {
       "cache": false,
