@@ -23,35 +23,35 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
     const telegramTextColor = color(text_color)
 
     return {
-      primaryFadedColor: telegramPrimaryColor.fade(0.8).toString(),
+      telegramPrimaryColor: telegramPrimaryColor.hex(),
 
       inputBackgroundColor:
         colorScheme === 'light'
-          ? telegramBackgroundColor.lighten(0.3).toString()
-          : telegramBackgroundColor.darken(0.3).toString(),
+          ? telegramPrimaryColor.mix(color('white'), 0.85).hex()
+          : telegramBackgroundColor.darken(0.3).hex(),
 
       inputBorderColor:
         colorScheme === 'light'
-          ? telegramBackgroundColor.darken(0.25).toString()
-          : telegramBackgroundColor.lighten(0.6).toString(),
+          ? telegramPrimaryColor.mix(color('white'), 0.65).hex()
+          : telegramBackgroundColor.lighten(0.6).hex(),
 
       alertBackgroundColor:
         colorScheme === 'light'
-          ? telegramBackgroundColor.darken(0.025).toString()
-          : telegramBackgroundColor.lighten(0.2).toString(),
+          ? telegramPrimaryColor.mix(color('white'), 0.85).hex()
+          : telegramBackgroundColor.lighten(0.2).hex(),
 
       alertBorderColor:
         colorScheme === 'light'
-          ? telegramBackgroundColor.darken(0.1).toString()
-          : telegramBackgroundColor.lighten(0.4).toString(),
+          ? telegramPrimaryColor.mix(color('white'), 0.8).hex()
+          : telegramBackgroundColor.lighten(0.4).hex(),
 
       tinyIconColor:
         colorScheme === 'light'
-          ? telegramTextColor.lighten(0.8).toString()
-          : telegramTextColor.darken(0.4).toString(),
+          ? telegramTextColor.lighten(0.8).hex()
+          : telegramTextColor.darken(0.4).hex(),
 
       tagBorderColor: telegramPrimaryColor.fade(0.4).toString(),
-      tagColor: telegramPrimaryColor.toString()
+      tagColor: telegramPrimaryColor.hex()
     }
   }, [WebApp])
 
@@ -70,7 +70,7 @@ export const TelegramTheme: React.FC<{ children: React.ReactNode }> = ({
             : defaultTheme.defaultAlgorithm,
         token: {
           borderRadius: 20,
-          colorPrimary: theme.primaryFadedColor,
+          colorPrimary: theme.telegramPrimaryColor,
           colorInfo: theme.tinyIconColor
         },
         components: {

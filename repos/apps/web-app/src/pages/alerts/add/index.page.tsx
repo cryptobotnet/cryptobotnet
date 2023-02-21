@@ -187,7 +187,7 @@ export const AddAlert: NextPage = () => {
     WebApp?.BackButton.onClick(handleBackClick)
     WebApp?.BackButton.show()
 
-    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
 
     return () => {
       WebApp?.MainButton.offClick(handleMainClick)
@@ -197,7 +197,7 @@ export const AddAlert: NextPage = () => {
       WebApp?.BackButton.offClick(handleBackClick)
       WebApp?.BackButton.hide()
 
-      document.documentElement.style.overflow = 'auto'
+      document.body.style.overflow = 'auto'
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
