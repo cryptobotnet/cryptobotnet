@@ -1,6 +1,6 @@
 {
-  "name": "okx-alerts",
-  "description": "@cryptoaIertsbot & @okxalertsbot monorepo",
+  "name": "cryptobotnet",
+  "description": "@cryptoaIertsbot & @cryptopositionsbot monorepo",
   "version": "0.0.0",
   "license": "UNLICENSED",
   "author": "Mikhail T. <totalism@icloud.com>",

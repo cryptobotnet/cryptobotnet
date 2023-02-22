@@ -267,7 +267,7 @@ export const Settings: NextPage = () => {
           <Alert
             description={
               <>
-                <Typography.Text strong>@okxalertsbot</Typography.Text> is
+                <Typography.Text strong>@cryptopositionsbot</Typography.Text> is
                 third-party open-source project and is not affiliated with
                 okx.com team. Check out our code in case of any concerns:
                 <br />

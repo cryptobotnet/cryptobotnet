@@ -1,4 +1,4 @@
-## @cryptoaIertsbot & **@okxalertsbot** monorepo
+## @cryptoaIertsbot & **@cryptopositionsbot** monorepo
 
 </h1>
 
@@ -14,13 +14,13 @@ Get alerts for changes in crypto prices directly in your Telegram.
 
 Free forever and open-source.
 
-### [t.me/okxalertsbot](https://t.me/okxalertsbot)
+### [t.me/cryptopositionsbot](https://t.me/cryptopositionsbot)
 
-Get alerts with account position events on the okx.com crypto exchange and automated alerts every time your open positions cross PnL thresholds.
-Get alerts with account position events on the okx.com and auto alerts every time your positions cross PnL thresholds.
+Get alerts with your positions on crypto exchanges and auto alerts every time your open positions cross PnL thresholds.
 
 - Market data update frequency 200 ms.
 - Instant delivery. Persistent on all devices.
-- Know the exact time of opening, closing and changing positions.
+- Supported crypto exchanges: OKX.
+- Exact time of opening, closing and changing positions.
 
 Free forever and open-source.

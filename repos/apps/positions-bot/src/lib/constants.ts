@@ -8,13 +8,14 @@ export enum Commands {
 export const Responses = {
   START: dedent(
     `
-    Welcome to chat with @okxalertsbot
+    Welcome to chat with @cryptopositionsbot
 
-    Get alerts with account position events on the okx\\.com crypto exchange and automated alerts every time your open positions cross PnL thresholds\\.
+    Get alerts with account position events on crypto exchanges and auto alerts every time your open positions cross PnL thresholds\\.
 
     \\- Market data update frequency 200 ms\\.
     \\- Instant delivery\\. Persistent on all devices\\.
-    \\- Know the exact time of opening\\, closing and changing positions\\.
+    \\- Supported crypto exchanges\\: OKX\\.
+    \\- Exact time of opening\\, closing and changing positions\\.
 
     *Use Home button near your text bar to control the bot ⚡️*
 
