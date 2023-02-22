@@ -9,11 +9,11 @@
     },
     "lint": {
       "cache": false,
-      "dependsOn": ["redis-client#build", "okx-api#build"]
+      "dependsOn": ["redis-client#build", "okx-api#build", "web-sockets#build"]
     },
     "typecheck": {
       "cache": false,
-      "dependsOn": ["redis-client#build", "okx-api#build"]
+      "dependsOn": ["redis-client#build", "okx-api#build", "web-sockets#build"]
     },
     "start": {
       "cache": false,

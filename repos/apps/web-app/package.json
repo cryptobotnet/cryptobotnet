@@ -8,13 +8,13 @@
     "format": "prettier --ignore-path ../../../.prettierignore --write . && eslint --ignore-path ../../../.eslintignore './*.js' 'src/**/*.{js,ts,tsx}' --fix",
     "lint": "next lint && stylelint '**/*.css'",
     "typecheck": "tsc --pretty --noEmit",
-    "start": "next dev",
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED=0 next dev",
     "start:prod": "next start",
     "build": "next build"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
-    "antd": "^5.2.1",
+    "antd": "^5.2.2",
     "clsx": "^1.1.1",
     "color": "^4.2.3",
     "lodash.throttle": "^4.1.1",
@@ -24,7 +24,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
-    "react-hook-form": "^7.43.1",
+    "react-hook-form": "^7.43.2",
     "redis-client": "*",
     "yup": "^1.0.0"
   },
@@ -39,7 +39,7 @@
     "eslint-config-shared": "*",
     "postcss": "^8.4.12",
     "postcss-preset-env": "^8.0.1",
-    "stylelint": "^15.1.0",
+    "stylelint": "^15.2.0",
     "stylelint-config-standard": "^30.0.1",
     "tsconfig-shared": "*",
     "typescript": "^4.9.5"
