@@ -7,15 +7,10 @@
   & > main {
     width: 100%;
     max-width: 500px;
-    padding: 0 20px 40px;
+    padding: 24px 20px 40px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-flow: column nowrap;
-
-    /* &:global {
-      animation: appear 200ms ease-in-out 1;
-      animation-fill-mode: forwards;
-    } */
   }
 }

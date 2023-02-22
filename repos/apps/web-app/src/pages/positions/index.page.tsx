@@ -58,8 +58,8 @@ export const Positions: NextPage = () => {
           message="Not Configured"
           description={
             <>
-              OKX API keys have not been configured. Please visit{' '}
-              <Link href={Urls.SETTINGS}>API Keys section</Link>.
+              OKX API keys have not been configured. Please{' '}
+              <Link href={Urls.SETTINGS}>configure your keys</Link> first.
             </>
           }
           type="info"
@@ -68,9 +68,7 @@ export const Positions: NextPage = () => {
       ) : positionNodes.length ? (
         <>{positionNodes}</>
       ) : (
-        <Tag color="processing" className="global-appear">
-          no open positions
-        </Tag>
+        <Tag className="global-appear">no open positions</Tag>
       )}
     </Spin>
   )

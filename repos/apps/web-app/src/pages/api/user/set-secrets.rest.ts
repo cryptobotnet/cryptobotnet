@@ -28,7 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     redisClient.setUserAuthSecrets({ userId, apiKey, passphrase, secretKey })
-    // redisClient.disconnect()
 
     res.status(200).end()
   } catch (error) {

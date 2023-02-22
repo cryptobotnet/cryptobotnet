@@ -12,17 +12,25 @@
 }
 
 .alert {
-  /* &:global {
-    animation: appear 200ms ease-in-out 1;
-    animation-fill-mode: forwards;
-  } */
-
   & + .alert {
     margin-top: 24px;
   }
 
   &:last-of-type {
     margin-bottom: 16px;
+  }
+
+  &.redirect {
+    width: 100%;
+
+    & :global(.ant-alert-description) {
+      display: flex;
+      align-items: center;
+
+      & > svg {
+        margin-left: 8px;
+      }
+    }
   }
 }
 
@@ -31,20 +39,7 @@
   margin-left: 0 !important;
   user-select: none;
 
-  /* &:global {
-    animation: appear 200ms ease-in-out 1;
-    animation-fill-mode: forwards;
-  } */
-
   &:first-of-type {
     margin-top: 24px;
   }
-}
-
-.example {
-  width: 280px;
-}
-
-.remove {
-  margin-top: 36px;
 }

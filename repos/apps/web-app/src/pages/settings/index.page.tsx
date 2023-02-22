@@ -3,10 +3,12 @@ import type { NextPage } from 'next'
 
 import { getPositions, setUserSecrets } from 'api'
 import { useTelegramWebApp } from 'context/telegram'
+import { useRouter } from 'next/router'
+import { Urls } from 'lib/urls'
 
 import { Spin } from 'components/spin'
 import { Controller, useForm } from 'react-hook-form'
-import { Form, Input, Alert, Typography, Checkbox, Button } from 'antd'
+import { Form, Input, Alert, Typography } from 'antd'
 import { Copyable } from 'components/copyable'
 
 import styles from './styles.module.css'
@@ -110,6 +112,25 @@ export const Settings: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState])
 
+  const router = useRouter()
+
+  useEffect(() => {
+    let timerId: number | null = null
+
+    if (configured === true) {
+      timerId = window.setTimeout(() => {
+        router.push(Urls.POSITIONS)
+      }, 4000)
+    }
+
+    return () => {
+      if (timerId) {
+        window.clearTimeout(timerId)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [configured])
+
   return (
     <Spin loading={loading}>
       {configured === true ? (
@@ -118,54 +139,24 @@ export const Settings: NextPage = () => {
             message="Configuration Complete"
             description={
               <>
-                OKX API keys have been configured. You can receive alerts based
-                on account positions.
+                Your OKX API keys have been configured, allowing you to receive
+                alerts based on your account positions.
               </>
             }
             type="info"
             className={clsx(styles.alert, 'global-appear')}
           />
 
-          <Checkbox
-            onChange={() => {
-              WebApp?.HapticFeedback.impactOccurred('soft')
-            }}
-            className={styles.checkbox}>
-            Auto alerts with open positions events
-          </Checkbox>
-          <Typography.Paragraph className={styles.example}>
-            <pre>
-              SHORT in SHIB-USDT-SWAP
-              <br />
-              just opened
-              <br />
-              <br />
-              10 USDT x10 = 100 USDT
-              <br />
-              <br />
-              Entry price = 0.00001181 USDT
-            </pre>
-          </Typography.Paragraph>
-
-          <Checkbox
-            onChange={() => {
-              WebApp?.HapticFeedback.impactOccurred('soft')
-            }}
-            className={styles.checkbox}>
-            Auto alerts with opens positions PnL
-          </Checkbox>
-
-          <Typography.Paragraph className={styles.example}>
-            <pre>
-              SHORT in SHIB-USDT-SWAP
-              <br />
-              just reached 10% or 2.56 USDT
-            </pre>
-          </Typography.Paragraph>
-
-          <Button type="link" danger className={styles.remove}>
-            Remove API Keys
-          </Button>
+          <Alert
+            description={
+              <>
+                You will now be redirected
+                <Spin loading={true} />
+              </>
+            }
+            type="info"
+            className={clsx(styles.alert, styles.redirect, 'global-appear')}
+          />
         </>
       ) : (
         <>

@@ -2,8 +2,6 @@ import React from 'react'
 
 import { useRouter } from 'next/router'
 
-import { Header } from 'components/header'
-
 import styles from './styles.module.css'
 
 export const Layout: React.FC<{ children: React.ReactElement }> = ({
@@ -13,7 +11,6 @@ export const Layout: React.FC<{ children: React.ReactElement }> = ({
 
   return (
     <div className={styles.layout}>
-      <Header />
       <main key={pathname} className="global-appear">
         {children}
       </main>

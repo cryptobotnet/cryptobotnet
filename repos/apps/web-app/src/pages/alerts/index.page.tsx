@@ -168,7 +168,7 @@ export const Alerts: NextPage = () => {
         ? WebApp?.MainButton.hide()
         : WebApp?.MainButton.show()
     },
-    500,
+    300,
     { trailing: false }
   )
 

@@ -13,7 +13,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { userId, instrumentId, targetPrice } = req.body
 
     redisClient.addUserAlert({ userId, instrumentId, targetPrice })
-    // redisClient.disconnect()
 
     res.status(200).end()
   } catch (error) {

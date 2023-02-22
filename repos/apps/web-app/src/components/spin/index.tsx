@@ -6,11 +6,11 @@ import styles from './styles.module.css'
 
 type Props = {
   loading: boolean
-  children: React.ReactElement | React.ReactElement[]
+  children?: React.ReactElement | React.ReactElement[]
 }
 
 export const Spin: React.FC<Props> = ({ loading, children }) =>
-  loading ? (
+  loading || !children ? (
     <LoaderIcon className={styles.spinner} />
   ) : (
     (children as React.ReactElement)

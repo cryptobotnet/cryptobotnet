@@ -8,11 +8,6 @@
   align-items: center;
   justify-content: center;
 
-  /* &:global {
-    animation: appear 200ms ease-in-out 1;
-    animation-fill-mode: forwards;
-  } */
-
   & + .alert {
     margin-top: 20px;
   }

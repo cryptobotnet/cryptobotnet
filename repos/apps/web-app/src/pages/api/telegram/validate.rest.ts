@@ -46,7 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!isValid) {
       const secretInPositions = createHmac('sha256', 'WebAppData').update(
-        TELEGRAM_BOT_KEY_ALERTS
+        TELEGRAM_BOT_KEY_POSITIONS
       )
       const _hashInPositions = createHmac('sha256', secretInPositions.digest())
         .update(dataCheckString)

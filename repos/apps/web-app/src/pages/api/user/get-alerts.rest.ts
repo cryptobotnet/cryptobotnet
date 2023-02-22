@@ -13,7 +13,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { userId } = req.body
 
     const { documents } = await redisClient.findAlerts({ userId })
-    // redisClient.disconnect()
 
     res.status(200).json({
       data: documents.map(
