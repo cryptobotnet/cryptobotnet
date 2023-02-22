@@ -129,9 +129,9 @@ export const Alerts: NextPage = () => {
 
   const alertNodes = useMemo(
     () =>
-      sortedAlerts.map(({ userId, instrumentId, targetPrice }) => (
+      sortedAlerts.map(({ userId, instrumentId, targetPrice }, index) => (
         <div
-          key={`${instrumentId}${targetPrice}`}
+          key={`${instrumentId}${targetPrice}${index}`}
           className={clsx(styles.alert, 'global-appear')}>
           <Copyable className={styles.instrumentId}>{instrumentId}</Copyable>
           <Copyable className={styles.targetPrice}>

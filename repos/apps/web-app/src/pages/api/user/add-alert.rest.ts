@@ -5,6 +5,9 @@ import { addAlertSchema } from 'api'
 
 import { redisClient } from 'lib/redis'
 
+import { fetchServerRoute } from 'lib/fetch'
+import { ServerEndpoints } from 'lib/urls'
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     validateRequestMethod(req, res)
@@ -13,6 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { userId, instrumentId, targetPrice } = req.body
 
     redisClient.addUserAlert({ userId, instrumentId, targetPrice })
+
+    fetchServerRoute(ServerEndpoints.SUBSCRIBE_INSTRUMENT, { instrumentId })
 
     res.status(200).end()
   } catch (error) {

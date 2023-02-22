@@ -16,3 +16,7 @@ export const Endpoints = {
   USER_ADD_ALERT: '/api/user/add-alert',
   USER_REMOVE_ALERT: '/api/user/remove-alert'
 }
+
+export const ServerEndpoints = {
+  SUBSCRIBE_INSTRUMENT: '/subscribe/instrument'
+}
