@@ -1,10 +1,10 @@
 {
   "name": "okx-alerts",
-  "description": "telegram bot for alerts from okx.com crypto exchange",
+  "description": "@cryptoaIertsbot & @okxalertsbot monorepo",
   "version": "0.0.0",
   "license": "UNLICENSED",
   "author": "Mikhail T. <totalism@icloud.com>",
-  "repository": "git@github.com:asyncink/okx-alerts-bot.git",
+  "repository": "git@github.com:cryptobotnet/cryptobotnet.git",
   "private": true,
   "workspaces": [
     "repos/apps/*",
