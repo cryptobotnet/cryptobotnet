@@ -1,16 +1,29 @@
 import type { Debugger } from 'lib/debug'
 
-import { OKXEvent, type PublicChannel, type InstrumentType } from 'lib/types'
+import {
+  OKXEvent,
+  type InstrumentType,
+  type PublicChannelName,
+  type PrivateChannelName
+} from 'lib/types'
 
-type MessageHandlerParams = {
+type OnMessageParams = {
+  channel: PublicChannelName | PrivateChannelName
+  instType?: InstrumentType
+  instId: string
+  data?: Record<string, string>[]
+}
+
+export type MessageHandlerParams = {
   debug: Debugger
-  onAuthCallback: () => void
+  onAuth: () => void
+  onMessage: (messageParams: OnMessageParams) => Promise<void>
 }
 
 type ResponseMessage = {
   event: OKXEvent
   arg: {
-    channel: PublicChannel
+    channel: PublicChannelName | PrivateChannelName
     instType?: InstrumentType
     instId: string
   }
@@ -20,7 +33,7 @@ type ResponseMessage = {
 }
 
 export const getMessageHandler =
-  ({ debug, onAuthCallback }: MessageHandlerParams) =>
+  ({ debug, onAuth, onMessage }: MessageHandlerParams) =>
   (payload: Buffer) => {
     // console.log('%s', payload)
 
@@ -40,7 +53,7 @@ export const getMessageHandler =
       debug({ event, msg, code })
 
       if (event === OKXEvent.LOGIN && code === '0') {
-        onAuthCallback?.()
+        onAuth()
       }
 
       return
@@ -53,4 +66,6 @@ export const getMessageHandler =
     const { data } = message
 
     debug(JSON.stringify({ data }, null, 2))
+
+    onMessage({ channel, instType, instId, data })
   }

@@ -14,7 +14,7 @@ import {
 
 export class OKXWebSocketPrivate extends OKXWebSocket<PrivateChannel> {
   constructor(authSecrets: AuthSecrets) {
-    super(authSecrets)
+    super({ onMessage: async () => undefined, authSecrets })
   }
 
   public getAccount(params?: Omit<AccountPrivateChannel, 'channel'>) {
