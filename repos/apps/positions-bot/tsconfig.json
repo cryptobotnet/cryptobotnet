@@ -1,0 +1,12 @@
+{
+  "extends": "tsconfig-shared/default.json",
+
+  "compilerOptions": {
+    "outDir": "./out",
+    "rootDir": "./src",
+    "baseUrl": "./src"
+  },
+
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", ".next", "out"]
+}
