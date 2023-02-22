@@ -5,14 +5,14 @@ import { redisClient } from 'lib/redis'
 export const handler = async (ctx: CommandContext<Context>) => {
   const { id: userId } = ctx.chat
 
-  const introMessageId = await redisClient.getUserIntroMessageId(userId)
+  const introMessageId = await redisClient.getUserIntroMessageIdInAlerts(userId)
 
   const sendIntroMessage = async () => {
     const { message_id: messageId } = await ctx.reply(Responses.START, {
       parse_mode: 'MarkdownV2'
     })
 
-    redisClient.setUserIntroMessageId({ userId, messageId })
+    redisClient.setUserIntroMessageIdInAlerts({ userId, messageId })
   }
 
   if (!introMessageId) {
