@@ -8,7 +8,8 @@ import { validateTelegramSchema } from 'api'
 
 import { createHmac } from 'crypto'
 
-const TELEGRAM_BOT_KEY = process.env.TELEGRAM_BOT_KEY
+const TELEGRAM_BOT_KEY_ALERTS = process.env.TELEGRAM_BOT_KEY_ALERTS
+const TELEGRAM_BOT_KEY_POSITIONS = process.env.TELEGRAM_BOT_KEY_POSITIONS
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -17,7 +18,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { telegramInitData } = req.body
 
-    if (!TELEGRAM_BOT_KEY || !telegramInitData) {
+    if (
+      !TELEGRAM_BOT_KEY_ALERTS ||
+      !TELEGRAM_BOT_KEY_POSITIONS ||
+      !telegramInitData
+    ) {
       res.status(200).json({ data: { isValid: false } })
 
       return
@@ -28,14 +33,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const hashIndex = arr.findIndex(str => str.startsWith('hash='))
     const hash = arr.splice(hashIndex)[0].split('=')[1]
-
     const dataCheckString = arr.sort((a, b) => a.localeCompare(b)).join('\n')
-    const secret = createHmac('sha256', 'WebAppData').update(TELEGRAM_BOT_KEY)
-    const _hash = createHmac('sha256', secret.digest())
+
+    const secretInAlerts = createHmac('sha256', 'WebAppData').update(
+      TELEGRAM_BOT_KEY_ALERTS
+    )
+    const _hashInAlerts = createHmac('sha256', secretInAlerts.digest())
       .update(dataCheckString)
       .digest('hex')
 
-    const isValid = _hash === hash
+    let isValid = _hashInAlerts === hash
+
+    if (!isValid) {
+      const secretInPositions = createHmac('sha256', 'WebAppData').update(
+        TELEGRAM_BOT_KEY_ALERTS
+      )
+      const _hashInPositions = createHmac('sha256', secretInPositions.digest())
+        .update(dataCheckString)
+        .digest('hex')
+
+      isValid = _hashInPositions === hash
+    }
 
     res.status(200).json({ data: { isValid } })
   } catch (error) {
