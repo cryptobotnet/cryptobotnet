@@ -23,13 +23,13 @@ export class RedisClient {
     this.client.connect()
   }
 
-  public getUserIntroMessageId(userId: number) {
+  public getUserIntroMessageIdInAlerts(userId: number) {
     return this.client.get(
-      RedisKeyGetters[RedisKeys.USER_INTRO_MESSAGE_ID](userId)
+      RedisKeyGetters[RedisKeys.USER_INTRO_MESSAGE_ID_ALERTS](userId)
     )
   }
 
-  public setUserIntroMessageId({
+  public setUserIntroMessageIdInAlerts({
     userId,
     messageId
   }: {
@@ -37,7 +37,26 @@ export class RedisClient {
     messageId: number
   }) {
     this.client.set(
-      RedisKeyGetters[RedisKeys.USER_INTRO_MESSAGE_ID](userId),
+      RedisKeyGetters[RedisKeys.USER_INTRO_MESSAGE_ID_ALERTS](userId),
+      messageId
+    )
+  }
+
+  public getUserIntroMessageIdInPositions(userId: number) {
+    return this.client.get(
+      RedisKeyGetters[RedisKeys.USER_INTRO_MESSAGE_ID_POSITIONS](userId)
+    )
+  }
+
+  public setUserIntroMessageIdInPositions({
+    userId,
+    messageId
+  }: {
+    userId: number
+    messageId: number
+  }) {
+    this.client.set(
+      RedisKeyGetters[RedisKeys.USER_INTRO_MESSAGE_ID_POSITIONS](userId),
       messageId
     )
   }
