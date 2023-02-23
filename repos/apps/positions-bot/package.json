@@ -9,7 +9,7 @@
     "lint": "eslint '**/*.ts'",
     "typecheck": "tsc --pretty --noEmit",
     "start": "ts-node-dev -r tsconfig-paths/register ./src/index.ts",
-    "build": "tsc && tsc-alias"
+    "build": "esbuild --bundle src/index.ts --outdir=out --platform=node --target=node18"
   },
   "dependencies": {
     "@grammyjs/conversations": "^1.1.0",
@@ -23,11 +23,11 @@
   "devDependencies": {
     "@types/dedent": "^0.7.0",
     "@types/node": "^18.14.0",
+    "esbuild": "^0.17.10",
     "eslint-config-shared": "*",
     "ts-node-dev": "^2.0.0",
-    "tsc-alias": "^1.8.2",
-    "tsconfig-shared": "*",
     "tsconfig-paths": "^4.1.2",
+    "tsconfig-shared": "*",
     "typescript": "^4.9.5"
   }
 }

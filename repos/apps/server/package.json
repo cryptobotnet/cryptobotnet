@@ -9,7 +9,7 @@
     "lint": "eslint '**/*.ts'",
     "typecheck": "tsc --pretty --noEmit",
     "start": "DEBUG=* ts-node-dev -r tsconfig-paths/register ./src/index.ts",
-    "build": "tsc && tsc-alias"
+    "build": "esbuild --bundle src/index.ts --outdir=out --platform=node --target=node18"
   },
   "dependencies": {
     "compression": "^1.7.4",
@@ -31,11 +31,11 @@
     "@types/express": "^4.17.17",
     "@types/express-slow-down": "^1.3.2",
     "@types/node": "^18.14.0",
+    "esbuild": "^0.17.10",
     "eslint-config-shared": "*",
     "ts-node-dev": "^2.0.0",
-    "tsc-alias": "^1.8.2",
-    "tsconfig-shared": "*",
     "tsconfig-paths": "^4.1.2",
+    "tsconfig-shared": "*",
     "typescript": "^4.9.5"
   }
 }
