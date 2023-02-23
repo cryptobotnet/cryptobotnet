@@ -32,4 +32,4 @@ jobs:
       - name: Count lines of code
         run: |
           yarn global add cloc
-          cloc src/
+          cloc repos/**/*/src
