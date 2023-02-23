@@ -26,6 +26,7 @@
     "react-feather": "^2.0.10",
     "react-hook-form": "^7.43.2",
     "redis-client": "*",
+    "sharp": "^0.31.3",
     "yup": "^1.0.0"
   },
   "devDependencies": {
