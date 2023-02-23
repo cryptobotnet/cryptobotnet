@@ -1,0 +1,47 @@
+name: deploy bots
+
+on:
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    uses: ./.github/workflows/checkup.yml
+
+  deploy:
+    name: Deploy bots to AWS EC2
+    needs: prepare
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build code
+        run: yarn build
+
+      - name: Deploy @cryptoalertsbot
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_BOTS_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_BOTS_PUBLIC_DNS }}
+          REMOTE_USER: ${{ secrets.EC2_BOTS_USERNAME }}
+          TARGET: ${{ secrets.EC2_BOTS_TARGET_DIR_ALERTS }}
+          SOURCE: repos/apps/alerts-bot/out
+
+      - name: Deploy @cryptopositionsbot
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_BOTS_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_BOTS_PUBLIC_DNS }}
+          REMOTE_USER: ${{ secrets.EC2_BOTS_USERNAME }}
+          TARGET: ${{ secrets.EC2_BOTS_TARGET_DIR_POSITIONS }}
+          SOURCE: repos/apps/positions-bot/out
