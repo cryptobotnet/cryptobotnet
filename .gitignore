@@ -38,4 +38,4 @@ tsconfig.tsbuildinfo
 
 # internal packages
 repos/packages/nginx
-deploy.md
+*deploy.md

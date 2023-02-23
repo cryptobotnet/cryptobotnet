@@ -23,7 +23,7 @@ export const Responses = {
   ),
   HELP: dedent(
     `
-    *Use Home button near your text bar to control the bot 🔥*
+    *Use Home button near your text bar to control the bot *
     
     ||Consider to check the first message for an introduction\\.||
     `
