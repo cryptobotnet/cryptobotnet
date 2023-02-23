@@ -9,10 +9,11 @@ on:
 
 jobs:
   prepare:
+    name: Code quality assurance
     uses: ./.github/workflows/checkup.yml
 
   deploy:
-    name: Deploy bots to AWS EC2
+    name: Deployment
     needs: prepare
     runs-on: ubuntu-latest
     env:
@@ -41,13 +42,13 @@ jobs:
       - name: Pull Vercel environment variables
         run: vercel pull --token=${{ secrets.VERCEL_TOKEN }} --environment=production
       
-      - name: Build project
+      - name: Build Vercel project
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }} --prod
       
-      - name: Deploy project to Vercel
+      - name: Deploy web app to Vercel
         run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --prod
 
-      - name: Deploy @cryptoalertsbot
+      - name: Deploy @cryptoalertsbot to AWS EC2
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_BOTS_SSH_KEY }}
@@ -56,7 +57,7 @@ jobs:
           TARGET: ${{ secrets.EC2_BOTS_TARGET_DIR_ALERTS }}
           SOURCE: repos/apps/alerts-bot/out/
 
-      - name: Deploy @cryptopositionsbot
+      - name: Deploy @cryptopositionsbot to AWS EC2
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_BOTS_SSH_KEY }}
@@ -65,7 +66,7 @@ jobs:
           TARGET: ${{ secrets.EC2_BOTS_TARGET_DIR_POSITIONS }}
           SOURCE: repos/apps/positions-bot/out/
 
-      - name: Deploy server
+      - name: Deploy server to AWS EC2
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SERVER_SSH_KEY }}

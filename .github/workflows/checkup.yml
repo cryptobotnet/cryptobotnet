@@ -6,7 +6,7 @@ on:
 
 jobs:
   checkup:
-    name: checkup
+    name: Code quality assurance
     if: ${{ !startsWith(github.event.message, 'chore(release)') }}
     runs-on: ubuntu-latest
 

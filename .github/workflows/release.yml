@@ -5,10 +5,11 @@ on:
 
 jobs:
   prepare:
+    name: Code quality assurance
     uses: ./.github/workflows/checkup.yml
 
   release:
-    name: release
+    name: Release
     needs: prepare
     runs-on: ubuntu-latest
 
