@@ -148,8 +148,8 @@ export class RedisClient {
     }
 
     if (instrumentId && currentPrice) {
-      /* NOTE: tolerance is 0.005% */
-      const tolerance = 0.005 / 100
+      /* NOTE: tolerance is 0.01% */
+      const tolerance = 0.01 / 100
 
       /* NOTE: multiply by 1e8 to avoid float numbers with high precision */
       const lowerBound = Math.trunc(currentPrice * (1 - tolerance) * 1e8)
