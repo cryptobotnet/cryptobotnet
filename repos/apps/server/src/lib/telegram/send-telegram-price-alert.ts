@@ -1,4 +1,5 @@
 import fetch from 'cross-fetch'
+import { debug } from 'lib/debug'
 import numeral from 'numeral'
 import type { Alert } from 'redis-client'
 
@@ -8,6 +9,10 @@ export const sendTelegramPriceAlert = ({
   targetPrice
 }: Alert) => {
   try {
+    debug(
+      `sent alert with ${instrumentId} price ${targetPrice} to user ${userId}`
+    )
+
     fetch(
       `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_KEY_ALERTS}/sendMessage`,
       {

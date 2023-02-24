@@ -61,11 +61,11 @@ export const getMessageHandler =
 
     const { channel, instType, instId } = message.arg
 
-    debug({ event, channel, instId, instType })
+    // debug({ event, channel, instId, instType })
 
     const { data } = message
 
-    debug(JSON.stringify({ data }, null, 2))
+    // debug(JSON.stringify({ data }, null, 2))
 
     onMessage({ channel, instType, instId, data })
   }
