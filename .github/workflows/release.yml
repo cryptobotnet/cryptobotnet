@@ -5,7 +5,7 @@ on:
 
 jobs:
   prepare:
-    name: Code quality assurance
+    name: Prepare
     uses: ./.github/workflows/checkup.yml
 
   release:

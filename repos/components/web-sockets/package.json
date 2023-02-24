@@ -16,10 +16,12 @@
     "build": "tsc && tsc-alias"
   },
   "dependencies": {
+    "lodash.throttle": "^4.1.1",
     "okx-api": "*",
     "redis-client": "*"
   },
   "devDependencies": {
+    "@types/lodash.throttle": "^4.1.7",
     "@types/node": "^18.11.18",
     "eslint-config-shared": "*",
     "tsc-alias": "^1.8.2",
