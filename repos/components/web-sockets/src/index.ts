@@ -14,6 +14,8 @@ type WebSocketsManagerParams = {
   sendTelegramPriceAlert: (alert: Alert) => void
 }
 
+const WEB_SOCKET_FREQUENCY = 300
+
 export class WebSocketsManager {
   private publicConnecttion: OKXWebSocketPublic
 
@@ -23,10 +25,8 @@ export class WebSocketsManager {
   constructor(params: WebSocketsManagerParams) {
     const { redisClient, sendTelegramPriceAlert } = params
 
-    const throttledSendAlert = throttle(sendTelegramPriceAlert, 1e4)
-
     this.publicConnecttion = new OKXWebSocketPublic({
-      onMarkPriceMessage: async ({ channel, instId, data }) => {
+      onMarkPriceMessage: throttle(async ({ channel, instId, data }) => {
         if (!data || channel !== PublicChannelName.MARK_PRICE) {
           return
         }
@@ -51,9 +51,9 @@ export class WebSocketsManager {
 
         documents.map(({ value }) => {
           redisClient.removeUserAlert(value)
-          throttledSendAlert(value)
+          sendTelegramPriceAlert(value)
         })
-      }
+      }, WEB_SOCKET_FREQUENCY)
     })
 
     this.subscribedInstruments = {} // TODO: получать существующие алерты при инициализации

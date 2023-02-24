@@ -17,7 +17,7 @@ type OnMessageParams = {
 export type MessageHandlerParams = {
   debug: Debugger
   onAuth: () => void
-  onMessage: (messageParams: OnMessageParams) => Promise<void>
+  onMessage: (messageParams: OnMessageParams) => Promise<void> | undefined
 }
 
 type ResponseMessage = {
