@@ -147,7 +147,11 @@ export class RedisClient {
       attributes.push([`@userId:[${userId} ${userId}]`])
     }
 
-    if (instrumentId && currentPrice) {
+    if (instrumentId) {
+      attributes.push([`@instrumentId:{${instrumentId.replace(/-/g, '\\-')}}`])
+    }
+
+    if (currentPrice) {
       /* NOTE: tolerance is 0.01% */
       const tolerance = 0.01 / 100
 
@@ -155,10 +159,7 @@ export class RedisClient {
       const lowerBound = Math.trunc(currentPrice * (1 - tolerance) * 1e8)
       const upperBound = Math.trunc(currentPrice * (1 + tolerance) * 1e8)
 
-      attributes.push(
-        [`@instrumentId:{${instrumentId.replace(/-/g, '\\-')}}`],
-        [`@targetPrice:[${lowerBound} ${upperBound}]`]
-      )
+      attributes.push([`@targetPrice:[${lowerBound} ${upperBound}]`])
     }
 
     const query = attributes.join(' ')
