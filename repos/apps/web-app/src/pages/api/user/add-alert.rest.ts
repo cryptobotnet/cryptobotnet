@@ -17,18 +17,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     redisClient.addUserAlert({ userId, instrumentId, targetPrice })
 
-    const { error } = await fetchServerRoute(
-      ServerEndpoints.SUBSCRIBE_INSTRUMENT,
-      {
-        instrumentId
-      }
-    )
-
-    if (error) {
-      res.status(500).json(error)
-
-      return
-    }
+    await fetchServerRoute(ServerEndpoints.SUBSCRIBE_INSTRUMENT, {
+      instrumentId
+    })
 
     res.status(200).end()
   } catch (error) {

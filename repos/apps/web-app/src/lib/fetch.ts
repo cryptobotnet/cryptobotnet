@@ -41,11 +41,7 @@ export const fetchServerRoute = async (
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(params)
     })
-  } catch (err) {
-    console.log({ err })
-  }
-
-  console.log({ response })
+  } catch {}
 
   let error = null
 
