@@ -8,6 +8,7 @@ import {
 import type { Alert, RedisClient } from 'redis-client'
 
 import throttle from 'lodash.throttle'
+import EventEmitter from 'events'
 
 type WebSocketsManagerParams = {
   redisClient: RedisClient
@@ -16,44 +17,63 @@ type WebSocketsManagerParams = {
 
 const WEB_SOCKET_FREQUENCY = 300
 
+export const UNSUBSCRIBE_EVENT = 'UNSUBSCRIBE'
+
 export class WebSocketsManager {
+  private redisClient: RedisClient
+
   private publicConnecttion: OKXWebSocketPublic
 
   private subscribedInstruments: Record<string, true>
   private subscribedUsers: Record<string, OKXWebSocketPrivate>
 
-  constructor(params: WebSocketsManagerParams) {
-    const { redisClient, sendTelegramPriceAlert } = params
+  constructor({
+    redisClient,
+    sendTelegramPriceAlert
+  }: WebSocketsManagerParams) {
+    this.redisClient = redisClient
+
+    const eventEmitter = new EventEmitter()
+
+    eventEmitter.on(UNSUBSCRIBE_EVENT, (instrumentId: string) => {
+      this.unsubscribeInstrument(instrumentId)
+    })
 
     this.publicConnecttion = new OKXWebSocketPublic({
-      onMarkPriceMessage: throttle(async ({ channel, instId, data }) => {
-        if (!data || channel !== PublicChannelName.MARK_PRICE) {
-          return
-        }
+      onMarkPriceMessage: throttle(
+        async ({ channel, instId: instrumentId, data }) => {
+          if (!data || channel !== PublicChannelName.MARK_PRICE) {
+            return
+          }
 
-        const markPriceData = data?.[0] as {
-          instId: string
-          instType: InstrumentType
-          markPx?: string
-          ts?: string
-        }
+          const markPriceData = data?.[0] as {
+            instId: string
+            instType: InstrumentType
+            markPx?: string
+            ts?: string
+          }
 
-        const currentMessagePrice = Number(markPriceData.markPx)
+          const currentMessagePrice = Number(markPriceData.markPx)
 
-        const { documents } = await redisClient.findAlerts({
-          instrumentId: instId,
-          targetPrice: currentMessagePrice
-        })
+          const { documents } = await this.redisClient.findAlerts({
+            instrumentId: instrumentId,
+            targetPrice: currentMessagePrice
+          })
 
-        if (!documents?.length) {
-          return
-        }
+          if (!documents?.length) {
+            return
+          }
 
-        documents.map(({ value }) => {
-          redisClient.removeUserAlert(value)
-          sendTelegramPriceAlert(value)
-        })
-      }, WEB_SOCKET_FREQUENCY)
+          documents.map(({ value }) => {
+            this.redisClient.removeUserAlert(value)
+
+            eventEmitter.emit(UNSUBSCRIBE_EVENT, instrumentId)
+
+            sendTelegramPriceAlert(value)
+          })
+        },
+        WEB_SOCKET_FREQUENCY
+      )
     })
 
     this.subscribedInstruments = {} // TODO: получать существующие алерты при инициализации
@@ -70,9 +90,14 @@ export class WebSocketsManager {
   }
 
   public async unsubscribeInstrument(instrumentId: string) {
-    this.publicConnecttion.unsubscribeMarkPrice({ instId: instrumentId })
+    if (!this.subscribedInstruments[instrumentId]) {
+      return
+    }
 
-    if (this.subscribedInstruments[instrumentId]) {
+    const { total } = await this.redisClient.findAlerts({ instrumentId })
+
+    if (total === 0) {
+      this.publicConnecttion.unsubscribeMarkPrice({ instId: instrumentId })
       delete this.subscribedInstruments[instrumentId]
     }
   }
