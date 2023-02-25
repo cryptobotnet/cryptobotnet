@@ -1,4 +1,4 @@
-import numeral from 'numeral'
+// import numeral from 'numeral'
 
 export const getTolerantBounds = (currentPrice: number) => {
   const log10 = Math.abs(Math.trunc(Math.log10(currentPrice)))
@@ -19,16 +19,16 @@ export const getTolerantBounds = (currentPrice: number) => {
   const lowerBound = Math.trunc(currentPrice * (1 - tolerance) * 1e8)
   const upperBound = Math.trunc(currentPrice * (1 + tolerance) * 1e8)
 
-  console.log(
-    log10,
-    numeral(tolerance).format('0,0[.][00000000]').replace(',', ' '),
-    currentPrice,
-    numeral(lowerBound)
-      .divide(1e8)
-      .format('0,0[.][00000000]')
-      .replace(',', ' '),
-    numeral(upperBound).divide(1e8).format('0,0[.][00000000]').replace(',', ' ')
-  )
+  // console.log(
+  //   log10,
+  //   numeral(tolerance).format('0,0[.][00000000]').replace(',', ' '),
+  //   currentPrice,
+  //   numeral(lowerBound)
+  //     .divide(1e8)
+  //     .format('0,0[.][00000000]')
+  //     .replace(',', ' '),
+  //   numeral(upperBound).divide(1e8).format('0,0[.][00000000]').replace(',', ' ')
+  // )
 
   return [lowerBound, upperBound]
 }
