@@ -5,38 +5,50 @@ import { type MessageHandlerParams } from 'components/message-handler'
 import {
   type PublicChannel,
   PublicChannelName,
+  type MarkPricePublicChannel,
+  type TickersPublicChannel
   // type InstrumentsPublicChannel,
-  // type TickersPublicChannel,
   // type OpenInterestPublicChannel,
-  type MarkPricePublicChannel
 } from 'lib/types'
 
 interface OKXWebSocketPublicParams {
-  onMarkPriceMessage: MessageHandlerParams['onMessage']
+  onPriceMessage: MessageHandlerParams['onMessage']
 }
 
 export class OKXWebSocketPublic extends OKXWebSocket<PublicChannel> {
-  constructor({ onMarkPriceMessage }: OKXWebSocketPublicParams) {
-    super({ onMessage: onMarkPriceMessage })
+  constructor({ onPriceMessage }: OKXWebSocketPublicParams) {
+    super({ onMessage: onPriceMessage })
+  }
+
+  public subscribeMarkPriceChannel(
+    params: Omit<MarkPricePublicChannel, 'channel'>
+  ) {
+    this.subscribe([{ channel: PublicChannelName.MARK_PRICE, ...params }])
+  }
+
+  public unsubscribeMarkPriceChannel(
+    params: Omit<MarkPricePublicChannel, 'channel'>
+  ) {
+    this.unsubscribe([{ channel: PublicChannelName.MARK_PRICE, ...params }])
+  }
+
+  public subscribeTickersChannel(
+    params?: Omit<TickersPublicChannel, 'channel'>
+  ) {
+    this.subscribe([{ channel: PublicChannelName.TICKERS, ...params }])
+  }
+
+  public unsubscribeTickersChannel(
+    params?: Omit<TickersPublicChannel, 'channel'>
+  ) {
+    this.unsubscribe([{ channel: PublicChannelName.TICKERS, ...params }])
   }
 
   // public getInstruments(params?: Omit<InstrumentsPublicChannel, 'channel'>) {
   //   this.subscribe([{ channel: PublicChannelName.INSTRUMENTS, ...params }])
   // }
 
-  // public getTickers(params?: Omit<TickersPublicChannel, 'channel'>) {
-  //   this.subscribe([{ channel: PublicChannelName.TICKERS, ...params }])
-  // }
-
   // public getOpenInterest(params: Omit<OpenInterestPublicChannel, 'channel'>) {
   //   this.subscribe([{ channel: PublicChannelName.OPEN_INTEREST, ...params }])
   // }
-
-  public subscribeMarkPrice(params: Omit<MarkPricePublicChannel, 'channel'>) {
-    this.subscribe([{ channel: PublicChannelName.MARK_PRICE, ...params }])
-  }
-
-  public unsubscribeMarkPrice(params: Omit<MarkPricePublicChannel, 'channel'>) {
-    this.unsubscribe([{ channel: PublicChannelName.MARK_PRICE, ...params }])
-  }
 }
