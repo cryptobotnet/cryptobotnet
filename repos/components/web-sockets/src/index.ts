@@ -13,7 +13,7 @@ type WebSocketsManagerParams = {
   sendTelegramPriceAlert: (alert: Alert) => void
 }
 
-const WEB_SOCKET_FREQUENCY = 300
+const PRICE_MESSAGE_THROTTLE_TIMEOUT = 500
 
 export const UNSUBSCRIBE_EVENT = 'UNSUBSCRIBE'
 
@@ -65,7 +65,7 @@ export class WebSocketsManager {
             sendTelegramPriceAlert(value)
           })
         },
-        WEB_SOCKET_FREQUENCY
+        PRICE_MESSAGE_THROTTLE_TIMEOUT
       )
     })
 
