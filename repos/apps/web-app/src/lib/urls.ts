@@ -18,5 +18,6 @@ export const Endpoints = {
 }
 
 export const ServerEndpoints = {
-  SUBSCRIBE_INSTRUMENT: '/subscribe/instrument'
+  SUBSCRIBE_INSTRUMENT: '/subscribe/instrument',
+  UNSUBSCRIBE_INSTRUMENT: '/unsubscribe/instrument'
 }
