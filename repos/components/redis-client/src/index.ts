@@ -2,6 +2,7 @@ import { createClient, type RedisClientType, SchemaFieldTypes } from 'redis'
 
 import { RedisKeys, RedisIndexes } from 'lib/keys'
 import { RedisKeyGetters } from 'lib/key-getters'
+import { getTolerantBounds } from 'lib/tolerance'
 
 type AuthSecrets = {
   apiKey: string
@@ -152,12 +153,7 @@ export class RedisClient {
     }
 
     if (currentPrice) {
-      /* NOTE: tolerance is 0.01% */
-      const tolerance = 0.01 / 100
-
-      /* NOTE: multiply by 1e8 to avoid float numbers with high precision */
-      const lowerBound = Math.trunc(currentPrice * (1 - tolerance) * 1e8)
-      const upperBound = Math.trunc(currentPrice * (1 + tolerance) * 1e8)
+      const [lowerBound, upperBound] = getTolerantBounds(currentPrice)
 
       attributes.push([`@targetPrice:[${lowerBound} ${upperBound}]`])
     }
