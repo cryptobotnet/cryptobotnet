@@ -1,3 +1,4 @@
 export enum Endpoints {
-  SUBSCRIBE_INSTRUMENT = '/subscribe/instrument'
+  SUBSCRIBE_INSTRUMENT = '/subscribe/instrument',
+  UNSUBSCRIBE_INSTRUMENT = '/unsubscribe/instrument'
 }

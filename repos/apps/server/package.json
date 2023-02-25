@@ -8,7 +8,7 @@
     "format": "prettier --ignore-path ../../../.prettierignore --write . && eslint --ignore-path ../../../.eslintignore 'src/**/*.{js,ts,tsx}' --fix",
     "lint": "eslint '**/*.ts'",
     "typecheck": "tsc --pretty --noEmit",
-    "start": "DEBUG=* ts-node-dev -r tsconfig-paths/register ./src/index.ts",
+    "start": "DEBUG=server,websocket:* ts-node-dev -r tsconfig-paths/register ./src/index.ts",
     "build": "esbuild --bundle src/index.ts --outdir=out --platform=node --target=node18"
   },
   "dependencies": {
