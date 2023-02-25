@@ -1,6 +1,4 @@
 import {
-  type InstrumentType,
-  // InstrumentType,
   OKXWebSocketPrivate,
   OKXWebSocketPublic,
   PublicChannelName
@@ -40,20 +38,15 @@ export class WebSocketsManager {
     })
 
     this.publicConnecttion = new OKXWebSocketPublic({
-      onMarkPriceMessage: throttle(
+      onPriceMessage: throttle(
         async ({ channel, instId: instrumentId, data }) => {
-          if (!data || channel !== PublicChannelName.MARK_PRICE) {
+          if (!data || channel !== PublicChannelName.TICKERS) {
             return
           }
 
-          const markPriceData = data?.[0] as {
-            instId: string
-            instType: InstrumentType
-            markPx?: string
-            ts?: string
-          }
+          const tickerData = data?.[0] as { last: string }
 
-          const currentMessagePrice = Number(markPriceData.markPx)
+          const currentMessagePrice = Number(tickerData.last)
 
           const { documents } = await this.redisClient.findAlerts({
             instrumentId: instrumentId,
@@ -85,7 +78,7 @@ export class WebSocketsManager {
       return
     }
 
-    this.publicConnecttion.subscribeMarkPrice({ instId: instrumentId })
+    this.publicConnecttion.subscribeTickersChannel({ instId: instrumentId })
     this.subscribedInstruments[instrumentId] = true
   }
 
@@ -97,7 +90,7 @@ export class WebSocketsManager {
     const { total } = await this.redisClient.findAlerts({ instrumentId })
 
     if (total === 0) {
-      this.publicConnecttion.unsubscribeMarkPrice({ instId: instrumentId })
+      this.publicConnecttion.unsubscribeTickersChannel({ instId: instrumentId })
       delete this.subscribedInstruments[instrumentId]
     }
   }
