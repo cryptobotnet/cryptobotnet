@@ -61,11 +61,19 @@ export const getMessageHandler =
 
     const { channel, instType, instId } = message.arg
 
-    // debug({ event, channel, instId, instType })
+    if (event === OKXEvent.SUBSCRIBE || event === OKXEvent.UNSUBSCRIBE) {
+      debug(`event: ${event}. channel: ${channel}, ${instId}, ${instType}`)
+      // debug({ event, channel, instId, instType })
+
+      return
+    }
 
     const { data } = message
 
-    // debug(JSON.stringify({ data }, null, 2))
+    if (data) {
+      onMessage({ channel, instType, instId, data })
 
-    onMessage({ channel, instType, instId, data })
+      // debug(data?.[0]?.instId, data?.[0]?.markPx)
+      // debug(JSON.stringify({ data }, null, 2))
+    }
   }
