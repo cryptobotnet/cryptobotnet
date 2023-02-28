@@ -19,8 +19,9 @@ export const UNSUBSCRIBE_EVENT = 'UNSUBSCRIBE'
 
 export class WebSocketsManager {
   private redisClient: RedisClient
+  private sendTelegramPriceAlert: (alert: Alert) => void
 
-  private publicConnecttion: OKXWebSocketPublic
+  private publicConnection: OKXWebSocketPublic
 
   private subscribedInstruments: Record<string, true>
   private subscribedUsers: Record<string, OKXWebSocketPrivate>
@@ -30,6 +31,44 @@ export class WebSocketsManager {
     sendTelegramPriceAlert
   }: WebSocketsManagerParams) {
     this.redisClient = redisClient
+    this.sendTelegramPriceAlert = sendTelegramPriceAlert
+
+    this.subscribedInstruments = {} // TODO: получать существующие алерты при инициализации
+    this.subscribedUsers = {} // TODO: открывать по соединению на каждого активного юзера при инициализации
+
+    this.publicConnection = this.getConnection()
+  }
+
+  public async subscribeInstrument(instrumentId: string) {
+    this.getConnection()
+
+    if (this.subscribedInstruments[instrumentId]) {
+      return
+    }
+
+    this.publicConnection.subscribeTickersChannel([instrumentId])
+    this.subscribedInstruments[instrumentId] = true
+  }
+
+  public async unsubscribeInstrument(instrumentId: string) {
+    this.getConnection()
+
+    if (!this.subscribedInstruments[instrumentId]) {
+      return
+    }
+
+    const { total } = await this.redisClient.findAlerts({ instrumentId })
+
+    if (total === 0) {
+      this.publicConnection.unsubscribeTickersChannel([instrumentId])
+      delete this.subscribedInstruments[instrumentId]
+    }
+  }
+
+  private getConnection() {
+    if (this.publicConnection?.isOpen) {
+      return this.publicConnection
+    }
 
     const eventEmitter = new EventEmitter()
 
@@ -37,7 +76,7 @@ export class WebSocketsManager {
       this.unsubscribeInstrument(instrumentId)
     })
 
-    this.publicConnecttion = new OKXWebSocketPublic({
+    this.publicConnection = new OKXWebSocketPublic({
       onPriceMessage: throttle(
         async ({ channel, instId: instrumentId, data }) => {
           if (!data || channel !== PublicChannelName.TICKERS) {
@@ -62,37 +101,20 @@ export class WebSocketsManager {
 
             eventEmitter.emit(UNSUBSCRIBE_EVENT, instrumentId)
 
-            sendTelegramPriceAlert(value)
+            this.sendTelegramPriceAlert(value)
           })
         },
         PRICE_MESSAGE_THROTTLE_TIMEOUT
       )
     })
 
-    this.subscribedInstruments = {} // TODO: получать существующие алерты при инициализации
-    this.subscribedUsers = {} // TODO: открывать по соединению на каждого активного юзера при инициализации
-  }
+    const instruments = Object.keys(this.subscribedInstruments)
 
-  public async subscribeInstrument(instrumentId: string) {
-    if (this.subscribedInstruments[instrumentId]) {
-      return
+    if (instruments.length) {
+      this.publicConnection.subscribeTickersChannel(instruments)
     }
 
-    this.publicConnecttion.subscribeTickersChannel({ instId: instrumentId })
-    this.subscribedInstruments[instrumentId] = true
-  }
-
-  public async unsubscribeInstrument(instrumentId: string) {
-    if (!this.subscribedInstruments[instrumentId]) {
-      return
-    }
-
-    const { total } = await this.redisClient.findAlerts({ instrumentId })
-
-    if (total === 0) {
-      this.publicConnecttion.unsubscribeTickersChannel({ instId: instrumentId })
-      delete this.subscribedInstruments[instrumentId]
-    }
+    return this.publicConnection
   }
 
   // // NOTE: дергается при включении чекбокса
