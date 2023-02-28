@@ -22,10 +22,11 @@ export const sendTelegramPriceAlert = ({
         },
         body: JSON.stringify({
           chat_id: userId,
-          text: `${instrumentId} price just crossed ${numeral(targetPrice)
+          parse_mode: 'MarkdownV2',
+          text: `\`${instrumentId}\` price just crossed \`${numeral(targetPrice)
             .divide(1e8)
             .format('0,0[.][00000000]')
-            .replace(',', ' ')}`
+            .replace(',', ' ')}\``
         })
       }
     )
