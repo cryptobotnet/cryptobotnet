@@ -21,6 +21,11 @@
 
   & input {
     font-size: 16px;
+    text-transform: uppercase;
+
+    &:placeholder {
+      text-transform: none;
+    }
   }
 
   & :global(.ant-select-clear) {
@@ -33,6 +38,6 @@
   font-size: 16px;
 }
 
-.back {
-  margin-top: 16px;
+.shouldClose :global(.ant-checkbox-inner) {
+  border-radius: 4px;
 }

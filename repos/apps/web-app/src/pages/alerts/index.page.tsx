@@ -30,7 +30,7 @@ export const Alerts: NextPage = () => {
       setAlerts(alerts =>
         alerts.filter(
           alert =>
-            alert.instrumentId !== instrumentId &&
+            alert.instrumentId !== instrumentId ||
             alert.targetPrice !== targetPrice
         )
       ),
@@ -69,6 +69,7 @@ export const Alerts: NextPage = () => {
 
     return () => {
       WebApp?.MainButton.offClick(clickHandler)
+      WebApp?.MainButton.hideProgress()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -114,6 +115,8 @@ export const Alerts: NextPage = () => {
             return
           }
 
+          WebApp?.MainButton.showProgress()
+
           setIsRemoving(true)
 
           WebApp?.HapticFeedback.impactOccurred('medium')
@@ -121,6 +124,8 @@ export const Alerts: NextPage = () => {
           await removeAlert({ userId, instrumentId, targetPrice })
           removeLocalAlert({ instrumentId, targetPrice })
           setIsRemoving(false)
+
+          WebApp?.MainButton.hideProgress()
         }
       )
     },

@@ -4,11 +4,10 @@ import type { NextPage } from 'next'
 import { useTelegramWebApp } from 'context/telegram'
 import { useRouter } from 'next/router'
 import { addAlert, getTickers, InstrumentType } from 'api'
-import { getNumberPrecision } from 'lib/get-number-precision'
 import { Urls } from 'lib/urls'
 
 import { Controller, useForm } from 'react-hook-form'
-import { Radio, Select, InputNumber, Form } from 'antd'
+import { Select, Input, Form, Checkbox } from 'antd'
 
 import styles from './styles.module.css'
 
@@ -64,7 +63,7 @@ export const AddAlert: NextPage = () => {
               instId,
               last,
               value: instId,
-              label: instId
+              label: instId.replace('-', ' ⇄ ')
             }))
           }))
         }
@@ -96,8 +95,6 @@ export const AddAlert: NextPage = () => {
 
   const instrumentId = watch('instrumentId')
 
-  const [step, setStep] = useState(1)
-
   useEffect(() => {
     if (!instrumentId) {
       setValue('targetPrice', undefined)
@@ -110,19 +107,18 @@ export const AddAlert: NextPage = () => {
     if (last) {
       setValue('targetPrice', last)
       trigger()
-
-      if (Number(last) > 10000) {
-        setStep(10)
-      } else if (Number(last) > 100) {
-        setStep(1)
-      } else {
-        const precision = getNumberPrecision(Number(last))
-
-        setStep(1 / Math.pow(10, precision))
-      }
     }
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [instrumentId])
+
+  const handleFilterOption = useCallback(
+    (inputValue: string, option: Instrument | undefined) => {
+      const regexp = new RegExp(inputValue.replace(/\W/g, ''), 'i')
+
+      return !!option && regexp.test(option.instId.replace(/\W/g, ''))
+    },
+    []
+  )
 
   const handleFilterSort = useCallback(
     (optionA: Instrument, optionB: Instrument) =>
@@ -131,6 +127,9 @@ export const AddAlert: NextPage = () => {
         .localeCompare((optionB.value ?? '').toLowerCase()),
     []
   )
+
+  const [searchValue, setSearchValue] = useState('')
+  const [shouldClose, setShouldClose] = useState(true)
 
   const { WebApp } = useTelegramWebApp()
   const router = useRouter()
@@ -174,14 +173,28 @@ export const AddAlert: NextPage = () => {
         }
 
         WebApp?.HapticFeedback.notificationOccurred('success')
-        router.push(Urls.ALERTS)
+
+        if (shouldClose) {
+          WebApp?.close()
+        } else {
+          router.push(Urls.ALERTS)
+        }
       })()
     }
 
+    WebApp?.MainButton.onClick(handleMainClick)
+
+    return () => {
+      WebApp?.MainButton.offClick(handleMainClick)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldClose])
+
+  useEffect(() => {
     const handleBackClick = () => router.push(Urls.ALERTS)
 
     WebApp?.MainButton.setText('Confirm')
-    WebApp?.MainButton.onClick(handleMainClick)
+
     WebApp?.MainButton.hide()
 
     WebApp?.BackButton.onClick(handleBackClick)
@@ -190,7 +203,6 @@ export const AddAlert: NextPage = () => {
     document.body.style.overflow = 'hidden'
 
     return () => {
-      WebApp?.MainButton.offClick(handleMainClick)
       WebApp?.MainButton.hideProgress()
       WebApp?.MainButton.enable()
 
@@ -212,14 +224,14 @@ export const AddAlert: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState])
 
-  const hapticFeedback = useCallback(
-    () => WebApp?.HapticFeedback.impactOccurred('light'),
-    [WebApp]
-  )
+  // const hapticFeedback = useCallback(
+  //   () => WebApp?.HapticFeedback.impactOccurred('light'),
+  //   [WebApp]
+  // )
 
   return (
     <Form layout="vertical" className={styles.page}>
-      <Controller
+      {/* <Controller
         name="instrumentType"
         control={control}
         rules={{ required: true }}
@@ -248,7 +260,7 @@ export const AddAlert: NextPage = () => {
             />
           </Form.Item>
         )}
-      />
+      /> */}
 
       <Controller
         name="instrumentId"
@@ -257,13 +269,19 @@ export const AddAlert: NextPage = () => {
         render={({ field, fieldState: { error, isDirty } }) => (
           <Form.Item>
             <Select
+              open={!!searchValue && !field.value}
+              onSearch={setSearchValue}
               value={field.value}
-              onChange={field.onChange}
+              onChange={value => {
+                field.onChange(value)
+                setSearchValue('')
+              }}
               options={instruments[instrumentType]}
               loading={!instruments[instrumentType].length}
               showArrow={!instruments[instrumentType].length}
+              filterOption={handleFilterOption}
               filterSort={handleFilterSort}
-              placeholder="Select asset"
+              placeholder="Start typing the ticker (e.g. BTC)"
               notFoundContent="No matching asset"
               showSearch
               allowClear
@@ -280,30 +298,46 @@ export const AddAlert: NextPage = () => {
         )}
       />
 
-      <Controller
-        name="targetPrice"
-        control={control}
-        rules={{ required: true }}
-        render={({ field, fieldState: { error, isDirty } }) => (
-          <Form.Item>
-            <InputNumber
-              value={field.value}
-              onChange={field.onChange}
-              placeholder="Select target price"
-              step={step}
-              stringMode
-              className={styles.targetPrice}
-              disabled={loading}
-              status={
-                (formState.isSubmitted && !formState.isValid) ||
-                (error && !isDirty)
-                  ? 'error'
-                  : undefined
-              }
-            />
-          </Form.Item>
-        )}
-      />
+      {instrumentId && (
+        <>
+          <Controller
+            name="targetPrice"
+            control={control}
+            rules={{ required: true }}
+            render={({ field, fieldState: { error, isDirty } }) => (
+              <Form.Item>
+                <Input
+                  value={field.value}
+                  onChange={event => {
+                    const value = event.target.value
+
+                    if (value === '' || /^\d+\.?\d{0,8}$/.test(value)) {
+                      field.onChange(value)
+                    }
+                  }}
+                  placeholder="Select target price"
+                  className={styles.targetPrice}
+                  disabled={loading}
+                  status={
+                    (formState.isSubmitted && !formState.isValid) ||
+                    (error && !isDirty)
+                      ? 'error'
+                      : undefined
+                  }
+                />
+              </Form.Item>
+            )}
+          />
+
+          <Checkbox
+            checked={shouldClose}
+            onChange={event => setShouldClose(event.target.checked)}
+            disabled={loading}
+            className={styles.shouldClose}>
+            Close this window once the alert is set
+          </Checkbox>
+        </>
+      )}
     </Form>
   )
 }
