@@ -73,7 +73,8 @@ export class OKXWebSocket<ChannelType> {
 
     this.webSocket.on('message', messageHandler)
     this.webSocket.on('error', this.debug)
-    this.webSocket.on('close', () => {
+
+    this.webSocket.on('close', (code, reason) => {
       if (this.pingInterval) {
         clearInterval(this.pingInterval)
 
@@ -81,6 +82,10 @@ export class OKXWebSocket<ChannelType> {
       }
 
       this.debug(DebugMessage.CLOSED)
+      this.debug({
+        code,
+        reason: reason.toString()
+      })
     })
   }
 
@@ -144,5 +149,9 @@ export class OKXWebSocket<ChannelType> {
 
   public close() {
     this.webSocket?.close()
+  }
+
+  get isOpen() {
+    return this.webSocket?.readyState === this.webSocket?.OPEN
   }
 }
