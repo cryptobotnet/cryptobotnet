@@ -36,11 +36,11 @@ export class WebSocketsManager {
     this.subscribedInstruments = {} // TODO: получать существующие алерты при инициализации
     this.subscribedUsers = {} // TODO: открывать по соединению на каждого активного юзера при инициализации
 
-    this.publicConnection = this.getConnection()
+    this.publicConnection = this.connect()
   }
 
   public async subscribeInstrument(instrumentId: string) {
-    this.getConnection()
+    this.connect()
 
     if (this.subscribedInstruments[instrumentId]) {
       return
@@ -51,7 +51,7 @@ export class WebSocketsManager {
   }
 
   public async unsubscribeInstrument(instrumentId: string) {
-    this.getConnection()
+    this.connect()
 
     if (!this.subscribedInstruments[instrumentId]) {
       return
@@ -65,7 +65,7 @@ export class WebSocketsManager {
     }
   }
 
-  private getConnection() {
+  private connect() {
     if (this.publicConnection?.isOpen) {
       return this.publicConnection
     }
@@ -77,6 +77,9 @@ export class WebSocketsManager {
     })
 
     this.publicConnection = new OKXWebSocketPublic({
+      onClose: () => {
+        this.connect()
+      },
       onPriceMessage: throttle(
         async ({ channel, instId: instrumentId, data }) => {
           if (!data || channel !== PublicChannelName.TICKERS) {
