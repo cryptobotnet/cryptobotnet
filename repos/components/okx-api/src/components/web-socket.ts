@@ -15,8 +15,9 @@ import {
 import { Endpoints } from 'lib/constants'
 import { sign } from 'components/sign'
 
-interface OKXWebSocketParams {
+export interface OKXWebSocketParams {
   onMessage: MessageHandlerParams['onMessage']
+  onClose?: () => void
   authSecrets?: AuthSecrets
 }
 
@@ -30,7 +31,7 @@ export class OKXWebSocket<ChannelType> {
   private pingInterval: NodeJS.Timer | null
   private readonly debug: Debugger
 
-  constructor({ authSecrets, onMessage }: OKXWebSocketParams) {
+  constructor({ authSecrets, onMessage, onClose }: OKXWebSocketParams) {
     this.isPrivate = !!authSecrets
 
     this.queuedMessages = []
@@ -52,9 +53,9 @@ export class OKXWebSocket<ChannelType> {
         this.handleQueuedMessages()
       }
 
-      this.pingInterval = setInterval(() => {
-        this.webSocket.send('ping')
-      }, 15000)
+      // this.pingInterval = setInterval(() => {
+      //   this.webSocket.send('ping')
+      // }, 15000)
     })
 
     const messageHandler = getMessageHandler({
@@ -86,6 +87,8 @@ export class OKXWebSocket<ChannelType> {
         code,
         reason: reason.toString()
       })
+
+      onClose?.()
     })
   }
 
