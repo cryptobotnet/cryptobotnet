@@ -53,9 +53,9 @@ export class OKXWebSocket<ChannelType> {
         this.handleQueuedMessages()
       }
 
-      // this.pingInterval = setInterval(() => {
-      //   this.webSocket.send('ping')
-      // }, 15000)
+      this.pingInterval = setInterval(() => {
+        this.webSocket.send('ping')
+      }, 15000)
     })
 
     const messageHandler = getMessageHandler({
