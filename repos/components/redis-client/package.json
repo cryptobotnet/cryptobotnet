@@ -1,7 +1,7 @@
 {
   "name": "redis-client",
   "license": "UNLICENSED",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "main": "./out/index.js",
   "types": "./out/index.d.ts",
