@@ -18,7 +18,7 @@
     "typecheck": "turbo run typecheck",
     "start": "turbo run start --parallel",
     "build": "turbo run build",
-    "release": "multi-semantic-release",
+    "release": "multi-semantic-release --deps.bump=inherit",
     "postinstall": "husky install"
   },
   "devDependencies": {
