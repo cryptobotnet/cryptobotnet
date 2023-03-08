@@ -115,6 +115,7 @@ export const sendTelegramPositionAlert = ({
 
       message = dedent(
         `
+        ⚡
         \`${instrumentId}\` just *opened*
 
         \`\`\`
@@ -201,6 +202,7 @@ export const sendTelegramPositionAlert = ({
 
       message = dedent(
         `
+        ⚡
         \`${instrumentId}\` just crossed ${uplRatioFormatted} PnL
 
         \`\`\`
@@ -239,6 +241,7 @@ export const sendTelegramPositionAlert = ({
 
       message = dedent(
         `
+        ⚡
         \`${instrumentId}\` just *closed*
 
         \`\`\`
