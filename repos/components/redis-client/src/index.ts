@@ -16,6 +16,12 @@ export type Alert = {
   targetPrice: number
 }
 
+export type Position = {
+  userId: number
+  positionId: number
+  uplRatio: number
+}
+
 export class RedisClient {
   private client: RedisClientType
 
@@ -98,10 +104,10 @@ export class RedisClient {
     )
   }
 
-  public createAlertsIndex() {
+  public createPriceAlertsIndex() {
     try {
       this.client.ft.create(
-        RedisIndexes.ALERTS,
+        RedisIndexes.PRICE_ALERTS,
         {
           userId: {
             type: SchemaFieldTypes.NUMERIC,
@@ -112,32 +118,40 @@ export class RedisClient {
         },
         {
           ON: 'HASH',
-          PREFIX: 'ALERT:'
+          PREFIX: 'PRICE_ALERT:'
         }
       )
     } catch {}
   }
 
-  public dropAlertsIndex() {
+  public dropPriceAlertsIndex() {
     try {
-      this.client.ft.dropIndex('idx:alerts')
+      this.client.ft.dropIndex(RedisIndexes.PRICE_ALERTS)
     } catch {}
   }
 
-  public addUserAlert({ userId, instrumentId, targetPrice }: Alert) {
+  public addUserPriceAlert({ userId, instrumentId, targetPrice }: Alert) {
     this.client.HSET(
-      RedisKeyGetters[RedisKeys.USER_ALERT](userId, instrumentId, targetPrice),
+      RedisKeyGetters[RedisKeys.USER_PRICE_ALERT](
+        userId,
+        instrumentId,
+        targetPrice
+      ),
       { userId, instrumentId, targetPrice }
     )
   }
 
-  public removeUserAlert({ userId, instrumentId, targetPrice }: Alert) {
+  public removeUserPriceAlert({ userId, instrumentId, targetPrice }: Alert) {
     this.client.DEL(
-      RedisKeyGetters[RedisKeys.USER_ALERT](userId, instrumentId, targetPrice)
+      RedisKeyGetters[RedisKeys.USER_PRICE_ALERT](
+        userId,
+        instrumentId,
+        targetPrice
+      )
     )
   }
 
-  public findAlerts({
+  public findPriceAlerts({
     userId,
     instrumentId,
     targetPrice: currentPrice
@@ -160,9 +174,70 @@ export class RedisClient {
 
     const query = attributes.join(' ')
 
-    return this.client.ft.search(RedisIndexes.ALERTS, query) as Promise<{
+    return this.client.ft.search(RedisIndexes.PRICE_ALERTS, query) as Promise<{
       total: number
       documents: { id: string; value: Alert }[]
+    }>
+  }
+
+  public createPositionsIndex() {
+    try {
+      this.client.ft.create(
+        RedisIndexes.POSITIONS,
+        {
+          userId: {
+            type: SchemaFieldTypes.NUMERIC,
+            sortable: true
+          },
+          positionId: {
+            type: SchemaFieldTypes.NUMERIC,
+            sortable: true
+          },
+          uplRatio: SchemaFieldTypes.NUMERIC
+        },
+        {
+          ON: 'HASH',
+          PREFIX: 'POSITION:'
+        }
+      )
+    } catch {}
+  }
+
+  public dropPositionsIndex() {
+    try {
+      this.client.ft.dropIndex(RedisIndexes.POSITIONS)
+    } catch {}
+  }
+
+  public dropLegacyIndex() {
+    try {
+      this.client.ft.dropIndex('idx:alerts')
+    } catch {}
+  }
+
+  public updateUserPosition({ userId, positionId, uplRatio }: Position) {
+    this.client.HSET(
+      RedisKeyGetters[RedisKeys.USER_POSITION](userId, positionId),
+      { userId, positionId, uplRatio }
+    )
+  }
+
+  public getUserPosition({ userId, positionId }: Partial<Position>) {
+    const attributes: string[][] = []
+
+    if (userId) {
+      attributes.push([`@userId:[${userId} ${userId}]`])
+    }
+
+    if (positionId) {
+      attributes.push([`@positionId:[${positionId} ${positionId}]`])
+    }
+
+    const query = attributes.join(' ')
+
+    return this.client.ft.search(RedisIndexes.POSITIONS, query) as Promise<{
+      total: number
+      documents: { id: string; value: Position }[]
     }>
   }
 
