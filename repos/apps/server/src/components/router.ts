@@ -27,7 +27,7 @@ router.post(Endpoints.UNSUBSCRIBE_INSTRUMENT, (req, res) => {
     return
   }
 
-  debug(`received request to unsubscribe to instrument`, instrumentId)
+  debug(`received request to unsubscribe from instrument`, instrumentId)
 
   WebSocketsManagerInstance.unsubscribeInstrument(instrumentId)
 
@@ -44,6 +44,20 @@ router.post(Endpoints.SUBSCRIBE_USER, (req, res) => {
   debug(`received request to subscribe to user`, Number(userId))
 
   WebSocketsManagerInstance.subscribeUser(Number(userId))
+
+  return res.status(200).end()
+})
+
+router.post(Endpoints.UNSUBSCRIBE_USER, (req, res) => {
+  const { userId } = req.body
+
+  if (!userId) {
+    return
+  }
+
+  debug(`received request to unsubscribe from user`, userId)
+
+  WebSocketsManagerInstance.unsubscribeUser(userId)
 
   return res.status(200).end()
 })

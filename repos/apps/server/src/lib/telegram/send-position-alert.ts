@@ -259,10 +259,16 @@ export const sendTelegramPositionAlert = ({
     }
   }
 
+  const messageEscaped = message
+    .replace(/\./g, '\\.')
+    .replace(/\=/g, '\\=')
+    .replace(/\+/g, '\\+')
+    .replace(/\-/g, '\\-')
+
   sendTelegramMessage({
     botKey: process.env.TELEGRAM_BOT_KEY_POSITIONS,
     userId,
-    message
+    message: messageEscaped
   })
 
   // debug(message)

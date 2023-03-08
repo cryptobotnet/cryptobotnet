@@ -9,6 +9,7 @@ import { handlePublicMessage } from './handle-public-message'
 import { handlePrivateMessage } from './handle-private-message'
 
 const PRICE_MESSAGE_THROTTLE_TIMEOUT = 500
+const PRIVATE_CONNECTION_EMITTED_CLOSE_CODE = 4090
 
 export class WebSocketsManager {
   private eventEmitter: EventEmitter
@@ -91,9 +92,12 @@ export class WebSocketsManager {
 
     const userConnection = new OKXWebSocketPrivate({
       authSecrets,
-      onClose: () => {
+      onClose: code => {
         delete this.subscribedUsers[userId]
-        this.subscribeUser(userId)
+
+        if (code !== PRIVATE_CONNECTION_EMITTED_CLOSE_CODE) {
+          this.subscribeUser(userId)
+        }
       },
       onMessage: message => handlePrivateMessage(message, userId, authSecrets)
     })
@@ -104,11 +108,13 @@ export class WebSocketsManager {
     userConnection.subscribeBalanceAndPosition()
   }
 
-  // // NOTE: дергается при выключении чекбокса
-  // public async unsubscribeUser(userId: number) {
-  //   if (this.subscribedUsers[userId]) {
-  //     this.subscribedUsers[userId].close()
-  //     delete this.subscribedUsers[userId]
-  //   }
-  // }
+  public async unsubscribeUser(userId: number) {
+    if (!this.subscribedUsers[userId]) {
+      return
+    }
+
+    const userConnection = this.subscribedUsers[userId]
+
+    userConnection.close(PRIVATE_CONNECTION_EMITTED_CLOSE_CODE)
+  }
 }

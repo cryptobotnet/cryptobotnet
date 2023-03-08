@@ -1,7 +1,8 @@
 export enum Endpoints {
   SUBSCRIBE_INSTRUMENT = '/subscribe/instrument',
   UNSUBSCRIBE_INSTRUMENT = '/unsubscribe/instrument',
-  SUBSCRIBE_USER = '/subscribe/user'
+  SUBSCRIBE_USER = '/subscribe/user',
+  UNSUBSCRIBE_USER = '/unsubscribe/user'
 }
 
 export enum Events {
