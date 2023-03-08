@@ -171,6 +171,11 @@ export const sendTelegramPositionAlert = ({
         .format('+0,0%')
         .replace(/(\+|-)(.*)/, '$1 $2')
         .replace(',', ' ')
+      const uplRatioFormattedTitle = numeral(uplRatio)
+        .divide(100)
+        .format('+0,0%')
+        .replace('-', '–')
+        .replace(',', ' ')
       const totalFormatted = numeral(margin)
         .add(upl)
         .format('0,0[.][00]')
@@ -203,7 +208,7 @@ export const sendTelegramPositionAlert = ({
       message = dedent(
         `
         ⚡
-        \`${instrumentId}\` just crossed ${uplRatioFormatted} PnL
+        \`${instrumentId}\` just crossed ${uplRatioFormattedTitle} PnL
 
         \`\`\`
         ${line1.join(' ')}
@@ -245,8 +250,14 @@ export const sendTelegramPositionAlert = ({
         \`${instrumentId}\` just *closed*
 
         \`\`\`
-        PnL  = ${numeral(pnl).format('+0,0[.][00]').replace(',', ' ')}
-        PnL% = ${numeral(pnlRatio).format('+0,0%').replace(',', ' ')}
+        PnL  = ${numeral(pnl)
+          .format('+0,0[.][00]')
+          .replace('-', '–')
+          .replace(',', ' ')}
+        PnL% = ${numeral(pnlRatio)
+          .format('+0,0%')
+          .replace('-', '–')
+          .replace(',', ' ')}
 
         entry price = ${numeral(entryPrice)
           .format('0,0[.][00000000]')
