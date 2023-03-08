@@ -3,7 +3,8 @@ export enum RedisKeys {
   USER_INTRO_MESSAGE_ID_POSITIONS = 'USER:$user$:INTRO_MESSAGE_ID:POSITIONS',
   USER_OKX_SECRETS = 'USER:$user$:OKX_SECRETS',
   USER_PRICE_ALERT = 'PRICE_ALERT:$user$:$instrument$:$price$',
-  USER_POSITION = 'POSITION:$user$:$position$'
+  USER_POSITION = 'POSITION:$user$:$position$',
+  USER_POSITION_ALERTS_ENABLED = 'USER:$user$:POSITION_ALERTS_ENABLED'
 }
 
 export enum RedisIndexes {

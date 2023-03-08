@@ -19,5 +19,7 @@ export const RedisKeyGetters = {
     RedisKeys.USER_POSITION.replace('$user$', String(userId)).replace(
       '$position$',
       String(positionId)
-    )
+    ),
+  [RedisKeys.USER_POSITION_ALERTS_ENABLED]: (userId: number) =>
+    RedisKeys.USER_POSITION_ALERTS_ENABLED.replace('$user$', String(userId))
 }

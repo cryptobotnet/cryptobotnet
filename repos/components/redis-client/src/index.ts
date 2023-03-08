@@ -241,6 +241,31 @@ export class RedisClient {
     }>
   }
 
+  public setUserPositionAlertsEnabled({
+    userId,
+    enabled
+  }: {
+    userId: number
+    enabled: '1' | '0'
+  }) {
+    this.client.set(
+      RedisKeyGetters[RedisKeys.USER_POSITION_ALERTS_ENABLED](userId),
+      enabled
+    )
+  }
+
+  public async getUserPositionAlertsEnabled({
+    userId
+  }: {
+    userId: number
+  }): Promise<{ enabled: '1' | '0' } | null> {
+    const enabled = await this.client.get(
+      RedisKeyGetters[RedisKeys.USER_POSITION_ALERTS_ENABLED](userId)
+    )
+
+    return { enabled: (enabled as '1' | '0') || null }
+  }
+
   public connect() {
     return this.client.disconnect()
   }
