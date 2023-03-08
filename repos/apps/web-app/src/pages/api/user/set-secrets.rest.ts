@@ -16,13 +16,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { userId, apiKey, passphrase, secretKey } = req.body
 
-    const OKXHttpPublicInstance = new OKXHttpPrivate({
+    const OKXHttPrivateInstance = new OKXHttpPrivate({
       apiKey,
       passphrase,
       secretKey
     })
 
-    const { data, error } = await OKXHttpPublicInstance.getPositions()
+    const { data, error } = await OKXHttPrivateInstance.getPositions()
 
     if (!data || error) {
       res.status(403).end()
@@ -31,6 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     redisClient.setUserAuthSecrets({ userId, apiKey, passphrase, secretKey })
+    redisClient.setUserPositionAlertsEnabled({ userId, enabled: '1' })
 
     await fetchServerRoute(ServerEndpoints.SUBSCRIBE_USER, { userId })
 

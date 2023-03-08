@@ -283,6 +283,7 @@ export const AddAlert: NextPage = () => {
               filterSort={handleFilterSort}
               placeholder="Start typing the ticker (e.g. BTC)"
               notFoundContent="No matching asset"
+              placement="bottomRight"
               showSearch
               allowClear
               className={styles.instrumentId}

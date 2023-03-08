@@ -1,22 +1,27 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 
-import { getPositions } from 'api'
+import {
+  getPositions,
+  getPositionAlertsEnabled,
+  setPositionAlertsEnabled
+} from 'api'
 import { useTelegramWebApp } from 'context/telegram'
 import { Urls } from 'lib/urls'
 
 import { Spin } from 'components/spin'
-import { Alert, Tag } from 'antd'
+import { Alert, Checkbox } from 'antd'
+import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 import Link from 'next/link'
 
-// import styles from './styles.module.css'
+import styles from './styles.module.css'
 
 export const Positions: NextPage = () => {
   const { WebApp } = useTelegramWebApp()
 
   const [loading, setLoading] = useState(true)
-  const [positions, setPositions] = useState<any[]>([])
   const [configured, setConfigured] = useState<boolean>(false)
+  const [enabled, setEnabled] = useState(false)
 
   const fetchIsConfigured = useCallback(async () => {
     const userId = WebApp?.initDataUnsafe.user?.id
@@ -29,13 +34,16 @@ export const Positions: NextPage = () => {
 
     setLoading(true)
 
-    const { data, error } = await getPositions({ userId })
+    const { error } = await getPositions({ userId })
 
     if (!error) {
-      setPositions(data)
+      setConfigured(!error)
+
+      const { data } = await getPositionAlertsEnabled({ userId })
+
+      setEnabled(data?.enabled === '1')
     }
 
-    setConfigured(!error)
     setLoading(false)
   }, [WebApp])
 
@@ -46,9 +54,21 @@ export const Positions: NextPage = () => {
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 
-  const positionNodes = useMemo(
-    () => positions.map((item, index) => <div key={index}>{index}</div>),
-    [positions]
+  const onCheck = useCallback(
+    async (event: CheckboxChangeEvent) => {
+      const userId = WebApp?.initDataUnsafe.user?.id
+
+      if (!userId) {
+        return
+      }
+
+      setEnabled(event.target.checked)
+      await setPositionAlertsEnabled({
+        userId,
+        enabled: event.target.checked ? '1' : '0'
+      })
+    },
+    [WebApp]
   )
 
   return (
@@ -65,10 +85,31 @@ export const Positions: NextPage = () => {
           type="info"
           className="global-appear"
         />
-      ) : positionNodes.length ? (
-        <>{positionNodes}</>
       ) : (
-        <Tag className="global-appear">no open positions</Tag>
+        <Alert
+          message="API Keys Configured"
+          description={
+            <>
+              <p>
+                Now you can receive alerts for account position events.
+                Supported events:
+              </p>
+              <ul>
+                <li>position opened</li>
+                <li>position PnL crossed </li>
+                <li>position closed</li>
+              </ul>
+              <Checkbox
+                checked={enabled}
+                onChange={onCheck}
+                className={styles.checkbox}>
+                Receive account position alerts
+              </Checkbox>
+            </>
+          }
+          type="info"
+          className="global-appear"
+        />
       )}
     </Spin>
   )
