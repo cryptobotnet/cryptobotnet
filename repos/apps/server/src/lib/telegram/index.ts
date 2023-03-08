@@ -1,1 +1,2 @@
-export { sendTelegramPriceAlert } from './send-telegram-price-alert'
+export { sendTelegramPriceAlert } from './send-price-alert'
+export { sendTelegramPositionAlert } from './send-position-alert'

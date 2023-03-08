@@ -1,10 +1,11 @@
 import express from 'express'
 
-import { compression } from './compression'
-import { cors } from './cors'
 import { router } from 'components/router'
-import { rateLimit } from './rate-limit'
-import { slowDown } from './slow-down'
+
+import { compression } from 'middleware/compression'
+import { cors } from 'middleware/cors'
+import { rateLimit } from 'middleware/rate-limit'
+import { slowDown } from 'middleware/slow-down'
 
 export const app = express()
 
