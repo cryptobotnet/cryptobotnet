@@ -17,7 +17,7 @@ import { sign } from 'components/sign'
 
 export interface OKXWebSocketParams {
   onMessage: MessageHandlerParams['onMessage']
-  onClose: () => void
+  onClose: (code?: number) => void
   authSecrets?: AuthSecrets
 }
 
@@ -47,9 +47,9 @@ export class OKXWebSocket<ChannelType> {
     this.webSocket.on('open', () => {
       this.debug(DebugMessage.OPENED)
 
-      this.pingInterval = setInterval(() => {
-        this.webSocket.send('ping')
-      }, 15000)
+      // this.pingInterval = setInterval(() => {
+      //   this.webSocket.send('ping')
+      // }, 15000)
 
       if (this.isPrivate && authSecrets) {
         this.login(authSecrets)
@@ -88,7 +88,7 @@ export class OKXWebSocket<ChannelType> {
         reason: reason.toString()
       })
 
-      onClose?.()
+      onClose?.(code)
     })
   }
 
@@ -150,8 +150,8 @@ export class OKXWebSocket<ChannelType> {
     this.send(JSON.stringify(payload))
   }
 
-  public close() {
-    this.webSocket?.close()
+  public close(code?: number) {
+    this.webSocket?.close(code)
   }
 
   get isOpen() {
