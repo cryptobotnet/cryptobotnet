@@ -108,7 +108,11 @@ export const handlePrivateMessage = async (
     }
 
     const positionId = Number(posId)
-    const uplRatioRounded = Math.floor((Number(uplRatio) * 100) / 5) * 5
+    const uplRatioNumber = Number(uplRatio)
+    const uplRatioRound =
+      uplRatioNumber < 0
+        ? Math.round((uplRatioNumber * 100) / 5) * 5
+        : Math.ceil((uplRatioNumber * 100) / 5) * 5
 
     const { documents } = await redisClient.getUserPosition({
       userId,
@@ -119,20 +123,20 @@ export const handlePrivateMessage = async (
       redisClient.updateUserPosition({
         userId,
         positionId,
-        uplRatio: uplRatioRounded
+        uplRatio: uplRatioRound
       })
 
       return
     }
 
-    if (Number(documents[0].value.uplRatio) === uplRatioRounded) {
+    if (Number(documents[0].value.uplRatio) === uplRatioRound) {
       return
     }
 
     redisClient.updateUserPosition({
       userId,
       positionId,
-      uplRatio: uplRatioRounded
+      uplRatio: uplRatioRound
     })
 
     const {
@@ -151,7 +155,7 @@ export const handlePrivateMessage = async (
         instrumentId,
         margin,
         upl,
-        uplRatio: uplRatioRounded,
+        uplRatio: uplRatioRound,
         entryPrice,
         currentPrice,
         liquidationPrice
