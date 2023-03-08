@@ -9,6 +9,8 @@ import { handlePublicMessage } from './handle-public-message'
 import { handlePrivateMessage } from './handle-private-message'
 
 const PRICE_MESSAGE_THROTTLE_TIMEOUT = 500
+const POSITION_MESSAGE_THROTTLE_TIMEOUT = 5 * 60 * 1e3
+
 const PRIVATE_CONNECTION_EMITTED_CLOSE_CODE = 4090
 
 export class WebSocketsManager {
@@ -99,7 +101,10 @@ export class WebSocketsManager {
           this.subscribeUser(userId)
         }
       },
-      onMessage: message => handlePrivateMessage(message, userId, authSecrets)
+      onMessage: throttle(
+        message => handlePrivateMessage(message, userId, authSecrets),
+        POSITION_MESSAGE_THROTTLE_TIMEOUT
+      )
     })
 
     this.subscribedUsers[userId] = userConnection
