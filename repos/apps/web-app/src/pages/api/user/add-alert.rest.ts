@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { userId, instrumentId, targetPrice } = req.body
 
-    redisClient.addUserAlert({ userId, instrumentId, targetPrice })
+    redisClient.addUserPriceAlert({ userId, instrumentId, targetPrice })
 
     await fetchServerRoute(ServerEndpoints.SUBSCRIBE_INSTRUMENT, {
       instrumentId

@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { userId, instrumentId, targetPrice } = req.body
 
-    redisClient.removeUserAlert({ userId, instrumentId, targetPrice })
+    redisClient.removeUserPriceAlert({ userId, instrumentId, targetPrice })
 
     await fetchServerRoute(ServerEndpoints.UNSUBSCRIBE_INSTRUMENT, {
       instrumentId
