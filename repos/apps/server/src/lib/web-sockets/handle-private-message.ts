@@ -112,7 +112,7 @@ export const handlePrivateMessage = async (
     const uplRatioRound =
       uplRatioNumber < 0
         ? Math.round((uplRatioNumber * 100) / 5) * 5
-        : Math.ceil((uplRatioNumber * 100) / 5) * 5
+        : Math.floor((uplRatioNumber * 100) / 5) * 5
 
     const { documents } = await redisClient.getUserPosition({
       userId,
