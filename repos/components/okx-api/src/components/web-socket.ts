@@ -47,9 +47,9 @@ export class OKXWebSocket<ChannelType> {
     this.webSocket.on('open', () => {
       this.debug(DebugMessage.OPENED)
 
-      // this.pingInterval = setInterval(() => {
-      //   this.webSocket.send('ping')
-      // }, 15000)
+      this.pingInterval = setInterval(() => {
+        this.webSocket.send('ping')
+      }, 15000)
 
       if (this.isPrivate && authSecrets) {
         this.login(authSecrets)
