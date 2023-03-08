@@ -162,3 +162,84 @@ export type GetTickerPayload = {
 export type GetMarkPricePayload = {
   instId: string
 }
+
+export type Position = {
+  adl: string
+  availPos: string
+  avgPx: string
+  baseBal: string
+  baseBorrowed: string
+  baseInterest: string
+  bizRefId: string
+  bizRefType: string
+  cTime: string
+  ccy: string
+  closeOrderAlgo: []
+  deltaBS: string
+  deltaPA: string
+  gammaBS: string
+  gammaPA: string
+  imr: string
+  instId: string
+  instType: string
+  interest: string
+  last: string
+  lever: string
+  liab: string
+  liabCcy: string
+  liqPx: string
+  margin: string
+  markPx: string
+  mgnMode: string
+  mgnRatio: string
+  mmr: string
+  notionalUsd: string
+  optVal: string
+  pendingCloseOrdLiabVal: string
+  pos: string
+  posCcy: string
+  posId: string
+  posSide: string
+  quoteBal: string
+  quoteBorrowed: string
+  quoteInterest: string
+  spotInUseAmt: string
+  spotInUseCcy: string
+  thetaBS: string
+  thetaPA: string
+  tradeId: string
+  uTime: string
+  upl: string
+  uplRatio: string
+  usdPx: string
+  vegaBS: string
+  vegaPA: string
+}
+
+export type PositionHistory = {
+  cTime: string
+  ccy: string
+  closeAvgPx: string
+  closeTotalPos: string
+  direction: string
+  instId: string
+  instType: string
+  lever: string
+  mgnMode: string
+  openAvgPx: string
+  openMaxPos: string
+  pnl: string
+  pnlRatio: string
+  posId: string
+  triggerPx: string
+  type: string
+  uTime: string
+  uly: string
+}
+
+export type OKXWebSocketMessage = {
+  channel: PublicChannelName | PrivateChannelName
+  instType?: InstrumentType
+  instId: string
+  data?: Record<string, any>[]
+}

@@ -1,17 +1,9 @@
-import { OKXWebSocket } from 'components/web-socket'
-
-import { type OKXWebSocketParams } from 'components/web-socket'
-
+import { OKXWebSocket, OKXWebSocketParams } from 'components/web-socket'
 import { type PublicChannel, PublicChannelName } from 'lib/types'
 
-interface OKXWebSocketPublicParams {
-  onPriceMessage: OKXWebSocketParams['onMessage']
-  onClose: OKXWebSocketParams['onClose']
-}
-
 export class OKXWebSocketPublic extends OKXWebSocket<PublicChannel> {
-  constructor({ onPriceMessage, onClose }: OKXWebSocketPublicParams) {
-    super({ onMessage: onPriceMessage, onClose })
+  constructor(params: OKXWebSocketParams) {
+    super(params)
   }
 
   public subscribeTickersChannel(instIds: string[]) {

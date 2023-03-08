@@ -2,22 +2,16 @@ import type { Debugger } from 'lib/debug'
 
 import {
   OKXEvent,
-  type InstrumentType,
+  type OKXWebSocketMessage,
   type PublicChannelName,
-  type PrivateChannelName
+  type PrivateChannelName,
+  type InstrumentType
 } from 'lib/types'
-
-type OnMessageParams = {
-  channel: PublicChannelName | PrivateChannelName
-  instType?: InstrumentType
-  instId: string
-  data?: Record<string, string>[]
-}
 
 export type MessageHandlerParams = {
   debug: Debugger
   onAuth: () => void
-  onMessage: (messageParams: OnMessageParams) => Promise<void> | undefined
+  onMessage: (messageParams: OKXWebSocketMessage) => Promise<void> | undefined
 }
 
 type ResponseMessage = {
@@ -29,7 +23,7 @@ type ResponseMessage = {
   }
   msg?: string
   code?: string
-  data?: Record<string, string>[]
+  data?: Record<string, unknown>[]
 }
 
 export const getMessageHandler =

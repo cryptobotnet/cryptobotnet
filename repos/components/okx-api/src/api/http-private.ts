@@ -1,5 +1,5 @@
 import { fetcher } from 'components/fetcher'
-import type { AuthSecrets } from 'lib/types'
+import type { AuthSecrets, Position, PositionHistory } from 'lib/types'
 
 export class OKXHttpPrivate {
   private authSecrets: AuthSecrets
@@ -9,6 +9,26 @@ export class OKXHttpPrivate {
   }
 
   public async getPositions() {
-    return fetcher('/api/v5/account/positions', undefined, this.authSecrets)
+    return fetcher<Position[]>(
+      '/api/v5/account/positions',
+      undefined,
+      this.authSecrets
+    )
+  }
+
+  public async getPosition(posId: string) {
+    return fetcher<Position[]>(
+      '/api/v5/account/positions',
+      { posId },
+      this.authSecrets
+    )
+  }
+
+  public async getPositionsHistory(posId: string) {
+    return fetcher<PositionHistory[]>(
+      '/api/v5/account/positions-history',
+      { posId },
+      this.authSecrets
+    )
   }
 }

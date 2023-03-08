@@ -5,7 +5,7 @@ import { Endpoints } from 'lib/constants'
 import { sign } from 'components/sign'
 import type { AuthSecrets } from 'lib/types'
 
-export const fetcher = async (
+export const fetcher = async <T = any>(
   endpoint: string,
   params?: Record<string, string>,
   authSecrets?: AuthSecrets
@@ -38,6 +38,7 @@ export const fetcher = async (
       'OK-ACCESS-TIMESTAMP': String(timestamp),
       'OK-ACCESS-SIGN': signedBase64,
       'OK-ACCESS-PASSPHRASE': passphrase
+      // 'x-simulated-trading': '1'
     }
   }
 
@@ -55,7 +56,7 @@ export const fetcher = async (
   try {
     const json = await response?.json()
 
-    data = json.data ?? null
+    data = (json.data as T) ?? null
 
     const errorCode = json.sCode ?? json.code
     const errorMessage = json.sCode ? json.sMsg : json.msg
