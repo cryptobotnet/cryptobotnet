@@ -1,7 +1,13 @@
-export const getNearestUplRatio = (saved: number, current: number) =>
-  current >= saved
-    ? getMultipleOfFiveDown(current)
-    : getMultipleOfFiveUp(current)
+export const getNearestUplRatio = (saved: number, current: number) => {
+  const isPositive = current >= 0
+  const isGreater = current >= saved
+
+  if (isPositive === isGreater) {
+    return getMultipleOfFiveDown(current)
+  } else {
+    return getMultipleOfFiveUp(current)
+  }
+}
 
 /*
 -7 -> -5
