@@ -76,12 +76,18 @@ export const handlePrivateMessage = async (
 
       if (!historyError && history?.[0]) {
         const {
+          posId,
           instId: instrumentId,
           pnl,
           pnlRatio,
           openAvgPx: entryPrice,
           closeAvgPx: closePrice
         } = history[0]
+
+        redisClient.removeUserPosition({
+          userId,
+          positionId: Number(posId)
+        })
 
         sendTelegramPositionAlert({
           type: PositionAlertType.CLOSED,
