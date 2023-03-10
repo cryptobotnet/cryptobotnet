@@ -7,6 +7,7 @@ import {
 import { sendTelegramPositionAlert } from 'lib/telegram'
 import { PositionAlertType } from 'lib/constants'
 import { redisClient } from 'lib/redis'
+import { getNearestUplRatio } from 'lib/nearest-upl-ratio'
 
 export const handlePrivateMessage = async (
   { channel, data }: OKXWebSocketMessage,
@@ -102,17 +103,12 @@ export const handlePrivateMessage = async (
   if (channel === PrivateChannelName.POSITIONS) {
     const { posId, uplRatio } = data[0]
 
-    /* NOTE: receive empty uplRatio for newly closed position */
+    /* NOTE: got empty uplRatio for newly closed position */
     if (!uplRatio) {
       return
     }
 
     const positionId = Number(posId)
-    const uplRatioNumber = Number(uplRatio)
-    const uplRatioRound =
-      uplRatioNumber < 0
-        ? Math.round((uplRatioNumber * 100) / 5) * 5
-        : Math.floor((uplRatioNumber * 100) / 5) * 5
 
     const { documents } = await redisClient.getUserPosition({
       userId,
@@ -123,20 +119,27 @@ export const handlePrivateMessage = async (
       redisClient.updateUserPosition({
         userId,
         positionId,
-        uplRatio: uplRatioRound
+        uplRatio: 0
       })
 
       return
     }
 
-    if (Number(documents[0].value.uplRatio) === uplRatioRound) {
+    const savedNearestUplRatio = Number(documents[0].value.uplRatio)
+    const uplRatioPercent = Number(uplRatio) * 100
+    const currentNearestUplRatio = getNearestUplRatio(
+      savedNearestUplRatio,
+      uplRatioPercent
+    )
+
+    if (savedNearestUplRatio === currentNearestUplRatio) {
       return
     }
 
     redisClient.updateUserPosition({
       userId,
       positionId,
-      uplRatio: uplRatioRound
+      uplRatio: currentNearestUplRatio
     })
 
     const {
@@ -155,7 +158,7 @@ export const handlePrivateMessage = async (
         instrumentId,
         margin,
         upl,
-        uplRatio: uplRatioRound,
+        uplRatio: currentNearestUplRatio,
         entryPrice,
         currentPrice,
         liquidationPrice
