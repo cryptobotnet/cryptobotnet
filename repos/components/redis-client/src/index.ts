@@ -222,6 +222,15 @@ export class RedisClient {
     )
   }
 
+  public removeUserPosition({
+    userId,
+    positionId
+  }: Omit<Position, 'uplRatio'>) {
+    this.client.DEL(
+      RedisKeyGetters[RedisKeys.USER_POSITION](userId, positionId)
+    )
+  }
+
   public getUserPosition({ userId, positionId }: Partial<Position>) {
     const attributes: string[][] = []
 
